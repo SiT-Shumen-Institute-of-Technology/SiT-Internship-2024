@@ -24,7 +24,7 @@
             this.dayRepository.SaveChangesAsync();
         }
 
-        public void RemoveById(int id)
+        public void RemoveById(string id)
         {
             var choosenDay = this.dayRepository.All().FirstOrDefault(x => x.Id == id);
             this.dayRepository.Delete(choosenDay);

@@ -8,7 +8,7 @@
 
     using SACS.Data.Common.Models;
 
-    public class Day : BaseDeletableModel<int>
+    public class Day : BaseDeletableModel<string>
     {
         public char State { get; set; }
 
@@ -16,7 +16,7 @@
 
         public virtual Employee Employee { get; set; }
 
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public DateTime Date { get; set; }
     }

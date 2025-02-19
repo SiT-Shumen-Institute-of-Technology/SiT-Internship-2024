@@ -25,11 +25,16 @@
             this.employeeRepository.SaveChangesAsync();
         }
 
-        public void RemoveById(int id)
+        public void RemoveById(string id)
         {
             Employee choosenEmployee = this.employeeRepository.All().FirstOrDefault(x => x.Id == id);
             this.employeeRepository.Delete(choosenEmployee);
             this.employeeRepository.SaveChangesAsync();
+        }
+
+        public List<Employee> GetAllEmployees()
+        {
+            return this.employeeRepository.All().ToList();
         }
     }
 }

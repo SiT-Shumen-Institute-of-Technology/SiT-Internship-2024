@@ -1,15 +1,39 @@
 ﻿namespace SACS.Web.Controllers
 {
     using System.Diagnostics;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using SACS.Common;
+    using SACS.Services.Data;
     using SACS.Web.ViewModels;
 
     public class HomeController : BaseController
     {
+        private readonly IEmployeeService employeeService;
+        private readonly ISummaryService summaryService;
+
+        public HomeController(IEmployeeService employeeService, ISummaryService summaryService)
+        {
+            this.employeeService = employeeService;
+            this.summaryService = summaryService;
+        }
+
         public IActionResult Index()
         {
-            return this.View();
+            return this.View(new EmployeeListViewModel
+            {
+                Employees = this.employeeService.GetAllEmployees(),
+                Summaries = this.summaryService.GetAllSummaries(),
+            });
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public IActionResult Delete(string id)
+        {
+            this.employeeService.RemoveById(id);
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public IActionResult Privacy()

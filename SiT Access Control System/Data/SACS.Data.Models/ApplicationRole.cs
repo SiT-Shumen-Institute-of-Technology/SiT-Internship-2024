@@ -3,9 +3,8 @@ namespace SACS.Data.Models
 {
     using System;
 
-    using SACS.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using SACS.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

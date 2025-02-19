@@ -8,12 +8,8 @@
 
     using SACS.Data.Models;
 
-    public interface IEmployeeService
+    public interface ISummaryService
     {
-        void RemoveById(string id);
-
-        void Add(Employee employee);
-
-        List<Employee> GetAllEmployees();
+        public List<Summary> GetAllSummaries();
     }
 }

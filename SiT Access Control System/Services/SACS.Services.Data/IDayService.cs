@@ -10,7 +10,7 @@
 
     public interface IDayService
     {
-        void RemoveById(int id);
+        void RemoveById(string id);
 
         void Add(Day day);
     }

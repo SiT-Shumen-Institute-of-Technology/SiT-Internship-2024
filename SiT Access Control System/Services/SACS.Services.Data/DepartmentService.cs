@@ -24,7 +24,7 @@
             this.departmentRepository.SaveChangesAsync();
         }
 
-        public void RemoveById(int id)
+        public void RemoveById(string id)
         {
             Department choosenDepartment = this.departmentRepository.All().FirstOrDefault(x => x.Id == id);
             this.departmentRepository.Delete(choosenDepartment);

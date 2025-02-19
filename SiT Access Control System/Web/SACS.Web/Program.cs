@@ -68,6 +68,7 @@
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDayService, DayService>();
+            services.AddTransient<ISummaryService, SummaryService>();
         }
 
         private static void Configure(WebApplication app)

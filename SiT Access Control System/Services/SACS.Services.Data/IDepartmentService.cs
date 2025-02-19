@@ -10,7 +10,7 @@
 
     public interface IDepartmentService
     {
-        void RemoveById(int id);
+        void RemoveById(string id);
 
         void Add(Department department);
     }

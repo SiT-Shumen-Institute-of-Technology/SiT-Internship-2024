@@ -1,14 +1,17 @@
 ﻿namespace SACS.Data.Models
 {
+    using System.Collections.Generic;
+
     using SACS.Data.Common.Models;
 
-    public class Department : BaseDeletableModel<int>
+    public class Department : BaseDeletableModel<string>
     {
-        public int Id { get; set; }
+        public Department()
+        {
+            this.Employees = new HashSet<Employee>();
+        }
 
-        public virtual Employee Employee { get; set; }
-
-        public int EmployeeId { get; set; }
+        public virtual HashSet<Employee> Employees { get; set; }
 
         public string Name { get; set; }
     }

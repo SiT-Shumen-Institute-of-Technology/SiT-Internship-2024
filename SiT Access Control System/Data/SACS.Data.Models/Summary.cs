@@ -6,7 +6,9 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class Summary
+    using SACS.Data.Common.Models;
+
+    public class Summary : BaseDeletableModel<string>
     {
         public string CurrentState { get; set; }
 
@@ -20,6 +22,6 @@
 
         public virtual Employee Employee { get; set; }
 
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
     }
 }

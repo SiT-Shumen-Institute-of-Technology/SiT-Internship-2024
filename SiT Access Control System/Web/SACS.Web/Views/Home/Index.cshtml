@@ -1,9 +1,49 @@
 ﻿@using SACS.Common
+@using SACS.Services.Data
+@model EmployeeListViewModel
 @{
     this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Team Attendance</h1>
+</div>
+
+<div style="margin-top:50px;">
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Employees)
+            {
+                <tr>
+
+
+                    <th scope="row">1</th>
+                    <td>@employee.FirstName</td>
+
+
+                    <td>@employee.LastName </td>
+                    <td>@Model.Summaries.FirstOrDefault(x => x.EmployeeId == employee.Id).CurrentState</td>
+
+                    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                    {
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@employee.Id">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    }
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
 </div>
