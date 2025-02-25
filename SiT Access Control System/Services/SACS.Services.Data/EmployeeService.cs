@@ -36,5 +36,10 @@
         {
             return this.employeeRepository.All().ToList();
         }
+
+        public Employee FindEmployeeById(string id)
+        {
+            return this.employeeRepository.All().FirstOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -18,6 +18,12 @@
             this.summaryRepository = summaryRepository;
         }
 
+        public void CreateSummary(Summary summary)
+        {
+            this.summaryRepository.AddAsync(summary);
+            this.summaryRepository.SaveChangesAsync();
+        }
+
         public List<Summary> GetAllSummaries()
         {
             return this.summaryRepository.All().ToList();

@@ -1,0 +1,89 @@
+﻿@model CreateEmployeeAndSummaryViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="text-center">
+    <h1 class="display-4">Add an employee</h1>
+</div>
+<hr></hr>
+
+<form method="post" class="col-md-6 offset-md-3">
+    <div>
+        <h2>Employee Info:</h2>
+
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName"></input>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName"></input>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Position"></label>
+            <input class="form-control" asp-for="Position"></input>
+            <span asp-validation-for="Position" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber"></label>
+            <input class="form-control" asp-for="PhoneNumber"></input>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input class="form-control" asp-for="Email"></input>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DepartmentId"></label>
+            <dropdown class="form-control" asp-for="DepartmentId">
+                </input>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        </div>
+
+        <h2 style="margin-top:50px">Summary Info:</h2>
+
+        <div class="form-group">
+            <label asp-for="CurrentState"></label>
+            <input class="form-control" asp-for="CurrentState"></input>
+            <span asp-validation-for="CurrentState" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TimesLate"></label>
+            <input class="form-control" asp-for="TimesLate"></input>
+            <span asp-validation-for="TimesLate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TotalHoursWorked"></label>
+            <input class="form-control" asp-for="TotalHoursWorked"></input>
+            <span asp-validation-for="TotalHoursWorked" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Timesabscent"></label>
+            <input class="form-control" asp-for="Timesabscent"></input>
+            <span asp-validation-for="Timesabscent" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="VacationDays"></label>
+            <input class="form-control" asp-for="VacationDays"></input>
+            <span asp-validation-for="VacationDays" class="text-danger"></span>
+        </div>
+
+        <button style="margin-top: 25px" type="submit" class="btn btn-primary btn-lg">Submit</button>
+
+    </div>
+</form>
+

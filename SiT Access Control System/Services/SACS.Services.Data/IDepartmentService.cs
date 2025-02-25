@@ -13,5 +13,7 @@
         void RemoveById(string id);
 
         void Add(Department department);
+
+        Department GetDepartmentById(string id);
     }
 }

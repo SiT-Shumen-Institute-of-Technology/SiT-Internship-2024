@@ -12,6 +12,8 @@
     {
         void RemoveById(string id);
 
+        Employee FindEmployeeById(string id);
+
         void Add(Employee employee);
 
         List<Employee> GetAllEmployees();

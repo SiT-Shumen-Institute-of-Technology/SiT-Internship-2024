@@ -325,10 +325,7 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DepartmentId1")
+                    b.Property<string>("DepartmentId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -354,7 +351,7 @@ namespace SACS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("IsDeleted");
 
@@ -520,7 +517,7 @@ namespace SACS.Data.Migrations
                 {
                     b.HasOne("SACS.Data.Models.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId1");
+                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
                 });

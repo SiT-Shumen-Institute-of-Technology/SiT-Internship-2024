@@ -11,6 +11,7 @@
     public class EmployeeListViewModel
     {
         public ICollection<Employee> Employees { get; set; }
+
         public ICollection<Summary> Summaries { get; set; }
     }
 }

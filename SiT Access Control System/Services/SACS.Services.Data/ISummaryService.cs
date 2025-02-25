@@ -10,6 +10,8 @@
 
     public interface ISummaryService
     {
-        public List<Summary> GetAllSummaries();
+        List<Summary> GetAllSummaries();
+
+        void CreateSummary(Summary summary);
     }
 }

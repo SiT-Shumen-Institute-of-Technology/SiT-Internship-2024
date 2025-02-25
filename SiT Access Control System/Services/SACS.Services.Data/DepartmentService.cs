@@ -24,6 +24,11 @@
             this.departmentRepository.SaveChangesAsync();
         }
 
+        public Department GetDepartmentById(string id)
+        {
+            return this.departmentRepository.All().FirstOrDefault(x => x.Id == id);
+        }
+
         public void RemoveById(string id)
         {
             Department choosenDepartment = this.departmentRepository.All().FirstOrDefault(x => x.Id == id);

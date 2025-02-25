@@ -1,4 +1,4 @@
-﻿namespace SACS.Data.Models
+﻿namespace SACS.Web.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,10 +6,9 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    using SACS.Data.Common.Models;
-    using SACS.Data.Common.Repositories;
+    using SACS.Data.Models;
 
-    public class Employee : BaseDeletableModel<string>
+    public class EmployeeInformationViewModel
     {
         public string FirstName { get; set; }
 
@@ -21,8 +20,6 @@
 
         public string Email { get; set; }
 
-        public virtual Department Department { get; set; }
-
-        public virtual string DepartmentId { get; set; }
+        public Department Department { get; set; }
     }
 }
