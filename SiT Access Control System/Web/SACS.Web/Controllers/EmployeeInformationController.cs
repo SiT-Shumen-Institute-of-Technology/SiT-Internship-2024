@@ -22,6 +22,7 @@
             var currentEmployee = this.employeeService.FindEmployeeById(id);
             return this.View(new EmployeeInformationViewModel
             {
+                Id = currentEmployee.Id,
                 FirstName = currentEmployee.FirstName,
                 LastName = currentEmployee.LastName,
                 PhoneNumber = currentEmployee.PhoneNumber,
