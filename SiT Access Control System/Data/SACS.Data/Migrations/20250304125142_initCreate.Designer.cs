@@ -12,7 +12,7 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250225125528_initCreate")]
+    [Migration("20250304125142_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />

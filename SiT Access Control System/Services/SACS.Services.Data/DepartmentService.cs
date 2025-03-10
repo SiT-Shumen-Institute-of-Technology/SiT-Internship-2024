@@ -35,5 +35,10 @@
             this.departmentRepository.Delete(choosenDepartment);
             this.departmentRepository.SaveChangesAsync();
         }
+
+        public List<Department> GetAll()
+        {
+            return this.departmentRepository.All().ToList();
+        }
     }
 }
