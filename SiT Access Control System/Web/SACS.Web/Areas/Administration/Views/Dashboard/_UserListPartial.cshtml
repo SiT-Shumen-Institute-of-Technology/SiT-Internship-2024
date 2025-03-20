@@ -1,7 +1,5 @@
 ﻿@model SACS.Web.ViewModels.Administration.Dashboard.IndexViewModel
 
-<h3 class="text-center">List of all users</h3>
-
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -17,8 +15,7 @@
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
                 <td>
-                    <form asp-action="DeleteUsers" method="post">
-                        <input type="hidden" name="id" value="@user.Id" />
+                    <form asp-action="DeleteUsers" method="post" asp-route-id="@user.Id">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
@@ -26,8 +23,3 @@
         }
     </tbody>
 </table>
-
-<!-- Button to Add Employee -->
-<div class="text-center mt-3">
-    <a href="/AddEmployee/Index" class="btn btn-success btn-lg">Add Employee</a>
-</div>

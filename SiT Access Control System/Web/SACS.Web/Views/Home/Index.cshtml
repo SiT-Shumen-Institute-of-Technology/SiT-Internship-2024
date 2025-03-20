@@ -9,46 +9,46 @@
     <h1 class="display-4">Team Attendance</h1>
 </div>
 
-<table style="margin-top: 100px;" class="table">
-    <tbody>
-        @for (int i = 0; i < Model.Employees.Count(); i += 4)
-        {
-            <tr>
-                @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
-                {
-                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState;
-                    if (currentSummary == "Active")
-                    {
-                        <td class="bg-success">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Remote")
-                    {
-                        <td class="bg-primary">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Vacation")
-                    {
-                        <td class="bg-warning">
-                            <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Absent")
-                    {
-                        <td class="bg-secondary">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
+@* <table style="margin-top: 100px;" class="table"> *@
+@*     <tbody> *@
+@*         @for (int i = 0; i < Model.Employees.Count(); i += 4) *@
+@*         { *@
+@*             <tr> *@
+@*                 @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++) *@
+@*                 { *@
+@*                     var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState; *@
+@*                     if (currentSummary == "Active") *@
+@*                     { *@
+@*                         <td class="bg-success"> *@
+@*                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a> *@
+@*                         </td> *@
+@*                     } *@
+@*                     else if (currentSummary == "Remote") *@
+@*                     { *@
+@*                         <td class="bg-primary"> *@
+@*                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a> *@
+@*                         </td> *@
+@*                     } *@
+@*                     else if (currentSummary == "Vacation") *@
+@*                     { *@
+@*                         <td class="bg-warning"> *@
+@*                             <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a> *@
+@*                         </td> *@
+@*                     } *@
+@*                     else if (currentSummary == "Absent") *@
+@*                     { *@
+@*                         <td class="bg-secondary"> *@
+@*                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a> *@
+@*                         </td> *@
+@*                     } *@
 
-                }
+@*                 } *@
 
-            </tr>
-        }
+@*             </tr> *@
+@*         } *@
 
-    </tbody>
-</table>
+@*     </tbody> *@
+@* </table> *@
 
 <div style="margin-top: 100px;">
     <h3 class="text-center">Color Legend</h3>
