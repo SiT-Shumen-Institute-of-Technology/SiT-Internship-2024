@@ -1,24 +1,69 @@
 ﻿@model SACS.Web.ViewModels.Administration.Dashboard.IndexViewModel
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery antiforgery
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var token = antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<style>
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        min-width: 250px;
+        z-index: 1000;
+    }
+</style>
 
 <h3 class="text-center">List of all users</h3>
+
+<div id="toast" class="toast" style="display: none;"></div>
 
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Username</th>
             <th>Email</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model.Users)
         {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
+            <tr id="row-@user.Id">
                 <td>
-                    <form asp-action="DeleteUsers" method="post">
+                    <span class="view-mode">@user.UserName</span>
+                    <input type="text" class="edit-mode form-control" value="@user.UserName" style="display:none;" />
+                </td>
+                <td>
+                    <span class="view-mode">@user.Email</span>
+                    <input type="email" class="edit-mode form-control" value="@user.Email" style="display:none;" />
+                </td>
+                <td>
+                    <button class="btn btn-primary edit-btn">Edit</button>
+                    <button class="btn btn-success save-btn" style="display:none;" data-userid="@user.Id">Save</button>
+                    <button class="btn btn-secondary cancel-btn" style="display:none;">Cancel</button>
+                    <form asp-action="DeleteUser" method="post" style="display:inline;">
                         <input type="hidden" name="id" value="@user.Id" />
+                        @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
@@ -27,7 +72,83 @@
     </tbody>
 </table>
 
-<!-- Button to Add Employee -->
 <div class="text-center mt-3">
     <a href="/AddEmployee/Index" class="btn btn-success btn-lg">Add Employee</a>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const token = '@token';
+
+            function showToast(message, isSuccess) {
+                const toast = $('#toast');
+                toast.removeClass('alert-success alert-error');
+                toast.addClass(isSuccess ? 'alert-success' : 'alert-error');
+                toast.text(message).fadeIn(300);
+                setTimeout(() => toast.fadeOut(300), 3000);
+            }
+
+            // Edit button click handler
+            $(".edit-btn").click(function () {
+                var row = $(this).closest("tr");
+                row.find(".view-mode").hide();
+                row.find(".edit-mode").show();
+                row.find(".edit-btn").hide();
+                row.find(".save-btn, .cancel-btn").show();
+            });
+
+            // Cancel button click handler
+            $(".cancel-btn").click(function () {
+                var row = $(this).closest("tr");
+                row.find(".edit-mode").val(function() {
+                    return $(this).siblings(".view-mode").text();
+                });
+                row.find(".view-mode").show();
+                row.find(".edit-mode").hide();
+                row.find(".edit-btn").show();
+                row.find(".save-btn, .cancel-btn").hide();
+            });
+
+            // Save button click handler
+            $(".save-btn").click(function () {
+                var row = $(this).closest("tr");
+                var userId = $(this).data("userid");
+                var userName = row.find("input[type='text']").val().trim();
+                var email = row.find("input[type='email']").val().trim();
+
+                if (!userName || !email) {
+                    showToast("Username and email are required", false);
+                    return;
+                }
+
+                $.ajax({
+                    url: "@Url.Action("UpdateUser", "Dashboard", new { area = "Administration" })",
+                    type: "POST",
+                    headers: {
+                        "RequestVerificationToken": token
+                    },
+                    data: {
+                        id: userId,
+                        userName: userName,
+                        email: email
+                    },
+                    success: function () {
+                        row.find(".view-mode").eq(0).text(userName).show();
+                        row.find(".view-mode").eq(1).text(email).show();
+                        row.find(".edit-mode").hide();
+                        row.find(".edit-btn").show();
+                        row.find(".save-btn, .cancel-btn").hide();
+                        showToast("User updated successfully!", true);
+                    },
+                    error: function (xhr) {
+                        const errorMsg = xhr.responseText || "Error updating user";
+                        showToast(errorMsg, false);
+                        console.error("Update error:", xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
