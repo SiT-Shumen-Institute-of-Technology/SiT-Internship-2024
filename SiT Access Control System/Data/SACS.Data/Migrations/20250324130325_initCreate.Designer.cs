@@ -12,7 +12,7 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250304125142_initCreate")]
+    [Migration("20250324130325_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -379,6 +379,41 @@ namespace SACS.Data.Migrations
                     b.ToTable("PersonalIdentifications");
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.RFIDCard", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("RFIDCards");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -530,6 +565,15 @@ namespace SACS.Data.Migrations
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.RFIDCard", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId1");
 
                     b.Navigation("Employee");
                 });

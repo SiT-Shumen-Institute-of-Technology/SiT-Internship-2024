@@ -69,6 +69,7 @@
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDayService, DayService>();
             services.AddTransient<ISummaryService, SummaryService>();
+            services.AddTransient<IRFIDCardService, RFIDCardService>();
         }
 
         private static void Configure(WebApplication app)
