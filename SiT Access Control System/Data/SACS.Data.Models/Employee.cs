@@ -1,13 +1,6 @@
 ﻿namespace SACS.Data.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using SACS.Data.Common.Models;
-    using SACS.Data.Common.Repositories;
 
     public class Employee : BaseDeletableModel<string>
     {

@@ -10,8 +10,8 @@
 
     public class EmployeeListViewModel
     {
-        public List<Employee> Employees { get; set; }
+        public ICollection<Employee> Employees { get; set; }
 
-        public List<Summary> Summaries { get; set; }
+        public ICollection<Summary> Summaries { get; set; }
     }
 }

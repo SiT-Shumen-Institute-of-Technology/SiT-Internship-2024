@@ -1,9 +1,8 @@
 ﻿namespace SACS.Web.Areas.Administration.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
     using SACS.Services.Data;
     using SACS.Web.ViewModels.Administration.Dashboard;
-
-    using Microsoft.AspNetCore.Mvc;
 
     public class DashboardController : AdministrationController
     {

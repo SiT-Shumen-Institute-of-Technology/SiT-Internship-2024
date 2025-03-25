@@ -11,9 +11,9 @@
 
     public class SummaryService : ISummaryService
     {
-        private readonly IDeletableEntityRepository<Summary> summaryRepository;
+        private readonly IRepository<Summary> summaryRepository;
 
-        public SummaryService(IDeletableEntityRepository<Summary> summaryRepository)
+        public SummaryService(IRepository<Summary> summaryRepository)
         {
             this.summaryRepository = summaryRepository;
         }

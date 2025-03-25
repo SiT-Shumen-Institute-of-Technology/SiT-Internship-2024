@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web.Mvc;
 
     using SACS.Data.Models;
 
@@ -26,7 +25,7 @@
         [MinLength(6)]
         public string Email { get; set; }
 
-        public string DepartmentId { get; set; }
+        public int DepartmentId { get; set; }
 
         public string CurrentState { get; set; }
 
@@ -37,7 +36,5 @@
         public int Timesabscent { get; set; }
 
         public int VacationDays { get; set; }
-
-        public List<Department> Departments { get; set; }
     }
 }

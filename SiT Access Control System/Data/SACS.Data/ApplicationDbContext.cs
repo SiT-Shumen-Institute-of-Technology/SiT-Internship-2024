@@ -35,6 +35,10 @@
 
         public DbSet<Summary> Summaries { get; set; }
 
+        public DbSet<EmployeeSchedule> EmployeeSchedules { get; set; }
+
+        public DbSet<ActualAttendance> ActualAttendances { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

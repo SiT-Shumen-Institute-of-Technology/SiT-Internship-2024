@@ -1,0 +1,68 @@
+﻿@model SACS.Web.ViewModels.ScheduleViewModel
+
+<h2>Добавяне на график</h2>
+
+<form method="post" action="/Employee/Schedule">
+    <label for="employeeId">Служител:</label>
+    <input type="number" id="employeeId" name="EmployeeID" required />
+
+    <label for="date">Дата:</label>
+    <input type="date" id="date" name="Date" required />
+
+    <label for="startTime">Начален час:</label>
+    <input type="time" id="startTime" name="StartTime" required />
+
+    <label for="endTime">Краен час:</label>
+    <input type="time" id="endTime" name="EndTime" required />
+
+    <label for="location">Локация:</label>
+    <select id="location" name="Location" required>
+        <option value="Office">Office</option>
+        <option value="Remote">Remote</option>
+        <option value="Vacation">Vacation</option>
+    </select>
+
+    <button type="submit">Добави</button>
+</form>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 20px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    label, input, select, button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    input, select, button {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+</style>

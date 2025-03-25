@@ -3,76 +3,119 @@
 @model EmployeeListViewModel
 @{
     this.ViewData["Title"] = "Home Page";
+    int counter = 0;
 }
 
 <div class="text-center">
     <h1 class="display-4">Team Attendance</h1>
 </div>
 
-<table style="margin-top: 100px;" class="table">
-    <tbody>
-        @for (int i = 0; i < Model.Employees.Count(); i += 4)
-        {
+<div style="margin-top:50px;">
+    <table class="table">
+        <thead>
             <tr>
-                @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Employees)
+            {
+                var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == employee.Id).CurrentState;
+                counter++;
+                if (currentSummary == "Active")
                 {
-                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState;
-                    if (currentSummary == "Active")
-                    {
-                        <td class="bg-success">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Remote")
-                    {
-                        <td class="bg-primary">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Vacation")
-                    {
-                        <td class="bg-warning">
-                            <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == "Absent")
-                    {
-                        <td class="bg-secondary">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
+                    <tr class="text-bg-success">
 
+                        <th scope="row">@counter</th>
+                        <td><a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@employee.Id">@employee.FirstName</a></td>
+
+
+                        <td>@employee.LastName </td>
+                        <td>@currentSummary</td>
+
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@employee.Id">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        }
+
+                    </tr>
+                }
+                else if (currentSummary == "Remote")
+                {
+                    <tr class="text-bg-primary">
+
+                        <th scope="row">@counter</th>
+                        <td><a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@employee.Id">@employee.FirstName</a></td>
+
+
+                        <td>@employee.LastName </td>
+                        <td>@currentSummary</td>
+
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@employee.Id">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        }
+
+                    </tr>
+                }
+                else if (currentSummary == "Vacation")
+                {
+                    <tr class="text-bg-warning">
+
+                        <th scope="row">@counter</th>
+                        <td><a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@employee.Id">@employee.FirstName</a></td>
+
+
+                        <td>@employee.LastName </td>
+                        <td>@currentSummary</td>
+
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@employee.Id">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        }
+
+                    </tr>
+                }
+                else if (currentSummary == "Absent")
+                {
+                    <tr class="text-bg-secondary">
+
+                        <th scope="row">@counter</th>
+                        <td><a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@employee.Id">@employee.FirstName</a></td>
+
+
+                        <td>@employee.LastName </td>
+                        <td>@currentSummary</td>
+
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@employee.Id">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        }
+
+                    </tr>
                 }
 
-            </tr>
-        }
+            }
 
-    </tbody>
-</table>
-
-<div style="margin-top: 100px;">
-    <h3 class="text-center">Color Legend</h3>
-    <hr>
-    <div>
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-success rounded list-group-item"> </li>
-            <li class="list-group-item">Active</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-primary rounded list-group-item"> </li>
-            <li class="list-group-item">Remote</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-warning rounded list-group-item"> </li>
-            <li class="list-group-item">Vacation</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-secondary rounded list-group-item"> </li>
-            <li class="list-group-item">Absent</li>
-        </ul>
-    </div>
-    <hr>
+        </tbody>
+    </table>
 </div>
