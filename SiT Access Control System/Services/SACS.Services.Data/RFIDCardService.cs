@@ -18,10 +18,10 @@
             this.rfidCardRepository = rfidCardRepository;
         }
 
-        public void Add(RFIDCard rfidCard)
+        public async Task AddAsync(RFIDCard rfidCard)
         {
-            this.rfidCardRepository.AddAsync(rfidCard);
-            this.rfidCardRepository.SaveChangesAsync();
+            await this.rfidCardRepository.AddAsync(rfidCard);
+            await this.rfidCardRepository.SaveChangesAsync();
         }
 
         public List<RFIDCard> All()

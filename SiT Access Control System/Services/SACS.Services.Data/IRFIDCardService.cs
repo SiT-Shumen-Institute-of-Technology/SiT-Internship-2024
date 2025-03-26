@@ -12,6 +12,6 @@
     {
         List<RFIDCard> All();
 
-        void Add(RFIDCard rfidCard);
+        Task AddAsync(RFIDCard rfidCard);
     }
 }

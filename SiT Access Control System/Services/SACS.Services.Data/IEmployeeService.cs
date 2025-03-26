@@ -14,7 +14,7 @@
 
         Employee FindEmployeeById(string id);
 
-        void Add(Employee employee);
+        Task AddAsync(Employee employee);
 
         List<Employee> GetAllEmployees();
     }

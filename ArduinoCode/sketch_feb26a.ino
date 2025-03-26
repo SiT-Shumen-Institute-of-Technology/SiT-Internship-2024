@@ -36,6 +36,8 @@ WiFiClientSecure wifiClient;
 void setup() {
     Serial.begin(9600);
     initWiFi();
+    wifiClient.setInsecure();
+    delay(1000);
     Serial.println("");
     PostRFIDCode("2Q9UDFP2Q");
     Serial.println("");
@@ -80,109 +82,36 @@ void initWiFi() {
 void PostRFIDCode(String code)
 {
   Serial.println("CONNECTING TO SERVER...");
-  wifiClient.setInsecure();
 
   if(wifiClient.connect(serverAddress, serverPort))
   {
       Serial.println("SUCCESSFULLY CONNECTED TO SERVER");
-      Serial.println("POSTING RFID CODE" + code);
+      Serial.println("POSTING RFID CODE " + code);
+      
+      String postData = "code=" + code;
 
-      String postData = "{code:" + code + "}";  // JSON or other data format
-
-    wifiClient.print(String("POST ") + kPath + " HTTP/1.1\r\n" +
+    wifiClient.print(String("POST ") + (String)kPath + " HTTP/1.1\r\n" +
                  "Host: " + (String)serverAddress + ":" + (String)serverPort + "\r\n" +
-                 "Content-Type: application/json\r\n" +
-                 "Content-Length: " + postData.length() + "\r\n" +
+                 "Content-Type: application/x-www-form-urlencoded\r\n" +
+                 "Content-Length: " + String(postData.length()) + "\r\n" +
                  "Connection: close\r\n\r\n" +
                  postData);
 
       Serial.println("POSTED [" + code + "] TO SERVER");
+
+      delay(1000);
+      String response = wifiClient.readString();
+    Serial.println("Server response: ");
+    Serial.println(String(response));
+    delay(1000);
   }
   else
   {
     Serial.println("failed to connect to server");
   }
+
+  wifiClient.stop();
   
-  
-}
-
-void GetEmployees()
-{
-  if(WiFi.status() == WL_CONNECTED)
-  {
-    int err =0;
-
-    HttpClient http(wifiClient);
-
-    wifiClient.setInsecure();
-    err = http.get(serverAddress, serverPort, "/api/employees");
-  if (err == 0)
-  {
-    Serial.println("startedRequest ok");
-
-    err = http.responseStatusCode();
-    if (err >= 0)
-    {
-      Serial.print("Got status code: ");
-      Serial.println(err);
-
-      err = http.skipResponseHeaders();
-      if (err >= 0)
-      {
-        int bodyLen = http.contentLength();
-        Serial.print("Content length is: ");
-        Serial.println(bodyLen);
-        Serial.println();
-        Serial.println("Body returned follows:");
-      
-        // Now we've got to the body, so we can print it out
-        unsigned long timeoutStart = millis();
-        char c;
-        // Whilst we haven't timed out & haven't reached the end of the body
-        while (http.connected() || http.available() )
-        {
-            if (http.available())
-            {
-                c = http.read();
-                // Print out this character
-                Serial.print(c);
-               
-                bodyLen--;
-                // We read something, reset the timeout counter
-                timeoutStart = millis();
-            }
-            else
-            {
-                // We haven't got any data, so let's pause to allow some to
-                // arrive
-                delay(1000);
-            }
-        }
-      }
-      else
-      {
-        Serial.print("Failed to skip response headers: ");
-        Serial.println(err);
-      }
-    }
-    else
-    {    
-      Serial.print("Getting response failed: ");
-      Serial.println(err);
-    }
-  }
-  else
-  {
-    Serial.print("Connect failed: ");
-    Serial.println(err);
-  }
-  http.stop();
-
-  // And just stop, now that we've tried a download
-  while(1);
-  }
-
-  delay(1000);
 }
 
 void GetRFIDCards()
@@ -193,7 +122,6 @@ void GetRFIDCards()
 
     HttpClient http(wifiClient);
 
-    wifiClient.setInsecure();
     err = http.get(serverAddress, serverPort, "/api/cardreaderapi");
   if (err == 0)
   {
@@ -258,6 +186,6 @@ void GetRFIDCards()
   http.stop();
 
   delay(1000);
-  }
+}
 }
 

@@ -4,7 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using SACS.Data.Models;
     using SACS.Services.Data;
@@ -32,7 +32,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreateEmployeeAndSummaryViewModel input)
+        public async Task<IActionResult> CreateAsync(CreateEmployeeAndSummaryViewModel input)
         {
             Employee newEmployee = new Employee
             {
@@ -56,8 +56,8 @@
                 Employee = newEmployee,
                 EmployeeId = newEmployee.Id,
             };
-            this.employeeService.Add(newEmployee);
-            this.summaryService.CreateSummary(newSummary);
+            await this.employeeService.AddAsync(newEmployee);
+            await this.summaryService.CreateSummaryAsync(newSummary);
             return this.Redirect("/");
         }
     }

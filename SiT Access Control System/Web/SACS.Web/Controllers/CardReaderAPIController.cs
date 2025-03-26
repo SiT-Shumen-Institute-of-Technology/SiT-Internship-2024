@@ -1,6 +1,7 @@
 ﻿namespace SACS.Web.Controllers
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using SACS.Data.Models;
@@ -18,14 +19,13 @@
         }
 
         [HttpPost]
-        public ActionResult<RFIDCard> GetAndAddRFIDCard(string code)
+        public async Task GetAndAddRFIDCard([FromForm] string code)
         {
             RFIDCard rfidCard = new RFIDCard
             {
                 Code = code,
             };
-            this.rfidCardService.Add(rfidCard);
-            return rfidCard;
+            await this.rfidCardService.AddAsync(rfidCard);
         }
 
         [HttpGet]
