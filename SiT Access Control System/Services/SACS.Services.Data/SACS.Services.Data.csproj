@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Data\SACS.Data.Common\SACS.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\SACS.Data.Models\SACS.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\SACS.Data\SACS.Data.csproj" />
+    <ProjectReference Include="..\..\Web\SACS.Web.ViewModels\SACS.Web.ViewModels.csproj" />
     <ProjectReference Include="..\SACS.Services.Mapping\SACS.Services.Mapping.csproj" />
   </ItemGroup>
 

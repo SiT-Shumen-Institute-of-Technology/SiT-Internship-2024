@@ -27,6 +27,8 @@
         {
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder.Services, builder.Configuration);
+            builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
             var app = builder.Build();
             Configure(app);
             app.Run();

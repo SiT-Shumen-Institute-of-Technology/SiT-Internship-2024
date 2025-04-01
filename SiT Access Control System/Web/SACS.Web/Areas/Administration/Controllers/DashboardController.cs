@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -15,58 +16,44 @@ namespace SACS.Web.Areas.Administration.Controllers
     [Authorize(Roles = "Administrator")]
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService _settingsService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IDashboardService _dashboardService;
+        private readonly IUserManagementService _userManagementService;
 
         public DashboardController(
-            ISettingsService settingsService,
-            UserManager<ApplicationUser> userManager,
-            ApplicationDbContext context)
+            IDashboardService dashboardService,
+            IUserManagementService userManagementService)
         {
-            _settingsService = settingsService;
-            _userManager = userManager;
-            _context = context;
+            _dashboardService = dashboardService;
+            _userManagementService = userManagementService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users
-                .OrderBy(u => u.UserName)
-                .ToListAsync();
-
-            var currentUser = await _userManager.GetUserAsync(User);
-
-            return View(new IndexViewModel
-            {
-                SettingsCount = _settingsService.GetCount(),
-                Users = users,
-                CurrentUser = currentUser
-            });
+            var viewModel = await _dashboardService.GetDashboardDataAsync(User);
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            try
+            {
+                await _userManagementService.DeleteUserAsync(id);
+                return Ok();
+            }
+            catch (ArgumentException ex)
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest("Failed to delete user");
+                return BadRequest(ex.Message);
             }
-
-            return Ok();
         }
 
         [HttpPost]
@@ -75,50 +62,20 @@ namespace SACS.Web.Areas.Administration.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(id))
-                {
-                    return BadRequest("User ID is required");
-                }
-
-                var user = await _userManager.FindByIdAsync(id);
-                if (user == null)
-                {
-                    return NotFound("User not found");
-                }
-
-                // Validate input
-                if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(email))
-                {
-                    return BadRequest("Username and email are required");
-                }
-
-                // Check for duplicate username
-                var existingUser = await _userManager.FindByNameAsync(userName);
-                if (existingUser != null && existingUser.Id != user.Id)
-                {
-                    return BadRequest("Username is already taken");
-                }
-
-                // Check for duplicate email
-                existingUser = await _userManager.FindByEmailAsync(email);
-                if (existingUser != null && existingUser.Id != user.Id)
-                {
-                    return BadRequest("Email is already in use");
-                }
-
-                // Update user properties
-                user.UserName = userName;
-                user.Email = email;
-                user.NormalizedUserName = userName.ToUpper();
-                user.NormalizedEmail = email.ToUpper();
-
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    return BadRequest(string.Join(", ", result.Errors.Select(e => e.Description)));
-                }
-
+                await _userManagementService.UpdateUserAsync(id, userName, email);
                 return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
