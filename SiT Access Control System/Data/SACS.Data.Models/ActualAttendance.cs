@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SACS.Data.Models
+﻿namespace SACS.Data.Models
 {
+    using System;
+
     public class ActualAttendance
     {
         public int Id { get; set; }
