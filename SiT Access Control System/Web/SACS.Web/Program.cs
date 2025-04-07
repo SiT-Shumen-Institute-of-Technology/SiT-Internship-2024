@@ -68,6 +68,8 @@
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDayService, DayService>();
             services.AddTransient<ISummaryService, SummaryService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
+
         }
 
         private static void Configure(WebApplication app)

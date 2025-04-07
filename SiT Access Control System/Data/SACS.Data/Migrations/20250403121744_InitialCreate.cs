@@ -7,7 +7,7 @@ namespace SACS.Data.Migrations
     using Microsoft.EntityFrameworkCore.Migrations;
 
     /// <inheritdoc />
-    public partial class InitCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace SACS.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Settings",
-                columns: table => new
+                columns: static table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -226,6 +226,29 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ActualAttendances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActualAttendances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ActualAttendances_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Days",
                 columns: table => new
                 {
@@ -245,6 +268,29 @@ namespace SACS.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Days_Employees_EmployeeId",
                         column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeSchedules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeSchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeSchedules_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
                         principalTable: "Employees",
                         principalColumn: "Id");
                 });
@@ -292,6 +338,11 @@ namespace SACS.Data.Migrations
                         principalTable: "Employees",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActualAttendances_EmployeeId1",
+                table: "ActualAttendances",
+                column: "EmployeeId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -368,6 +419,11 @@ namespace SACS.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSchedules_EmployeeId1",
+                table: "EmployeeSchedules",
+                column: "EmployeeId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalIdentifications_EmployeeId",
                 table: "PersonalIdentifications",
                 column: "EmployeeId");
@@ -392,6 +448,9 @@ namespace SACS.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ActualAttendances");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -408,6 +467,9 @@ namespace SACS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Days");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeSchedules");
 
             migrationBuilder.DropTable(
                 name: "PersonalIdentifications");

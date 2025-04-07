@@ -2,9 +2,14 @@
 
 <h2>Добавяне на график</h2>
 
-<form method="post" action="/Employee/Schedule">
+<form method="post" asp-action="Schedule" asp-controller="Employee">
     <label for="employeeId">Служител:</label>
-    <input type="number" id="employeeId" name="EmployeeID" required />
+    <select id="employeeId" name="EmployeeId" required>
+        @foreach (var employee in Model.Employees)
+        {
+            <option value="@employee.Value">@employee.Text</option>
+        }
+    </select>
 
     <label for="date">Дата:</label>
     <input type="date" id="date" name="Date" required />
@@ -25,6 +30,31 @@
     <button type="submit">Добави</button>
 </form>
 
+<h2>График за текущата седмица</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Служител</th>
+            <th>Дата</th>
+            <th>Начален час</th>
+            <th>Краен час</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in Model.WeeklySchedule)
+        {
+            <tr>
+                <td>@entry.EmployeeId</td>
+                <td>@entry.Date.ToString("dd-MM-yyyy")</td>
+                <td>@entry.StartTime.ToString(@"hh\:mm")</td>
+                <td>@entry.EndTime.ToString(@"hh\:mm")</td>
+                <td class="status-@entry.Location.ToLower()">@entry.Location</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -36,11 +66,12 @@
         color: #333;
     }
 
-    form {
+    form, table {
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 100%;
     }
 
     label, input, select, button {
@@ -65,4 +96,30 @@
             background-color: #45a049;
         }
 
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+    .status-office {
+        background-color: green;
+        color: white;
+    }
+
+    .status-remote {
+        background-color: gray;
+        color: white;
+    }
+
+    .status-vacation {
+        background-color: orange;
+        color: white;
+    }
 </style>

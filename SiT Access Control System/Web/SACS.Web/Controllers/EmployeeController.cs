@@ -5,6 +5,7 @@
     using System.Linq;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using SACS.Data;
     using SACS.Data.Models;
@@ -18,14 +19,15 @@
         private readonly IDepartmentService departmentService;
         private readonly ApplicationDbContext db;
         private readonly ISummaryService summaryService;
+        private readonly IScheduleService scheduleService;
 
-        public EmployeeController(IEmployeeService employeeService, IDepartmentService departmentService,
-            ApplicationDbContext db, ISummaryService summaryService)
+        public EmployeeController(IEmployeeService employeeService, IDepartmentService departmentService, ApplicationDbContext db, ISummaryService summaryService, IScheduleService scheduleService)
         {
             this.employeeService = employeeService;
             this.departmentService = departmentService;
             this.db = db;
             this.summaryService = summaryService;
+            this.scheduleService = scheduleService;
         }
 
         public IActionResult Create()
@@ -88,37 +90,26 @@
             return this.View(model);
         }
 
+
+
+
         [HttpGet]
         public IActionResult Schedule()
         {
-            var model = new ScheduleViewModel();
-            return View(model);
+            var model = this.scheduleService.GetWeeklySchedule();
+            return this.View(model);
         }
 
         [HttpPost]
         public IActionResult Schedule(ScheduleViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                var schedule = new EmployeeSchedule
-                {
-                    EmployeeId = model.EmployeeId,
-                    Date = model.Date,
-                    StartTime = model.StartTime,
-                    EndTime = model.EndTime,
-                    Location = model.Location,
-                };
-
-                db.EmployeeSchedules.Add(schedule);
-                db.SaveChanges();
-
-                return RedirectToAction(nameof(EmployeeSchedule));
+                return this.BadRequest(this.ModelState);
             }
 
-            return View(model);
+            this.scheduleService.AddSchedule(model);
+            return this.RedirectToAction(nameof(this.Schedule));
         }
-
-
-
     }
 }

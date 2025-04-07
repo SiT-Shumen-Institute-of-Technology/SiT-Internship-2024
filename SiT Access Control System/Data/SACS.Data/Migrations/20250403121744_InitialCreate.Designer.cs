@@ -12,8 +12,8 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250305125524_AddedEmployeeScheduleModel")]
-    partial class AddedEmployeeScheduleModel
+    [Migration("20250403121744_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,39 @@ namespace SACS.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.ActualAttendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.ToTable("ActualAttendances");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.ApplicationRole", b =>
@@ -369,11 +402,23 @@ namespace SACS.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("EmployeeId1")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
@@ -398,30 +443,6 @@ namespace SACS.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("PersonalIdentifications");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.ScheduleEntry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Day")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EmployeeScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeScheduleId");
-
-                    b.ToTable("ScheduleEntries");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.Setting", b =>
@@ -501,39 +522,6 @@ namespace SACS.Data.Migrations
                     b.ToTable("Summaries");
                 });
 
-            modelBuilder.Entity("SACS.Data.Models.WorkSchedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EmpolyeeId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("WorkSchedules");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("SACS.Data.Models.ApplicationRole", null)
@@ -585,6 +573,15 @@ namespace SACS.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.ActualAttendance", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId1");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.Day", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
@@ -606,7 +603,7 @@ namespace SACS.Data.Migrations
             modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
-                        .WithMany("Schedules")
+                        .WithMany()
                         .HasForeignKey("EmployeeId1");
 
                     b.Navigation("Employee");
@@ -621,27 +618,7 @@ namespace SACS.Data.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("SACS.Data.Models.ScheduleEntry", b =>
-                {
-                    b.HasOne("SACS.Data.Models.EmployeeSchedule", "EmployeeSchedule")
-                        .WithMany("ScheduleEntries")
-                        .HasForeignKey("EmployeeScheduleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("EmployeeSchedule");
-                });
-
             modelBuilder.Entity("SACS.Data.Models.Summary", b =>
-                {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.WorkSchedule", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
                         .WithMany()
@@ -662,16 +639,6 @@ namespace SACS.Data.Migrations
             modelBuilder.Entity("SACS.Data.Models.Department", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.Employee", b =>
-                {
-                    b.Navigation("Schedules");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
-                {
-                    b.Navigation("ScheduleEntries");
                 });
 #pragma warning restore 612, 618
         }

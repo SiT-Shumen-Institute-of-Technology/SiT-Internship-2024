@@ -44,4 +44,11 @@
     <ProjectReference Include="..\SACS.Web.Infrastructure\SACS.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SACS.Web.ViewModels\SACS.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
