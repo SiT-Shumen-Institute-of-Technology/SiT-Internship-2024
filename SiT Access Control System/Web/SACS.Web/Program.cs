@@ -1,34 +1,35 @@
-﻿namespace SACS.Web
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SACS.Data;
+using SACS.Services.Data;
+using SACS.Services.Messaging;
+using SACS.Web.ViewModels;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using Microsoft.AspNetCore.Mvc;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Common;
+using SACS.Data.Models;
+using SACS.Data.Repositories;
+using SACS.Data.Seeding;
+using SACS.Services.Mapping;
+using System.Reflection;
+
+namespace SACS.Web
 {
-    using System.Reflection;
-
-    using SACS.Data;
-    using SACS.Data.Common;
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-    using SACS.Data.Repositories;
-    using SACS.Data.Seeding;
-    using SACS.Services.Data;
-    using SACS.Services.Mapping;
-    using SACS.Services.Messaging;
-    using SACS.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Register services
             ConfigureServices(builder.Services, builder.Configuration);
-            builder.Services.AddScoped<IUserManagementService, UserManagementService>();
-            builder.Services.AddScoped<IDashboardService, DashboardService>();
+
             var app = builder.Build();
             Configure(app);
             app.Run();
@@ -36,41 +37,50 @@
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = configuration.GetConnectionString("DefaultConnection")
+                                    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            // Register Identity only ONCE
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
 
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-            services.AddControllersWithViews(
-                options =>
-                {
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                }).AddRazorRuntimeCompilation();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            }).AddRazorRuntimeCompilation();
+
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(configuration);
 
-            // Data repositories
+            // Register repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
-            // Application services
+            // Register application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDayService, DayService>();
             services.AddTransient<ISummaryService, SummaryService>();
+
+            // User and dashboard services
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IDashboardService, DashboardService>();
         }
 
         private static void Configure(WebApplication app)
