@@ -43,11 +43,11 @@ namespace SACS.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            // Register Identity only ONCE
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>()
+            // Register Identity with your custom ApplicationUser and ApplicationRole
+            services.AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultUI();
+                .AddDefaultTokenProviders()
+                .AddDefaultUI(); // Add this if you're using Razor Pages for Identity UI
 
             services.Configure<CookiePolicyOptions>(options =>
             {
