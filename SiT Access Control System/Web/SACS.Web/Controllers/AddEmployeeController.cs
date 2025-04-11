@@ -15,12 +15,19 @@
         private readonly IDepartmentService departmentService;
         private readonly IEmployeeService employeeService;
         private readonly ISummaryService summaryService;
+        private readonly IUserManagementService userManagementService;
 
-        public AddEmployeeController(IDepartmentService departmentService, IEmployeeService employeeService, ISummaryService summaryService)
+
+        public AddEmployeeController(
+    IDepartmentService departmentService,
+    IEmployeeService employeeService,
+    ISummaryService summaryService,
+    IUserManagementService userManagementService)
         {
             this.departmentService = departmentService;
             this.employeeService = employeeService;
             this.summaryService = summaryService;
+            this.userManagementService = userManagementService;
         }
 
         public IActionResult Index()
@@ -28,12 +35,15 @@
             return this.View(new CreateEmployeeAndSummaryViewModel
             {
                 Departments = this.departmentService.GetAll(),
+                Users = this.userManagementService.GetAllUsers(), // implement this if needed
             });
         }
 
         [HttpPost]
         public IActionResult Create(CreateEmployeeAndSummaryViewModel input)
         {
+            var user = this.userManagementService.GetUserById(input.UserId); // or however you fetch a user
+
             Employee newEmployee = new Employee
             {
                 Id = Guid.NewGuid().ToString(),
@@ -44,7 +54,10 @@
                 Email = input.Email,
                 Department = this.departmentService.GetDepartmentById(input.DepartmentId),
                 DepartmentId = input.DepartmentId,
+                User = user,
+                UserId = user.Id,
             };
+
             Summary newSummary = new Summary
             {
                 Id = Guid.NewGuid().ToString(),
@@ -56,6 +69,7 @@
                 Employee = newEmployee,
                 EmployeeId = newEmployee.Id,
             };
+
             this.employeeService.Add(newEmployee);
             this.summaryService.CreateSummary(newSummary);
             return this.Redirect("/");

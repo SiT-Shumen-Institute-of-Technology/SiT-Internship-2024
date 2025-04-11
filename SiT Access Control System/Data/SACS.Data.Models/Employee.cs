@@ -24,5 +24,9 @@
         public virtual Department Department { get; set; }
 
         public virtual string DepartmentId { get; set; }
+
+        public string UserId { get; set; } 
+
+        public ApplicationUser User { get; set; } 
     }
 }

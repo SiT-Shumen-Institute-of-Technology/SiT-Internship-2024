@@ -10,8 +10,17 @@ namespace SACS.Services.Data
     public interface IUserManagementService
     {
         Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+
         Task<ApplicationUser> GetCurrentUserAsync(System.Security.Claims.ClaimsPrincipal user);
+
         Task DeleteUserAsync(string id);
+
         Task UpdateUserAsync(string id, string userName, string email);
+
+        List<ApplicationUser> GetAllUsers();
+
+        ApplicationUser GetUserById(string id);
+
+
     }
 }

@@ -12,27 +12,37 @@ namespace SACS.Services.Data
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly ApplicationDbContext dbContext;
 
         public UserManagementService(
             UserManager<ApplicationUser> userManager,
-            ApplicationDbContext context)
+            ApplicationDbContext dbContext)
         {
-            _userManager = userManager;
-            _context = context;
+            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+
+        public List<ApplicationUser> GetAllUsers()
+        {
+            return dbContext.Users.ToList();
+        }
+
+        public ApplicationUser GetUserById(string id)
+        {
+            return dbContext.Users.FirstOrDefault(u => u.Id == id);
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return await _userManager.Users
+            return await userManager.Users
                 .OrderBy(u => u.UserName)
                 .ToListAsync();
         }
 
         public async Task<ApplicationUser> GetCurrentUserAsync(System.Security.Claims.ClaimsPrincipal user)
         {
-            return await _userManager.GetUserAsync(user);
+            return await userManager.GetUserAsync(user);
         }
 
         public async Task DeleteUserAsync(string id)
@@ -42,13 +52,13 @@ namespace SACS.Services.Data
                 throw new ArgumentException("User ID cannot be empty");
             }
 
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found");
             }
 
-            var result = await _userManager.DeleteAsync(user);
+            var result = await userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Failed to delete user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
@@ -62,7 +72,7 @@ namespace SACS.Services.Data
                 throw new ArgumentException("User ID is required");
             }
 
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found");
@@ -74,14 +84,14 @@ namespace SACS.Services.Data
             }
 
             // Check for duplicate username
-            var existingUser = await _userManager.FindByNameAsync(userName);
+            var existingUser = await userManager.FindByNameAsync(userName);
             if (existingUser != null && existingUser.Id != user.Id)
             {
                 throw new InvalidOperationException("Username is already taken");
             }
 
             // Check for duplicate email
-            existingUser = await _userManager.FindByEmailAsync(email);
+            existingUser = await userManager.FindByEmailAsync(email);
             if (existingUser != null && existingUser.Id != user.Id)
             {
                 throw new InvalidOperationException("Email is already in use");
@@ -93,7 +103,7 @@ namespace SACS.Services.Data
             user.NormalizedUserName = userName.ToUpper();
             user.NormalizedEmail = email.ToUpper();
 
-            var result = await _userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Failed to update user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
