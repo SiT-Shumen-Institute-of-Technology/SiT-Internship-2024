@@ -19,25 +19,25 @@
                     var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState;
                     if (currentSummary == "Active")
                     {
-                        <td class="bg-success">
+                        <td class="bg-success border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Remote")
                     {
-                        <td class="bg-primary">
+                        <td class="bg-primary border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Vacation")
                     {
-                        <td class="bg-warning">
+                        <td class="bg-warning border">
                             <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Absent")
                     {
-                        <td class="bg-secondary">
+                        <td class="bg-secondary border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }

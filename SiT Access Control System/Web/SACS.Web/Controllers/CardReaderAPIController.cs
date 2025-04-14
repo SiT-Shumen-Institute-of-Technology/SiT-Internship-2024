@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Text.Json;
     using System.Text.Json.Serialization;
@@ -19,19 +20,17 @@
     public class CardReaderAPIController : Controller
     {
         private readonly IRFIDCardService rfidCardService;
-        private readonly IEmployeeService employeeService;
         private readonly IEmployeeRFIDCardService employeeRFIDCardService;
         private bool isANewCard = true;
 
-        public CardReaderAPIController(IRFIDCardService rfidCardService, IEmployeeService employeeService, IEmployeeRFIDCardService employeeRFIDCardService)
+        public CardReaderAPIController(IRFIDCardService rfidCardService, IEmployeeRFIDCardService employeeRFIDCardService)
         {
             this.rfidCardService = rfidCardService;
-            this.employeeService = employeeService;
             this.employeeRFIDCardService = employeeRFIDCardService;
         }
 
         [HttpPost("apipost")]
-        public async Task<ActionResult<RFIDCard>> GetAndAddRFIDCard([FromQuery]string code)
+        public async Task<ActionResult<RFIDCard>> GetAndAddRFIDCard([FromQuery] string code)
         {
             if (this.rfidCardService.All() != null)
             {
@@ -51,37 +50,32 @@
 
             if (this.isANewCard == true)
             {
-                //TEMPORARY
-
-                Random random = new Random();
-                var allEmployees = this.employeeService.GetAllEmployees();
-
-                //TEMPORARY
-
-                var randomEmployeeId = allEmployees[random.Next(0, this.employeeService.GetAllEmployees().Count)].Id;
-
                 RFIDCard rfidCard = new RFIDCard
                 {
                     Id = Guid.NewGuid().ToString(),
 
                     Code = code,
                 };
-
-                EmployeeRFIDCard employeeRFIDCard = new EmployeeRFIDCard
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    EmployeeId = randomEmployeeId,
-                    Employee = this.employeeService.FindEmployeeById(randomEmployeeId),
-                    RFIDCardId = rfidCard.Id,
-                    RFIDCard = rfidCard,
-                };
-                await this.employeeRFIDCardService.AddEmployeeAndRFIDCardServiceAsync(employeeRFIDCard);
                 await this.rfidCardService.AddAsync(rfidCard);
-                return rfidCard;
+                return this.Content("Not Connected", "text/plain", Encoding.UTF8);
             }
             else
             {
-                return null;
+                if (this.employeeRFIDCardService.All() != null)
+                {
+                    if (this.employeeRFIDCardService.All().FirstOrDefault(x => x.RFIDCard.Code == code) != null)
+                    {
+                        return this.Content("Connected", "text/plain", Encoding.UTF8);
+                    }
+                    else
+                    {
+                        return this.Content("Not Connected", "text/plain", Encoding.UTF8);
+                    }
+                }
+                else
+                {
+                    return this.Content("Not Connected", "text/plain", Encoding.UTF8);
+                }
             }
         }
 
