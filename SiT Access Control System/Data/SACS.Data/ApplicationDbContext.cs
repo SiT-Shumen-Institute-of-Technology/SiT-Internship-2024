@@ -35,6 +35,10 @@
 
         public DbSet<Summary> Summaries { get; set; }
 
+        public DbSet<RFIDCard> RFIDCards { get; set; }
+
+        public DbSet<EmployeeRFIDCard> EmployeesRFIDCards { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

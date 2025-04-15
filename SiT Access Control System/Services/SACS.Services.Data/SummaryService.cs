@@ -18,10 +18,10 @@
             this.summaryRepository = summaryRepository;
         }
 
-        public void CreateSummary(Summary summary)
+        public async Task CreateSummaryAsync(Summary summary)
         {
-            this.summaryRepository.AddAsync(summary);
-            this.summaryRepository.SaveChangesAsync();
+            await this.summaryRepository.AddAsync(summary);
+            await this.summaryRepository.SaveChangesAsync();
         }
 
         public List<Summary> GetAllSummaries()

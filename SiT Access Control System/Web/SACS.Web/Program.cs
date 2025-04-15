@@ -1,34 +1,50 @@
-﻿namespace SACS.Web
+﻿using System.Reflection;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using SACS.Data;
+using SACS.Data.Common;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Models;
+using SACS.Data.Repositories;
+using SACS.Data.Seeding;
+using SACS.Services.Data;
+using SACS.Services.Mapping;
+using SACS.Services.Messaging;
+using SACS.Web.ViewModels;
+
+namespace SACS.Web
 {
-    using System.Reflection;
-
-    using SACS.Data;
-    using SACS.Data.Common;
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-    using SACS.Data.Repositories;
-    using SACS.Data.Seeding;
-    using SACS.Services.Data;
-    using SACS.Services.Mapping;
-    using SACS.Services.Messaging;
-    using SACS.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
+
             ConfigureServices(builder.Services, builder.Configuration);
             var app = builder.Build();
             Configure(app);
+            app.UseHttpsRedirection();
+            app.MapControllers();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             app.Run();
         }
 
@@ -69,6 +85,40 @@
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDayService, DayService>();
             services.AddTransient<ISummaryService, SummaryService>();
+            services.AddTransient<IRFIDCardService, RFIDCardService>();
+            services.AddTransient<IEmployeeRFIDCardService, EmployeeRFIDCardService>();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                context.Request.EnableBuffering();
+                await next();
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         private static void Configure(WebApplication app)
@@ -95,8 +145,9 @@
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseDeveloperExceptionPage();
 
             app.UseRouting();
 

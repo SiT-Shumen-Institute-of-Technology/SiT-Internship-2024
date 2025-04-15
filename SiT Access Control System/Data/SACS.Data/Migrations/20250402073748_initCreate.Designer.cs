@@ -12,7 +12,7 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250304125142_initCreate")]
+    [Migration("20250402073748_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -361,6 +361,40 @@ namespace SACS.Data.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RFIDCardId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("RFIDCardId");
+
+                    b.ToTable("EmployeesRFIDCards");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>
                 {
                     b.Property<int>("Id")
@@ -377,6 +411,33 @@ namespace SACS.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("PersonalIdentifications");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.RFIDCard", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("RFIDCards");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.Setting", b =>
@@ -523,6 +584,21 @@ namespace SACS.Data.Migrations
                         .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("SACS.Data.Models.RFIDCard", "RFIDCard")
+                        .WithMany()
+                        .HasForeignKey("RFIDCardId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("RFIDCard");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>

@@ -8,14 +8,10 @@
 
     using SACS.Data.Models;
 
-    public interface IEmployeeService
+    public interface IEmployeeRFIDCardService
     {
-        void RemoveById(string id);
+        Task AddEmployeeAndRFIDCardServiceAsync(EmployeeRFIDCard employeeRFIDCard);
 
-        Employee FindEmployeeById(string id);
-
-        Task AddAsync(Employee employee);
-
-        List<Employee> GetAllEmployees();
+        List<EmployeeRFIDCard> All();
     }
 }

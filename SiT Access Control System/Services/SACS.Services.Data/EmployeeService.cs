@@ -19,10 +19,10 @@
             this.employeeRepository = employeeRepository;
         }
 
-        public void Add(Employee employee)
+        public async Task AddAsync(Employee employee)
         {
-            this.employeeRepository.AddAsync(employee);
-            this.employeeRepository.SaveChangesAsync();
+            await this.employeeRepository.AddAsync(employee);
+            await this.employeeRepository.SaveChangesAsync();
         }
 
         public void RemoveById(string id)
