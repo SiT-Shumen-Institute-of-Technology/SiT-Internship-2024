@@ -1,4 +1,4 @@
-﻿namespace SACS.Web.ViewModels
+﻿namespace SACS.Web.ViewModels.Employee
 {
     using System;
     using System.Collections.Generic;

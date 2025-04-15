@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using SACS.Data.Models;
+using SACS.Web.ViewModels.Employee;
 
 namespace SACS.Web.ViewModels.Administration.Dashboard
 {

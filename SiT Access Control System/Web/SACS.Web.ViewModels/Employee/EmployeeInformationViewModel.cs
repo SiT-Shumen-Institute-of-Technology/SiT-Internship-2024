@@ -1,13 +1,14 @@
-﻿namespace SACS.Web.ViewModels
+﻿namespace SACS.Web.ViewModels.Employee
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using SACS.Data.Models;
 
-    public class EditEmployeeViewModel
+    public class EmployeeInformationViewModel
     {
         public string Id { get; set; }
 
@@ -21,8 +22,6 @@
 
         public string Email { get; set; }
 
-        public string DepartmentId { get; set; }
-
-        public IEnumerable<Department> Departments { get; set; }
+        public Department Department { get; set; }
     }
 }
