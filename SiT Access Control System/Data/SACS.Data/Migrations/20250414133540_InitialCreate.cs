@@ -1,11 +1,10 @@
-﻿#nullable disable
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
 
 namespace SACS.Data.Migrations
 {
-    using System;
-
-    using Microsoft.EntityFrameworkCore.Migrations;
-
     /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
@@ -23,7 +22,7 @@ namespace SACS.Data.Migrations
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,7 +51,7 @@ namespace SACS.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,29 +67,11 @@ namespace SACS.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Settings",
-                columns: static table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,7 +82,7 @@ namespace SACS.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,7 +103,7 @@ namespace SACS.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,7 +123,7 @@ namespace SACS.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -160,7 +141,7 @@ namespace SACS.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,7 +167,7 @@ namespace SACS.Data.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -213,7 +194,7 @@ namespace SACS.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -229,14 +210,17 @@ namespace SACS.Data.Migrations
                 name: "ActualAttendances",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -260,7 +244,7 @@ namespace SACS.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,21 +260,23 @@ namespace SACS.Data.Migrations
                 name: "EmployeeSchedules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmployeeSchedules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeeSchedules_Employees_EmployeeId1",
-                        column: x => x.EmployeeId1,
+                        name: "FK_EmployeeSchedules_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id");
                 });
@@ -301,7 +287,7 @@ namespace SACS.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -327,7 +313,7 @@ namespace SACS.Data.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -343,6 +329,11 @@ namespace SACS.Data.Migrations
                 name: "IX_ActualAttendances_EmployeeId1",
                 table: "ActualAttendances",
                 column: "EmployeeId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActualAttendances_IsDeleted",
+                table: "ActualAttendances",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -419,19 +410,19 @@ namespace SACS.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeSchedules_EmployeeId1",
+                name: "IX_EmployeeSchedules_EmployeeId",
                 table: "EmployeeSchedules",
-                column: "EmployeeId1");
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSchedules_IsDeleted",
+                table: "EmployeeSchedules",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalIdentifications_EmployeeId",
                 table: "PersonalIdentifications",
                 column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Settings_IsDeleted",
-                table: "Settings",
-                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Summaries_EmployeeId",
@@ -473,9 +464,6 @@ namespace SACS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersonalIdentifications");
-
-            migrationBuilder.DropTable(
-                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Summaries");

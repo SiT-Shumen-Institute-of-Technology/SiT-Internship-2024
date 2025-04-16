@@ -12,7 +12,7 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250403121744_InitialCreate")]
+    [Migration("20250414133540_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -133,13 +133,16 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.ActualAttendance", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EmployeeId")
@@ -151,8 +154,14 @@ namespace SACS.Data.Migrations
                     b.Property<TimeSpan?>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<TimeSpan?>("StartTime")
                         .HasColumnType("time");
@@ -160,6 +169,8 @@ namespace SACS.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId1");
+
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("ActualAttendances");
                 });
@@ -396,33 +407,41 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeId1")
+                    b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("EmployeeSchedules");
                 });
@@ -443,39 +462,6 @@ namespace SACS.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("PersonalIdentifications");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.Setting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.Summary", b =>
@@ -604,7 +590,7 @@ namespace SACS.Data.Migrations
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId1");
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Employee");
                 });

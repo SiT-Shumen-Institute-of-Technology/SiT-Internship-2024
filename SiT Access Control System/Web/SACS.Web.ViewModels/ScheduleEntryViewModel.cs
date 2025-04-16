@@ -4,7 +4,7 @@
 
     public class ScheduleEntryViewModel
     {
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public string EmployeeName { get; set; }
 

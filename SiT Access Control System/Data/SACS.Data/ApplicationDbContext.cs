@@ -23,8 +23,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Day> Days { get; set; }

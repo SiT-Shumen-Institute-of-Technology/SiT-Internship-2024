@@ -2,9 +2,14 @@
 {
     using System;
 
-    public class ActualAttendance
+    using SACS.Data.Common.Models;
+
+    public class ActualAttendance : BaseDeletableModel<string>
     {
-        public int Id { get; set; }
+        public ActualAttendance()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
 
         public int EmployeeId { get; set; }
 

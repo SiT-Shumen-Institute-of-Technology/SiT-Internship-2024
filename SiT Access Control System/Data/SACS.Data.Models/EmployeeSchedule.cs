@@ -1,16 +1,17 @@
 ﻿namespace SACS.Data.Models
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    public class EmployeeSchedule
+    using SACS.Data.Common.Models;
+
+    public class EmployeeSchedule : BaseDeletableModel<string>
     {
-        public int Id { get; set; }
+        public EmployeeSchedule()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
 
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public virtual Employee Employee { get; set; }
 

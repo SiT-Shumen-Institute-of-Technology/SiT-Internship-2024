@@ -3,11 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using SACS.Data.Models;
 
     public class ScheduleViewModel
     {
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public string EmployeeName => $"{this.FirstName} {this.LastName}";
 
