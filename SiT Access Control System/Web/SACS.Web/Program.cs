@@ -18,6 +18,7 @@
     using SACS.Services.Data;
     using SACS.Services.Mapping;
     using SACS.Services.Messaging;
+    using SACS.Web.Profiles;
     using SACS.Web.ViewModels;
 
     public class Program
@@ -55,6 +56,10 @@
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSingleton(configuration);
+
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
+            services.AddAutoMapper(currentAssembly);
+            services.AddAutoMapper(typeof(EmployeeScheduleProfile));
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

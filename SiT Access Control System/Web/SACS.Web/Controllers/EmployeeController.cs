@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using SACS.Data;
     using SACS.Data.Models;
     using SACS.Services.Data;
+    using SACS.Web.Profiles;
     using SACS.Web.ViewModels;
     using SendGrid.Helpers.Mail;
 
@@ -20,14 +22,16 @@
         private readonly ApplicationDbContext db;
         private readonly ISummaryService summaryService;
         private readonly IScheduleService scheduleService;
+        private readonly IMapper mapper;
 
-        public EmployeeController(IEmployeeService employeeService, IDepartmentService departmentService, ApplicationDbContext db, ISummaryService summaryService, IScheduleService scheduleService)
+        public EmployeeController(IEmployeeService employeeService, IDepartmentService departmentService, ApplicationDbContext db, ISummaryService summaryService, IScheduleService scheduleService, IMapper mapper)
         {
             this.employeeService = employeeService;
             this.departmentService = departmentService;
             this.db = db;
             this.summaryService = summaryService;
             this.scheduleService = scheduleService;
+            this.mapper = mapper;
         }
 
         public IActionResult Create()
@@ -108,14 +112,8 @@
                 model.Employees = this.scheduleService.GetWeeklySchedule().Employees;
                 return this.View("Schedule", model);
             }
-            var schedule = new EmployeeSchedule
-            {
-                EmployeeId = model.EmployeeId,
-                Date = model.Date,
-                StartTime = model.StartTime,
-                EndTime = model.EndTime,
-                Location = model.Location,
-            };
+
+            var schedule = this.mapper.Map<EmployeeSchedule>(model);
 
             await this.scheduleService.AddScheduleAsync(schedule);
             return this.RedirectToAction(nameof(this.Schedule));
