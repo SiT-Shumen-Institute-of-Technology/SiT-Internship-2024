@@ -58,32 +58,21 @@
                 @foreach (var entry in Model.WeeklySchedule)
                 {
                     <tr>
-                        <td>@entry.EmployeeId</td>
+                        <td>@entry.EmployeeName</td>
                         <td>@entry.Date.ToString("dd-MM-yyyy")</td>
                         <td>@entry.StartTime.ToString(@"hh\:mm")</td>
                         <td>@entry.EndTime.ToString(@"hh\:mm")</td>
-                        <td class="text-white fw-bold status-@entry.Location.ToLower()">@entry.Location</td>
+                        <td class="text-white fw-bold
+                            @(
+                                entry.Location == "Office" ? "bg-success" :
+                                entry.Location == "Remote" ? "bg-secondary" :
+                                entry.Location == "Vacation" ? "bg-warning" : ""
+                            )">
+                            @entry.Location
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-
-<style>
-    body {
-        background-color: #f4f4f9;
-    }
-
-    .status-office {
-        background-color: #198754;
-    }
-
-    .status-remote {
-        background-color: #6c757d;
-    }
-
-    .status-vacation {
-        background-color: #fd7e14;
-    }
-</style>

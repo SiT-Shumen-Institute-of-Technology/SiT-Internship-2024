@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -101,14 +101,23 @@
         }
 
         [HttpPost]
-        public IActionResult Schedule(ScheduleViewModel model)
+        public async Task<IActionResult> Schedule(ScheduleViewModel model)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                model.Employees = this.scheduleService.GetWeeklySchedule().Employees;
+                return this.View("Schedule", model);
             }
+            var schedule = new EmployeeSchedule
+            {
+                EmployeeId = model.EmployeeId,
+                Date = model.Date,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+                Location = model.Location,
+            };
 
-            this.scheduleService.AddSchedule(model);
+            await this.scheduleService.AddScheduleAsync(schedule);
             return this.RedirectToAction(nameof(this.Schedule));
         }
     }

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-
 using Microsoft.EntityFrameworkCore;
-using SACS.Data;
+using SACS.Data.Common.Repositories;
 using SACS.Data.Models;
 using SACS.Web.ViewModels;
 
 public class ScheduleService : IScheduleService
 {
-    private readonly ApplicationDbContext db;
+    private readonly IDeletableEntityRepository<Employee> employeeRepository;
+    private readonly IDeletableEntityRepository<EmployeeSchedule> scheduleRepository;
 
-    public ScheduleService(ApplicationDbContext db)
+    public ScheduleService(
+        IDeletableEntityRepository<Employee> employeeRepository,
+        IDeletableEntityRepository<EmployeeSchedule> scheduleRepository)
     {
-        this.db = db;
+        this.employeeRepository = employeeRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public ScheduleViewModel GetWeeklySchedule()
@@ -23,9 +27,10 @@ public class ScheduleService : IScheduleService
 
         var schedule = new ScheduleViewModel
         {
-            WeeklySchedule = this.db.EmployeeSchedules
-                .Include(e => e.Employee)
+            WeeklySchedule = this.scheduleRepository
+                .All()
                 .Where(e => e.Date >= startOfWeek && e.Date < endOfWeek)
+                .Include(e => e.Employee)
                 .Select(e => new ScheduleEntryViewModel
                 {
                     EmployeeId = e.EmployeeId,
@@ -37,31 +42,22 @@ public class ScheduleService : IScheduleService
                 })
                 .ToList(),
 
-            Employees = this.db.Employees
+            Employees = this.employeeRepository
+                .All()
                 .Select(e => new SelectListItem
                 {
                     Value = e.Id.ToString(),
                     Text = e.FirstName + " " + e.LastName,
-                }).ToList(),
+                })
+                .ToList(),
         };
 
         return schedule;
     }
 
-    public void AddSchedule(ScheduleViewModel model)
+    public async Task AddScheduleAsync(EmployeeSchedule schedule)
     {
-        var schedule = new EmployeeSchedule
-        {
-            EmployeeId = model.EmployeeId,
-            Date = model.Date,
-            StartTime = model.StartTime,
-            EndTime = model.EndTime,
-            Location = model.Location,
-        };
-
-        this.db.EmployeeSchedules.Add(schedule);
-        this.db.SaveChanges();
+        await this.scheduleRepository.AddAsync(schedule);
+        await this.scheduleRepository.SaveChangesAsync();
     }
-
-
 }
