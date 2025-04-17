@@ -1,126 +1,89 @@
 ﻿@model SACS.Web.ViewModels.ScheduleViewModel
 
-<h2>Добавяне на график</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Добавяне на график</h2>
 
-<form method="post" asp-action="Schedule" asp-controller="Employee">
-    <label for="employeeId">Служител:</label>
-    <select id="employeeId" name="EmployeeId" required>
-        @foreach (var employee in Model.Employees)
-        {
-            <option value="@employee.Value">@employee.Text</option>
-        }
-    </select>
+    <form method="post" asp-action="Schedule" asp-controller="Employee" class="bg-white p-4 rounded shadow-sm">
+        <div class="mb-3">
+            <label for="employeeId" class="form-label">Служител:</label>
+            <select id="employeeId" name="EmployeeId" class="form-select" required>
+                @foreach (var employee in Model.Employees)
+                {
+                    <option value="@employee.Value">@employee.Text</option>
+                }
+            </select>
+        </div>
 
-    <label for="date">Дата:</label>
-    <input type="date" id="date" name="Date" required />
+        <div class="mb-3">
+            <label for="date" class="form-label">Дата:</label>
+            <input type="date" id="date" name="Date" class="form-control" required />
+        </div>
 
-    <label for="startTime">Начален час:</label>
-    <input type="time" id="startTime" name="StartTime" required />
+        <div class="mb-3">
+            <label for="startTime" class="form-label">Начален час:</label>
+            <input type="time" id="startTime" name="StartTime" class="form-control" required />
+        </div>
 
-    <label for="endTime">Краен час:</label>
-    <input type="time" id="endTime" name="EndTime" required />
+        <div class="mb-3">
+            <label for="endTime" class="form-label">Краен час:</label>
+            <input type="time" id="endTime" name="EndTime" class="form-control" required />
+        </div>
 
-    <label for="location">Локация:</label>
-    <select id="location" name="Location" required>
-        <option value="Office">Office</option>
-        <option value="Remote">Remote</option>
-        <option value="Vacation">Vacation</option>
-    </select>
+        <div class="mb-3">
+            <label for="location" class="form-label">Локация:</label>
+            <select id="location" name="Location" class="form-select" required>
+                <option value="Office">Office</option>
+                <option value="Remote">Remote</option>
+                <option value="Vacation">Vacation</option>
+            </select>
+        </div>
 
-    <button type="submit">Добави</button>
-</form>
+        <button type="submit" class="btn btn-success">Добави</button>
+    </form>
 
-<h2>График за текущата седмица</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Служител</th>
-            <th>Дата</th>
-            <th>Начален час</th>
-            <th>Краен час</th>
-            <th>Статус</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var entry in Model.WeeklySchedule)
-        {
-            <tr>
-                <td>@entry.EmployeeId</td>
-                <td>@entry.Date.ToString("dd-MM-yyyy")</td>
-                <td>@entry.StartTime.ToString(@"hh\:mm")</td>
-                <td>@entry.EndTime.ToString(@"hh\:mm")</td>
-                <td class="status-@entry.Location.ToLower()">@entry.Location</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <h2 class="mt-5 mb-3">График за текущата седмица</h2>
+
+    <div class="table-responsive bg-white p-3 rounded shadow-sm">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Служител</th>
+                    <th>Дата</th>
+                    <th>Начален час</th>
+                    <th>Краен час</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model.WeeklySchedule)
+                {
+                    <tr>
+                        <td>@entry.EmployeeId</td>
+                        <td>@entry.Date.ToString("dd-MM-yyyy")</td>
+                        <td>@entry.StartTime.ToString(@"hh\:mm")</td>
+                        <td>@entry.EndTime.ToString(@"hh\:mm")</td>
+                        <td class="text-white fw-bold status-@entry.Location.ToLower()">@entry.Location</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <style>
     body {
-        font-family: Arial, sans-serif;
         background-color: #f4f4f9;
-        margin: 20px;
-        padding-bottom: 100px; /* Добавено, за да не се припокрива с footer-а */
-    }
-
-    h2 {
-        color: #333;
-    }
-
-    form, table {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        width: 100%;
-    }
-
-    label, input, select, button {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    input, select, button {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-    }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 10px;
-        border: 1px solid #ccc;
-        text-align: left;
     }
 
     .status-office {
-        background-color: green;
-        color: white;
+        background-color: #198754;
     }
 
     .status-remote {
-        background-color: gray;
-        color: white;
+        background-color: #6c757d;
     }
 
     .status-vacation {
-        background-color: orange;
-        color: white;
+        background-color: #fd7e14;
     }
 </style>
