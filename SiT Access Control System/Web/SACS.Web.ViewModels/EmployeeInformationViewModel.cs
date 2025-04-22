@@ -10,6 +10,11 @@
 
     public class EmployeeInformationViewModel
     {
+        public EmployeeInformationViewModel()
+        {
+            this.DailySummaries = new List<DailySummary>();
+        }
+
         public string Id { get; set; }
 
         public string FirstName { get; set; }
@@ -23,5 +28,9 @@
         public string Email { get; set; }
 
         public Department Department { get; set; }
+
+        public DailySummary DailySummary { get; set; }
+
+        public List<DailySummary> DailySummaries { get; set; }
     }
 }

@@ -33,7 +33,7 @@
 
         public DbSet<PersonalIdentification> PersonalIdentifications { get; set; }
 
-        public DbSet<Summary> Summaries { get; set; }
+        public DbSet<DailySummary> DailySummaries { get; set; }
 
         public DbSet<RFIDCard> RFIDCards { get; set; }
 

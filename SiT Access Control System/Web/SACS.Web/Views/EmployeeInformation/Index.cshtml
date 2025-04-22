@@ -1,27 +1,128 @@
 ﻿@using SACS.Common;
+@using SACS.Data.Models
 @model EmployeeInformationViewModel
 @{
+	DayOfWeek currentDayOfWeek = DateTime.UtcNow.Date.DayOfWeek;
+	DateTime currentDate = DateTime.UtcNow.Date;
+	List<DailySummary> weekDailySummaries = new List<DailySummary>();
+
+
+	for (int i = 0; i <= ((int)currentDayOfWeek); i++)
+	{
+		DateTime currentDayDate = currentDate.AddDays(-i);
+		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn == currentDayDate);
+		if (currentDailySummary != null)
+		{
+			weekDailySummaries.Add(currentDailySummary);
+		}
+
+	}
+
+	int daysActive = 0;
+	int daysRemote = 0;
+	int daysInVacation = 0;
+	int daysAbsent = 0;
+	int daysLate = 0;
+
+	for (int i = 1; i <= 30; i++)
+	{
+		DateTime currentDayDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Date.Month, i);
+		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn == currentDayDate);
+
+		if (currentDailySummary != null)
+		{
+			switch (currentDailySummary.CurrentStatus)
+			{
+				case Status.Active:
+					daysActive++;
+					break;
+				case Status.Remote:
+					daysRemote++;
+					break;
+				case Status.Vacation:
+					daysInVacation++;
+					break;
+				case Status.Absent:
+					daysAbsent++;
+					break;
+				case Status.Late:
+					daysLate++;
+					break;
+			}
+		}
+	}
 }
 <h1 class="text-center">Employee information</h1>
 <hr>
 
 <div style="margin-top: 50px" class="text-center">
-    <ul class="list-group">
-        <li class="list-group-item fs-3">First Name: @Model.FirstName</li>
-        <li class="list-group-item fs-3">Last Name: @Model.LastName</li>
-        <li class="list-group-item fs-3">Department: @Model.Department.Name</li>
-        <li class="list-group-item fs-3">PhoneNumber: @Model.PhoneNumber</li>
-        <li class="list-group-item fs-3">Email: @Model.Email</li>
-        <li class="list-group-item fs-3">Position: @Model.Position</li>
-        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-        {
+	<ul class="list-group">
+		<li class="list-group-item fs-3">First Name: @Model.FirstName</li>
+		<li class="list-group-item fs-3">Last Name: @Model.LastName</li>
+		<li class="list-group-item fs-3">Department: @Model.Department.Name</li>
+		<li class="list-group-item fs-3">PhoneNumber: @Model.PhoneNumber</li>
+		<li class="list-group-item fs-3">Email: @Model.Email</li>
+		<li class="list-group-item fs-3">Position: @Model.Position</li>
+		@if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+		{
 
-            <form asp-action="Delete" asp-route-id="@Model.Id">
-                <button class="btn btn-danger">Delete</button>
-            </form>
+			<form asp-action="Delete" asp-route-id="@Model.Id">
+				<button class="btn btn-danger">Delete</button>
+			</form>
 
-        }
-    </ul>
+		}
+	</ul>
 
+
+	<h1 style="margin-top: 10rem" class="text-center">Daily Summary</h1>
+	<ul class="list-group">
+		<li class="list-group-item fs-3">Current Status: @Model.DailySummary.CurrentStatus</li>
+	</ul>
+	<h1 style="margin-top: 10rem" class="text-center">Weekly Summary</h1>
+	<table class="table table-success table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Monday</th>
+				<th scope="col">Tuesday</th>
+				<th scope="col">Wednesday</th>
+				<th scope="col">Thursday</th>
+				<th scope="col">Friday</th>
+				<th scope="col">Saturday</th>
+				<th scope="col">Sunday</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				@if (weekDailySummaries.Count() != 0)
+				{
+					@foreach (var dailySummary in weekDailySummaries)
+					{
+						<td>
+							@dailySummary.CurrentStatus.ToString()
+						</td>
+					}
+				}
+				else
+				{
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+					<td>Not Assigned</td>
+				}
+			</tr>
+		</tbody>
+	</table>
+
+	<h1 style="margin-top: 10rem" class="text-center">Monthly Summary</h1>
+	<ul class="list-group">
+		<li class="list-group-item fs-3">Days Acitve: @daysActive</li>
+		<li class="list-group-item fs-3">Days Absent: @daysAbsent</li>
+		<li class="list-group-item fs-3">Days In Vacation: @daysInVacation</li>
+		<li class="list-group-item fs-3">Days Late: @daysLate</li>
+		<li class="list-group-item fs-3">Days Remote: @daysRemote</li>
+	</ul>
 
 </div>

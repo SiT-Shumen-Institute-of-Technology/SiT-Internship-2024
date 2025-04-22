@@ -12,6 +12,6 @@
     {
         public List<Employee> Employees { get; set; }
 
-        public List<Summary> Summaries { get; set; }
+        public List<DailySummary> Summaries { get; set; }
     }
 }

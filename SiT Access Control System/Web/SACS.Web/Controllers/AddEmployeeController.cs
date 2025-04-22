@@ -46,14 +46,10 @@
                 Department = this.departmentService.GetDepartmentById(input.DepartmentId),
                 DepartmentId = input.DepartmentId,
             };
-            Summary newSummary = new Summary
+            DailySummary newSummary = new DailySummary
             {
                 Id = Guid.NewGuid().ToString(),
-                CurrentState = input.CurrentState,
-                TimesLate = input.TimesLate,
-                TotalHoursWorked = input.TotalHoursWorked,
-                Timesabscent = input.Timesabscent,
-                VacationDays = input.VacationDays,
+                CurrentStatus = input.CurrentStatus,
                 Employee = newEmployee,
                 EmployeeId = newEmployee.Id,
             };

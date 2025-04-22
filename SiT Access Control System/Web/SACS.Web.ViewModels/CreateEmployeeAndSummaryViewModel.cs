@@ -28,15 +28,7 @@
 
         public string DepartmentId { get; set; }
 
-        public string CurrentState { get; set; }
-
-        public int TimesLate { get; set; }
-
-        public int TotalHoursWorked { get; set; }
-
-        public int Timesabscent { get; set; }
-
-        public int VacationDays { get; set; }
+        public Status CurrentStatus { get; set; }
 
         public List<Department> Departments { get; set; }
     }

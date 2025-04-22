@@ -1,10 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+﻿#nullable disable
 
 namespace SACS.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     /// <inheritdoc />
     public partial class initCreate : Migration
     {
@@ -241,6 +242,28 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DailySummaries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CurrentStatus = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailySummaries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailySummaries_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Days",
                 columns: table => new
                 {
@@ -309,32 +332,6 @@ namespace SACS.Data.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Summaries",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CurrentState = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TimesLate = table.Column<int>(type: "int", nullable: false),
-                    TotalHoursWorked = table.Column<int>(type: "int", nullable: false),
-                    Timesabscent = table.Column<int>(type: "int", nullable: false),
-                    VacationDays = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Summaries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Summaries_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -383,6 +380,16 @@ namespace SACS.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailySummaries_EmployeeId",
+                table: "DailySummaries",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailySummaries_IsDeleted",
+                table: "DailySummaries",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Days_EmployeeId",
@@ -438,16 +445,6 @@ namespace SACS.Data.Migrations
                 name: "IX_Settings_IsDeleted",
                 table: "Settings",
                 column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Summaries_EmployeeId",
-                table: "Summaries",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Summaries_IsDeleted",
-                table: "Summaries",
-                column: "IsDeleted");
         }
 
         /// <inheritdoc />
@@ -469,6 +466,9 @@ namespace SACS.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DailySummaries");
+
+            migrationBuilder.DropTable(
                 name: "Days");
 
             migrationBuilder.DropTable(
@@ -479,9 +479,6 @@ namespace SACS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Settings");
-
-            migrationBuilder.DropTable(
-                name: "Summaries");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

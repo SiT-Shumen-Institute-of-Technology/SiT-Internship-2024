@@ -1,4 +1,5 @@
 ﻿@using SACS.Common
+@using SACS.Data.Models
 @using SACS.Services.Data
 @model EmployeeListViewModel
 @{
@@ -16,28 +17,35 @@
             <tr>
                 @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
                 {
-                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState;
-                    if (currentSummary == "Active")
+                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentStatus;
+                    if (currentSummary == Status.Active)
                     {
                         <td class="bg-success border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
-                    else if (currentSummary == "Remote")
+                    else if (currentSummary == Status.Remote)
                     {
                         <td class="bg-primary border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
-                    else if (currentSummary == "Vacation")
+                    else if (currentSummary == Status.Vacation)
                     {
                         <td class="bg-warning border">
                             <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }
-                    else if (currentSummary == "Absent")
+                    else if (currentSummary == Status.Absent)
                     {
                         <td class="bg-secondary border">
+                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
+                        </td>
+                    }
+
+                    else if (currentSummary == Status.Late)
+                    {
+                        <td class="bg-danger border">
                             <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
                         </td>
                     }

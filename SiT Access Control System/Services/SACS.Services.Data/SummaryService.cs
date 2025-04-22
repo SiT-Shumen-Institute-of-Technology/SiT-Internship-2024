@@ -11,20 +11,20 @@
 
     public class SummaryService : ISummaryService
     {
-        private readonly IDeletableEntityRepository<Summary> summaryRepository;
+        private readonly IDeletableEntityRepository<DailySummary> summaryRepository;
 
-        public SummaryService(IDeletableEntityRepository<Summary> summaryRepository)
+        public SummaryService(IDeletableEntityRepository<DailySummary> summaryRepository)
         {
             this.summaryRepository = summaryRepository;
         }
 
-        public async Task CreateSummaryAsync(Summary summary)
+        public async Task CreateSummaryAsync(DailySummary summary)
         {
             await this.summaryRepository.AddAsync(summary);
             await this.summaryRepository.SaveChangesAsync();
         }
 
-        public List<Summary> GetAllSummaries()
+        public List<DailySummary> GetAllSummaries()
         {
             return this.summaryRepository.All().ToList();
         }

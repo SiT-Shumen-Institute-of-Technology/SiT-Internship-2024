@@ -248,6 +248,38 @@ namespace SACS.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.DailySummary", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("DailySummaries");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.Day", b =>
                 {
                     b.Property<string>("Id")
@@ -470,50 +502,6 @@ namespace SACS.Data.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("SACS.Data.Models.Summary", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CurrentState")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TimesLate")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Timesabscent")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalHoursWorked")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VacationDays")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Summaries");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("SACS.Data.Models.ApplicationRole", null)
@@ -565,6 +553,15 @@ namespace SACS.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.DailySummary", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.Day", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
@@ -599,15 +596,6 @@ namespace SACS.Data.Migrations
                 });
 
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>
-                {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("SACS.Data.Models.Summary", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
                         .WithMany()

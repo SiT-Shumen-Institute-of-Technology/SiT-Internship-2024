@@ -10,8 +10,8 @@
 
     public interface ISummaryService
     {
-        List<Summary> GetAllSummaries();
+        List<DailySummary> GetAllSummaries();
 
-        Task CreateSummaryAsync(Summary summary);
+        Task CreateSummaryAsync(DailySummary summary);
     }
 }
