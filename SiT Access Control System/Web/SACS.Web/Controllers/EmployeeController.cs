@@ -1,4 +1,9 @@
-﻿namespace SACS.Web.Controllers
+﻿using SACS.Data;
+using SACS.Data.Models;
+using SACS.Services.Data;
+using SACS.Web.ViewModels;
+
+namespace SACS.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -6,13 +11,6 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
-    using SACS.Data;
-    using SACS.Data.Models;
-    using SACS.Services.Data;
-    using SACS.Web.Profiles;
-    using SACS.Web.ViewModels;
     using SendGrid.Helpers.Mail;
 
     public class EmployeeController : Controller
@@ -66,8 +64,8 @@
                 Employee = newEmployee,
             };
 
-            this.employeeService.Add(newEmployee);
-            this.summaryService.CreateSummary(newSummary);
+            this.employeeService.AddAsync(newEmployee);
+            this.summaryService.CreateSummaryAsync(newSummary);
 
             return this.RedirectToAction("EmployeeSchedule");
         }

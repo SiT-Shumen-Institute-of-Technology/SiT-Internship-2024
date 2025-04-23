@@ -45,8 +45,4 @@
     <ProjectReference Include="..\SACS.Data.Models\SACS.Data.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

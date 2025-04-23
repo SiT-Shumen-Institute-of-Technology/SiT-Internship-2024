@@ -1,8 +1,9 @@
-﻿namespace SACS.Web.Profiles
+﻿using SACS.Data.Models;
+using SACS.Web.ViewModels;
+
+namespace SACS.Web.Profiles
 {
     using AutoMapper;
-    using SACS.Data.Models;
-    using SACS.Web.ViewModels;
 
     public class EmployeeScheduleProfile : Profile
     {

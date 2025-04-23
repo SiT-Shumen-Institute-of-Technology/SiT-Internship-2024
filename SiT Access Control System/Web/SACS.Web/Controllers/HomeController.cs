@@ -1,12 +1,14 @@
-﻿namespace SACS.Web.Controllers
+﻿using SACS.Common;
+using SACS.Services.Data;
+using SACS.Web.ViewModels;
+
+namespace SACS.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using SACS.Common;
-    using SACS.Services.Data;
-    using SACS.Web.ViewModels;
 
     public class HomeController : BaseController
     {
@@ -27,6 +29,8 @@
                 Summaries = this.summaryService.GetAllSummaries(),
             });
         }
+
+        
 
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]

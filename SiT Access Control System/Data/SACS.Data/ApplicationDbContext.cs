@@ -33,6 +33,10 @@
 
         public DbSet<Summary> Summaries { get; set; }
 
+        public DbSet<RFIDCard> RFIDCards { get; set; }
+
+        public DbSet<EmployeeRFIDCard> EmployeesRFIDCards { get; set; }
+
         public DbSet<EmployeeSchedule> EmployeeSchedules { get; set; }
 
         public DbSet<ActualAttendance> ActualAttendances { get; set; }
