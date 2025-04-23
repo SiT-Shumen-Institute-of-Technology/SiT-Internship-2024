@@ -1,8 +1,8 @@
-﻿namespace SACS.Web.Areas.Administration.Controllers
-{
-    using SACS.Common;
-    using SACS.Web.Controllers;
+﻿using SACS.Common;
+using SACS.Web.Controllers;
 
+namespace SACS.Web.Areas.Administration.Controllers
+{
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 

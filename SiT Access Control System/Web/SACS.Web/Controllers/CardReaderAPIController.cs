@@ -1,4 +1,7 @@
-﻿namespace SACS.Web.Controllers
+﻿using SACS.Data.Models;
+using SACS.Services.Data;
+
+namespace SACS.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -10,9 +13,6 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-    using SACS.Data.Models;
-    using SACS.Services.Data;
 
     [Route("api/[controller]")]
     [ApiController]

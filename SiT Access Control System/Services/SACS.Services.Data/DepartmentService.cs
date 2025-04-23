@@ -29,16 +29,16 @@
             return this.departmentRepository.All().FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Department> GetAll()
+        {
+            return this.departmentRepository.All().ToList();
+        }
+
         public void RemoveById(string id)
         {
             Department choosenDepartment = this.departmentRepository.All().FirstOrDefault(x => x.Id == id);
             this.departmentRepository.Delete(choosenDepartment);
             this.departmentRepository.SaveChangesAsync();
-        }
-
-        public List<Department> GetAll()
-        {
-            return this.departmentRepository.All().ToList();
         }
     }
 }

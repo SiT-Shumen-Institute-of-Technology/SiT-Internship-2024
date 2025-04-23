@@ -15,7 +15,6 @@
         void Add(Department department);
 
         Department GetDepartmentById(string id);
-
         List<Department> GetAll();
     }
 }

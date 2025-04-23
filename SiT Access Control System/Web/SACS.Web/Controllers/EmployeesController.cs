@@ -1,10 +1,11 @@
-﻿namespace SACS.Web.Controllers
+﻿using SACS.Data.Models;
+using SACS.Services.Data;
+
+namespace SACS.Web.Controllers
 {
     using System.Collections.Generic;
 
     using Microsoft.AspNetCore.Mvc;
-    using SACS.Data.Models;
-    using SACS.Services.Data;
 
     [Route("/api/[controller]")]
     [ApiController]

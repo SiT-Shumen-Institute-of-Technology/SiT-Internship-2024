@@ -3,6 +3,8 @@
 @model EmployeeListViewModel
 @{
     this.ViewData["Title"] = "Home Page";
+    // Convert ICollection to List for indexed access
+    var employeesList = Model.Employees.ToList();
 }
 
 <div class="text-center">
@@ -11,42 +13,56 @@
 
 <table style="margin-top: 100px;" class="table">
     <tbody>
-        @for (int i = 0; i < Model.Employees.Count(); i += 4)
+        @for (int i = 0; i < employeesList.Count; i += 4)
         {
             <tr>
-                @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
+                @for (int j = 0; j < 4 && (j + i) < employeesList.Count; j++)
                 {
-                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentState;
+                    var currentEmployee = employeesList[j + i];
+                    SACS.Data.Models.Summary first = null;
+                    foreach (var x in Model.Summaries)
+                    {
+                        if (x.EmployeeId == currentEmployee.Id)
+                        {
+                            first = x;
+                            break;
+                        }
+                    }
+
+                    var currentSummary = first?.CurrentState;
                     if (currentSummary == "Active")
                     {
                         <td class="bg-success border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
+                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Remote")
                     {
                         <td class="bg-primary border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
+                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Vacation")
                     {
                         <td class="bg-warning border">
-                            <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
+                            <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                         </td>
                     }
                     else if (currentSummary == "Absent")
                     {
                         <td class="bg-secondary border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
+                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                         </td>
                     }
-
+                    else
+                    {
+                        <td class="border">
+                            <a class="text-decoration-none" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
+                        </td>
+                    }
                 }
-
             </tr>
         }
-
     </tbody>
 </table>
 

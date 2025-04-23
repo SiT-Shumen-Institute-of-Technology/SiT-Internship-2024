@@ -1,4 +1,8 @@
-﻿namespace SACS.Web.Controllers
+﻿using SACS.Data.Models;
+using SACS.Services.Data;
+using SACS.Web.ViewModels;
+
+namespace SACS.Web.Controllers
 {
     using System;
     using System.Collections;
@@ -7,9 +11,6 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using SACS.Data.Models;
-    using SACS.Services.Data;
-    using SACS.Web.ViewModels;
 
     public class AddEmployeeController : Controller
     {

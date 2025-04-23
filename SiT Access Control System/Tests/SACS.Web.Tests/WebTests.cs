@@ -1,4 +1,6 @@
-﻿namespace SACS.Web.Tests
+﻿using SACS.Web.SACS.Web;
+
+namespace SACS.Web.Tests
 {
     using System.Net;
     using System.Threading.Tasks;

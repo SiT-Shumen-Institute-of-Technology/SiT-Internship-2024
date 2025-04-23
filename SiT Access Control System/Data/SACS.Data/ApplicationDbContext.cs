@@ -23,8 +23,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Day> Days { get; set; }
@@ -38,6 +36,10 @@
         public DbSet<RFIDCard> RFIDCards { get; set; }
 
         public DbSet<EmployeeRFIDCard> EmployeesRFIDCards { get; set; }
+
+        public DbSet<EmployeeSchedule> EmployeeSchedules { get; set; }
+
+        public DbSet<ActualAttendance> ActualAttendances { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
