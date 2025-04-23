@@ -17,5 +17,6 @@
         void Add(Employee employee);
 
         List<Employee> GetAllEmployees();
+        Task AddAsync(Employee newEmployee);
     }
 }

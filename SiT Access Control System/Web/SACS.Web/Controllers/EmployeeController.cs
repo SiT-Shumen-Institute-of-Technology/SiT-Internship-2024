@@ -70,7 +70,7 @@
             this.employeeService.Add(newEmployee);
             this.summaryService.CreateSummary(newSummary);
 
-            return this.Redirect("/");
+            return this.RedirectToAction("Create");
         }
 
         // GET: /Employee/Details/{id}

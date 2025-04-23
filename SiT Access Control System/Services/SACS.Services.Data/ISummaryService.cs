@@ -13,5 +13,6 @@
         List<Summary> GetAllSummaries();
 
         void CreateSummary(Summary summary);
+        Task CreateSummaryAsync(Summary newSummary);
     }
 }

@@ -37,6 +37,12 @@
             return this.employeeRepository.All().ToList();
         }
 
+        public async Task AddAsync(Employee employee)
+        {
+            await this.employeeRepository.AddAsync(employee);
+            await this.employeeRepository.SaveChangesAsync();
+        }
+
         public Employee FindEmployeeById(string id)
         {
             return this.employeeRepository.All().FirstOrDefault(x => x.Id == id);

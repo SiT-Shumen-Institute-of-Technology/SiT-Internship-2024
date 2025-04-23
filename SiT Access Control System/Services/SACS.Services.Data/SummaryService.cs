@@ -18,6 +18,13 @@
             this.summaryRepository = summaryRepository;
         }
 
+        public async Task CreateSummaryAsync(Summary summary)
+        {
+            await this.summaryRepository.AddAsync(summary);
+            await this.summaryRepository.SaveChangesAsync();
+        }
+
+
         public void CreateSummary(Summary summary)
         {
             this.summaryRepository.AddAsync(summary);

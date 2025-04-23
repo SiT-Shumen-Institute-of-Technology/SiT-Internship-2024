@@ -12,8 +12,8 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250415131028_test")]
-    partial class test
+    [Migration("20250423122714_tryingtofixUserId")]
+    partial class tryingtofixUserId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
