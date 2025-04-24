@@ -59,20 +59,27 @@
         <tr>
             <th>Username</th>
             <th>Email</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model.Users)
         {
+            var roleLabel = user.Roles.Contains("Administrator") ? "Admin" : "User";
             <tr id="row-@user.Id">
                 <td>
                     <span class="view-mode">@user.UserName</span>
-                    <input type="text" class="edit-mode form-control" value="@user.UserName" style="display:none;" />
+                    <input type="text" class="edit-mode form-control" value="@user.UserName" style="display:none;">
                 </td>
                 <td>
                     <span class="view-mode">@user.Email</span>
-                    <input type="email" class="edit-mode form-control" value="@user.Email" style="display:none;" />
+                    <input type="email" class="edit-mode form-control" value="@user.Email" style="display:none;">
+                </td>
+                <td class="text-center align-middle">
+                    <span class="badge @(roleLabel == "Admin" ? "bg-danger" : "bg-secondary")">
+                        @roleLabel
+                    </span>
                 </td>
                 <td>
                     <button class="btn btn-primary edit-btn">Edit</button>
@@ -90,11 +97,10 @@
 </table>
 
 <div class="text-center mt-3">
-<a href="/Employee/Create" class="btn btn-success btn-lg">Add Employee</a>
-</div>
-
-<div class="text-center mt-3">
-    <a href="" class="btn btn-success btn-lg">Add User</a>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="/Employee/Create" class="btn btn-success btn-lg">Add Employee</a>
+        <a href="" class="btn btn-success btn-lg">Add User</a>
+    </div>
 </div>
 
 @section Scripts {
@@ -129,20 +135,17 @@
                 var row = $(this).closest("tr");
                 row.find(".view-mode").hide();
                 row.find(".edit-mode").show();
-                row.find(".edit-btn").hide();
+                row.find(".edit-btn, .delete-btn").hide();
                 row.find(".save-btn, .cancel-btn").show();
             });
 
             // Cancel button click handler
             $(".cancel-btn").click(function () {
                 var row = $(this).closest("tr");
-                row.find(".edit-mode").val(function() {
-                    return $(this).siblings(".view-mode").text();
-                });
-                row.find(".view-mode").show();
                 row.find(".edit-mode").hide();
-                row.find(".edit-btn").show();
+                row.find(".view-mode").show();
                 row.find(".save-btn, .cancel-btn").hide();
+                row.find(".edit-btn, .delete-btn").show();
             });
 
             // Save button click handler
@@ -171,11 +174,12 @@
                         email: email
                     },
                     success: function () {
-                        row.find(".view-mode").eq(0).text(userName).show();
-                        row.find(".view-mode").eq(1).text(email).show();
+                        row.find(".view-mode").eq(0).text(userName);
+                        row.find(".view-mode").eq(1).text(email);
                         row.find(".edit-mode").hide();
-                        row.find(".edit-btn").show();
+                        row.find(".view-mode").show();
                         row.find(".save-btn, .cancel-btn").hide();
+                        row.find(".edit-btn, .delete-btn").show();
                         showToast("User updated successfully!", true);
                     },
                     error: function (xhr) {
