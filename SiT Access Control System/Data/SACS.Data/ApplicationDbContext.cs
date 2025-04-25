@@ -61,6 +61,12 @@
 
             this.ConfigureUserIdentityRelations(builder);
 
+            builder.Entity<Employee>()
+    .HasOne(e => e.User)
+    .WithMany() // or WithMany(u => u.Employees) if ApplicationUser has a collection
+    .HasForeignKey(e => e.UserId)
+    .OnDelete(DeleteBehavior.Restrict);
+
             EntityIndexesConfiguration.Configure(builder);
 
             var entityTypes = builder.Model.GetEntityTypes().ToList();

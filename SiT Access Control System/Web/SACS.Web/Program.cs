@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SACS.Data;
 using SACS.Services.Data;
@@ -18,6 +18,7 @@ using SACS.Data.Repositories;
 using SACS.Data.Seeding;
 using SACS.Services.Mapping;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SACS.Web
 {
@@ -31,7 +32,7 @@ namespace SACS.Web
             ConfigureServices(builder.Services, builder.Configuration);
 
             var app = builder.Build();
-            Configure(app);
+            Configure(app).GetAwaiter().GetResult(); // Await Configure method
             app.Run();
         }
 
@@ -43,11 +44,10 @@ namespace SACS.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            // Register Identity with your custom ApplicationUser and ApplicationRole
             services.AddIdentity<ApplicationUser, ApplicationRole>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
-                .AddDefaultUI(); // Add this if you're using Razor Pages for Identity UI
+                .AddDefaultUI();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -65,12 +65,10 @@ namespace SACS.Web
 
             services.AddSingleton(configuration);
 
-            // Register repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
-            // Register application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
@@ -78,19 +76,19 @@ namespace SACS.Web
             services.AddTransient<IDayService, DayService>();
             services.AddTransient<ISummaryService, SummaryService>();
 
-            // User and dashboard services
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IDashboardService, DashboardService>();
         }
 
-        private static void Configure(WebApplication app)
+        private static async Task Configure(WebApplication app)
         {
-            // Seed data on application startup
-            using (var serviceScope = app.Services.CreateScope())
+            using (var scope = app.Services.CreateScope())
             {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Database.Migrate();
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await dbContext.Database.MigrateAsync();
+
+                await new ApplicationDbContextSeeder().SeedAsync(dbContext, scope.ServiceProvider);
+                await AdminSeeder.SeedAdminAsync(scope.ServiceProvider); // 👈 Admin Seeder
             }
 
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);

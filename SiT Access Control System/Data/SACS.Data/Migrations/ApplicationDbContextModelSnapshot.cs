@@ -532,7 +532,8 @@ namespace SACS.Data.Migrations
 
                     b.HasOne("SACS.Data.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Department");
 

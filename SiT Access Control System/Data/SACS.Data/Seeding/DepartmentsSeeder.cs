@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SACS.Data.Models;
 
 namespace SACS.Data.Seeding
 {
-    public class DepartmentsSeeder
+    public class DepartmentsSeeder : ISeeder
     {
-        private readonly ApplicationDbContext _context;
-
-        public DepartmentsSeeder(ApplicationDbContext context)
+        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            _context = context;
-        }
-
-        public void Seed()
-        {
-            if (!_context.Departments.Any()) // Only seed if no departments exist
+            if (await dbContext.Departments.AnyAsync())
             {
-                _context.Departments.AddRange(
-                    new Department { Id = 1, Name = "Human Resources" },
-                    new Department { Id = 2, Name = "Finance" },
-                    new Department { Id = 3, Name = "IT" },
-                    new Department { Id = 4, Name = "Marketing" }
-                );
-
-                _context.SaveChanges(); // Save changes to the database
+                return; // Already seeded
             }
+
+            var departments = new[]
+            {
+                new Department { Name = "Human Resources" },
+                new Department { Name = "Finance" },
+                new Department { Name = "IT" },
+                new Department { Name = "Marketing" },
+            };
+
+            await dbContext.Departments.AddRangeAsync(departments);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

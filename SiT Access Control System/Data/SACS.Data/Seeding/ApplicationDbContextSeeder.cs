@@ -29,8 +29,8 @@ namespace SACS.Data.Seeding
             // Order matters ─ Roles first, then anything that depends on them
             var seeders = new List<ISeeder>
             {
-                new RolesSeeder(),          // creates "Admin" and "User" roles + assigns "User" to everyone
-                // new DefaultAccountsSeeder(), // ← uncomment if you seed a default admin account
+                new RolesSeeder(),
+                new DepartmentsSeeder(),
                 new SettingsSeeder(),
             };
 
