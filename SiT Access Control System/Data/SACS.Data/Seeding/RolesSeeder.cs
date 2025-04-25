@@ -20,18 +20,19 @@ namespace SACS.Data.Seeding
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            // 1. Ensure both roles exist
+            // Ensure all roles exist
             await EnsureRoleExistsAsync(roleManager, GlobalConstants.AdministratorRoleName); // "Admin"
             await EnsureRoleExistsAsync(roleManager, GlobalConstants.UserRoleName);          // "User"
+            await EnsureRoleExistsAsync(roleManager, GlobalConstants.EmployeeRoleName);      // "Employee"
 
-            // 2. Add "User" role to everyone who currently has no roles
+            // Add "User" role to everyone who currently has no roles
             var allUsers = await userManager.Users.ToListAsync();
 
             foreach (var user in allUsers)
             {
                 var roles = await userManager.GetRolesAsync(user);
 
-                if (roles.Count == 0) // user is role‑less
+                if (roles.Count == 0)
                 {
                     await userManager.AddToRoleAsync(user, GlobalConstants.UserRoleName);
                 }
