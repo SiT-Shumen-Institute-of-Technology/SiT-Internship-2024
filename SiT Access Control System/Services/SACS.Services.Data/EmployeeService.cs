@@ -9,6 +9,7 @@
     using Microsoft.EntityFrameworkCore;
     using SACS.Data.Common.Repositories;
     using SACS.Data.Models;
+    using SACS.Services.Data.Interfaces;
 
     public class EmployeeService : IEmployeeService
     {

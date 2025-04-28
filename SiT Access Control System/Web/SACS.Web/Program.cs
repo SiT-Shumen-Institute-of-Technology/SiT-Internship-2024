@@ -13,7 +13,7 @@ using SACS.Web.ViewModels;
 namespace SACS.Web
 {
     using System.Reflection;
-
+    using global::SACS.Services.Data.Interfaces;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -73,6 +73,8 @@ namespace SACS.Web
                 Assembly currentAssembly = Assembly.GetExecutingAssembly();
                 services.AddAutoMapper(currentAssembly);
                 services.AddAutoMapper(typeof(EmployeeScheduleProfile));
+                services.AddAutoMapper(typeof(EmployeeProfile));
+                services.AddAutoMapper(typeof(SummaryProfile));
 
                 // Data repositories
                 services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

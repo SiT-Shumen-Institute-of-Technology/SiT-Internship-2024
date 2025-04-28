@@ -1,4 +1,4 @@
-﻿namespace SACS.Services.Data
+﻿namespace SACS.Services.Data.Interfaces
 {
     using System;
     using System.Collections.Generic;

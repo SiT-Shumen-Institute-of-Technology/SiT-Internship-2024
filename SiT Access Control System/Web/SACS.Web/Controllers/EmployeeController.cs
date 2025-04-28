@@ -1,17 +1,16 @@
 ﻿using SACS.Data;
 using SACS.Data.Models;
-using SACS.Services.Data;
 using SACS.Web.ViewModels;
+using SACS.Services.Data.Interfaces;
+
 
 namespace SACS.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
+
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
-    using SendGrid.Helpers.Mail;
 
     public class EmployeeController : Controller
     {
@@ -38,36 +37,15 @@ namespace SACS.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateEmployeeAndSummaryViewModel input)
+        public async Task<IActionResult> Create(CreateEmployeeAndSummaryViewModel input)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(input);
-            }
+            var newEmployee = this.mapper.Map<Employee>(input);
 
-            var newEmployee = new Employee
-            {
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                Position = input.Position,
-                PhoneNumber = input.PhoneNumber,
-                Email = input.Email,
-            };
+            var newSummary = this.mapper.Map<Summary>(input);
 
-            var newSummary = new Summary
-            {
-                CurrentState = input.CurrentState,
-                TimesLate = input.TimesLate,
-                TotalHoursWorked = input.TotalHoursWorked,
-                Timesabscent = input.Timesabscent,
-                VacationDays = input.VacationDays,
-                Employee = newEmployee,
-            };
-
-            this.employeeService.AddAsync(newEmployee);
-            this.summaryService.CreateSummaryAsync(newSummary);
-
-            return this.RedirectToAction("EmployeeSchedule");
+            await this.employeeService.AddAsync(newEmployee);
+            await this.summaryService.CreateSummaryAsync(newSummary);
+            return this.RedirectToAction(nameof(this.Create));
         }
 
         public IActionResult EmployeeInformation(string id)
@@ -79,15 +57,8 @@ namespace SACS.Web.Controllers
                 return this.NotFound();
             }
 
-            var model = new EmployeeInformationViewModel
-            {
-                FirstName = currentEmployee.FirstName,
-                LastName = currentEmployee.LastName,
-                PhoneNumber = currentEmployee.PhoneNumber,
-                Position = currentEmployee.Position,
-                Department = this.departmentService.GetDepartmentById(currentEmployee.DepartmentId),
-                Email = currentEmployee.Email,
-            };
+            var model = this.mapper.Map<Employee>(id);
+
 
             return this.View(model);
         }

@@ -8,6 +8,7 @@
 
     using SACS.Data.Common.Repositories;
     using SACS.Data.Models;
+    using SACS.Services.Data.Interfaces;
 
     public class DepartmentService : IDepartmentService
     {

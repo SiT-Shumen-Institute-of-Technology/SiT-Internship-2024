@@ -1,4 +1,4 @@
-﻿namespace SACS.Services.Data
+﻿namespace SACS.Services.Data.Interfaces
 {
     using System;
     using System.Collections.Generic;
@@ -8,14 +8,10 @@
 
     using SACS.Data.Models;
 
-    public interface IEmployeeService
+    public interface IDayService
     {
         void RemoveById(string id);
 
-        Employee FindEmployeeById(string id);
-
-        Task AddAsync(Employee employee);
-
-        List<Employee> GetAllEmployees();
+        void Add(Day day);
     }
 }
