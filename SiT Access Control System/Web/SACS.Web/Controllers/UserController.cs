@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using SACS.Data.Models;
 using SACS.Web.ViewModels.Administration.Users;
 using System.Threading.Tasks;
+using System;
 
 [Authorize(Roles = "Administrator")]
 public class UserController : Controller
 {
-    // Method to get available roles
     private List<SelectListItem> GetAvailableRoles()
     {
         return new List<SelectListItem>
@@ -23,59 +23,95 @@ public class UserController : Controller
         };
     }
 
-    // GET method for creating a new user
     [HttpGet]
     public IActionResult Create()
     {
         var model = new CreateUserViewModel
         {
-            Roles = GetAvailableRoles()  // Use the GetAvailableRoles method
+            Roles = GetAvailableRoles()
         };
 
         return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
     }
 
-    // POST method for creating a new user
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateUserViewModel model, [FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager)
-{
-    if (!ModelState.IsValid)
+    public async Task<IActionResult> Create(CreateUserViewModel model,
+    [FromServices] UserManager<ApplicationUser> userManager,
+    [FromServices] RoleManager<ApplicationRole> roleManager)
     {
-        model.Roles = GetAvailableRoles();  // Ensure roles are repopulated on validation failure
-        return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
-    }
+        Console.WriteLine($"Received role: {model.SelectedRole}");
 
-    var user = new ApplicationUser
-    {
-        UserName = model.UserName,
-        Email = model.Email,
-    };
-
-    var result = await userManager.CreateAsync(user, model.Password);
-
-    if (result.Succeeded)
-    {
-        // Check if the selected role exists, if not create it
-        if (!await roleManager.RoleExistsAsync(model.SelectedRole))
+        if (!ModelState.IsValid)
         {
-            await roleManager.CreateAsync(new ApplicationRole(model.SelectedRole));
+            // Debug: Check validation errors
+            foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
+                }
+            }
+
+            model.Roles = GetAvailableRoles();
+            return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
         }
 
-        // Add the user to the selected role
-        await userManager.AddToRoleAsync(user, model.SelectedRole);
+        try
+        {
+            var user = new ApplicationUser
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+            };
 
-        // Redirect to the Admin Dashboard after successful user creation
-        return RedirectToAction("Index", "Dashboard", new { area = "Administration" });
+            var result = await userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                if (!await roleManager.RoleExistsAsync(model.SelectedRole))
+                {
+                    var roleResult = await roleManager.CreateAsync(new ApplicationRole(model.SelectedRole));
+                    if (!roleResult.Succeeded)
+                    {
+                        // Log or handle role creation errors
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, $"Role creation failed: {error.Description}");
+                        }
+                        model.Roles = GetAvailableRoles();
+                        return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
+                    }
+                }
+
+                var addToRoleResult = await userManager.AddToRoleAsync(user, model.SelectedRole);
+                if (!addToRoleResult.Succeeded)
+                {
+                    foreach (var error in addToRoleResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, $"Role assignment failed: {error.Description}");
+                    }
+                    model.Roles = GetAvailableRoles();
+                    return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
+                }
+
+                return RedirectToAction("Index", "Dashboard", new { area = "Administration" });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            ModelState.AddModelError(string.Empty, "An error occurred while creating the user.");
+            // For development, you might want to see the actual error:
+            ModelState.AddModelError(string.Empty, ex.Message);
+        }
+
+        model.Roles = GetAvailableRoles();
+        return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
     }
-
-    // Add errors to the model if the user creation failed
-    foreach (var error in result.Errors)
-    {
-        ModelState.AddModelError(string.Empty, error.Description);
-    }
-
-    model.Roles = GetAvailableRoles();  // Ensure roles are repopulated on error
-    return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
-}
 }
