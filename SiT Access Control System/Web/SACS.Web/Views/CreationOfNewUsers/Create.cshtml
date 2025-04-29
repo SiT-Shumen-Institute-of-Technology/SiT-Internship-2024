@@ -1,0 +1,36 @@
+﻿@model SACS.Web.ViewModels.Administration.Users.CreateUserViewModel
+
+@{
+    ViewData["Title"] = "Add New User";
+}
+
+<h3 class="text-center">Create New User</h3>
+
+<form asp-action="CreateUser" method="post" class="w-50 mx-auto mt-4">
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label"></label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" type="email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SelectedRole" class="form-label">Role</label>
+        <select asp-for="SelectedRole" asp-items="Model.Roles" class="form-select"></select>
+        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create User</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("~/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml")
+}

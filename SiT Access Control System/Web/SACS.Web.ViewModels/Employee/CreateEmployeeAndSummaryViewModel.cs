@@ -6,8 +6,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web.Mvc;
-
     using SACS.Data.Models;
 
     public class CreateEmployeeAndSummaryViewModel

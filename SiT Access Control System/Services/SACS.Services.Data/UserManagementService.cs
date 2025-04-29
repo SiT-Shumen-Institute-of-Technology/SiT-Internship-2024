@@ -45,6 +45,18 @@ namespace SACS.Services.Data
             return await userManager.GetUserAsync(user);
         }
 
+        public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, string role)
+        {
+            var result = await userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, role);
+            }
+
+            return result;
+        }
+
         public async Task DeleteUserAsync(string id)
         {
             if (string.IsNullOrEmpty(id))

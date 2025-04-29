@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using SACS.Data.Models;
 
 namespace SACS.Services.Data
@@ -18,6 +19,8 @@ namespace SACS.Services.Data
         Task UpdateUserAsync(string id, string userName, string email);
 
         List<ApplicationUser> GetAllUsers();
+
+        Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, string role);
 
         ApplicationUser GetUserById(string id);
 
