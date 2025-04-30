@@ -62,28 +62,43 @@ namespace SACS.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateUser(string id, string userName, string email)
+        public async Task<IActionResult> UpdateUser(string id, string userName, string email, string role)
         {
             try
             {
-                await _userManagementService.UpdateUserAsync(id, userName, email);
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Update basic information
+                user.UserName = userName;
+                user.Email = email;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest("Failed to update user.");
+                }
+
+                // Update role
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                if (currentRoles.Contains(role)) return Ok(); // If the role is already assigned, no need to change
+
+                // Remove old roles and add the new one
+                foreach (var currentRole in currentRoles)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, currentRole);
+                }
+
+                await _userManager.AddToRoleAsync(user, role);
+
                 return Ok();
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An unexpected error occurred: " + ex.Message);
+                return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
             }
         }
 

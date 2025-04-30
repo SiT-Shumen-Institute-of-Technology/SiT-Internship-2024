@@ -5,9 +5,18 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
     var token = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var allRoles = new List<string> { "Administrator", "User", "Employee" };
 }
 
 <style>
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        min-width: 250px;
+        z-index: 1000;
+    }
+
     .alert-success {
         background-color: #d4edda;
         color: #155724;
@@ -22,14 +31,6 @@
         padding: 10px;
         border-radius: 4px;
         margin-bottom: 15px;
-    }
-
-    .toast {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        min-width: 250px;
-        z-index: 1000;
     }
 
     .loading-spinner {
@@ -47,6 +48,24 @@
         to {
             transform: rotate(360deg);
         }
+    }
+
+    /* Add outline styles for edit mode */
+    tr.edit-mode-active {
+        outline: 2px solid #0d6efd;
+        outline-offset: -2px;
+    }
+
+    .edit-mode {
+        display: none;
+    }
+
+    .edit-mode-show {
+        display: block !important;
+    }
+
+    .view-mode-hide {
+        display: none !important;
     }
 </style>
 
@@ -66,27 +85,35 @@
     <tbody>
         @foreach (var user in Model.Users)
         {
-            var roleLabel = user.Roles.Contains("Administrator") ? "Admin" : "User";
+            var currentRole = user.Roles.FirstOrDefault() ?? "User";
             <tr id="row-@user.Id">
                 <td>
                     <span class="view-mode">@user.UserName</span>
-                    <input type="text" class="edit-mode form-control" value="@user.UserName" style="display:none;">
+                    <input type="text" class="edit-mode form-control" value="@user.UserName">
                 </td>
                 <td>
                     <span class="view-mode">@user.Email</span>
-                    <input type="email" class="edit-mode form-control" value="@user.Email" style="display:none;">
+                    <input type="email" class="edit-mode form-control" value="@user.Email">
                 </td>
-                <td class="text-center align-middle">
-                    <span class="badge @(roleLabel == "Admin" ? "bg-danger" : "bg-secondary")">
-                        @roleLabel
+                <td>
+                    <span class="view-mode">
+                        <span class="badge @(currentRole == "Administrator" ? "bg-danger" : currentRole == "Employee" ? "bg-primary" : "bg-secondary")">
+                            @currentRole
+                        </span>
                     </span>
+                    <select class="edit-mode form-control">
+                        @foreach (var role in allRoles)
+                        {
+                            <option value="@role" selected="@(role == currentRole)">@role</option>
+                        }
+                    </select>
                 </td>
                 <td>
                     <button class="btn btn-primary edit-btn">Edit</button>
-                    <button class="btn btn-success save-btn" style="display:none;" data-userid="@user.Id">
+                    <button class="btn btn-success save-btn" data-userid="@user.Id" style="display: none;">
                         <span class="btn-text">Save</span>
                     </button>
-                    <button class="btn btn-secondary cancel-btn" style="display:none;">Cancel</button>
+                    <button class="btn btn-secondary cancel-btn" style="display: none;">Cancel</button>
                     <button class="btn btn-danger delete-btn" data-userid="@user.Id">
                         <span class="btn-text">Delete</span>
                     </button>
@@ -99,7 +126,7 @@
 <div class="text-center mt-3">
     <div class="d-flex justify-content-center gap-3">
         <a href="/Employee/Create" class="btn btn-success btn-lg">Add Employee</a>
-        <a href="/User/Create" class="btn btn-success btn-lg">Add User</a>
+        <a href="/Administration/Dashboard/AddUser" class="btn btn-success btn-lg">Add User</a>
     </div>
 </div>
 
@@ -133,8 +160,9 @@
             // Edit button click handler
             $(".edit-btn").click(function () {
                 var row = $(this).closest("tr");
-                row.find(".view-mode").hide();
-                row.find(".edit-mode").show();
+                row.addClass("edit-mode-active");
+                row.find(".view-mode").addClass("view-mode-hide");
+                row.find(".edit-mode").addClass("edit-mode-show");
                 row.find(".edit-btn, .delete-btn").hide();
                 row.find(".save-btn, .cancel-btn").show();
             });
@@ -142,8 +170,9 @@
             // Cancel button click handler
             $(".cancel-btn").click(function () {
                 var row = $(this).closest("tr");
-                row.find(".edit-mode").hide();
-                row.find(".view-mode").show();
+                row.removeClass("edit-mode-active");
+                row.find(".view-mode").removeClass("view-mode-hide");
+                row.find(".edit-mode").removeClass("edit-mode-show");
                 row.find(".save-btn, .cancel-btn").hide();
                 row.find(".edit-btn, .delete-btn").show();
             });
@@ -154,6 +183,7 @@
                 var userId = $(this).data("userid");
                 var userName = row.find("input[type='text']").val().trim();
                 var email = row.find("input[type='email']").val().trim();
+                var role = row.find("select").val();
 
                 if (!userName || !email) {
                     showToast("Username and email are required", false);
@@ -171,15 +201,24 @@
                     data: {
                         id: userId,
                         userName: userName,
-                        email: email
+                        email: email,
+                        role: role
                     },
                     success: function () {
+                        // Update the view with new values
                         row.find(".view-mode").eq(0).text(userName);
                         row.find(".view-mode").eq(1).text(email);
-                        row.find(".edit-mode").hide();
-                        row.find(".view-mode").show();
+                        row.find(".view-mode").eq(2).html(
+                            `<span class="badge ${role === "Administrator" ? "bg-danger" : role === "Employee" ? "bg-primary" : "bg-secondary"}">${role}</span>`
+                        );
+
+                        // Exit edit mode
+                        row.removeClass("edit-mode-active");
+                        row.find(".view-mode").removeClass("view-mode-hide");
+                        row.find(".edit-mode").removeClass("edit-mode-show");
                         row.find(".save-btn, .cancel-btn").hide();
                         row.find(".edit-btn, .delete-btn").show();
+
                         showToast("User updated successfully!", true);
                     },
                     error: function (xhr) {
@@ -213,7 +252,7 @@
                     },
                     data: { id: userId },
                     success: function () {
-                        row.fadeOut(300, function() {
+                        row.fadeOut(300, function () {
                             $(this).remove();
                             showToast("User deleted successfully!", true);
                         });

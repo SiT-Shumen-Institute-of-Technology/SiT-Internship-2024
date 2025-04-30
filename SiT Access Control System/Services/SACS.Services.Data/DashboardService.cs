@@ -30,6 +30,7 @@ namespace SACS.Services.Data
             var users = await _userManagementService.GetAllUsersAsync();
             var rows = new List<IndexViewModel.UserRow>();
 
+
             foreach (var u in users)
             {
                 var roles = await _userManager.GetRolesAsync(u);
