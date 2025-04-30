@@ -39,12 +39,12 @@ namespace SACS.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeAndSummaryViewModel input)
         {
-            var newEmployee = this.mapper.Map<Employee>(input);
+            var employee = this.mapper.Map<Employee>(input);
 
-            var newSummary = this.mapper.Map<Summary>(input);
+            var summary = this.mapper.Map<Summary>(input);
 
-            await this.employeeService.AddAsync(newEmployee);
-            await this.summaryService.CreateSummaryAsync(newSummary);
+            await this.employeeService.AddAsync(employee);
+            await this.summaryService.CreateSummaryAsync(summary);
             return this.RedirectToAction(nameof(this.Create));
         }
 
