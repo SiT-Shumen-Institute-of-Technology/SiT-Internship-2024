@@ -53,4 +53,17 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
+  </ItemGroup>
 </Project>
