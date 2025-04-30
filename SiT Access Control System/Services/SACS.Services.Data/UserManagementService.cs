@@ -57,24 +57,26 @@ namespace SACS.Services.Data
             return result;
         }
 
-        public async Task DeleteUserAsync(string id)
+        public async Task DeleteUserAsync(string userId)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentException("User ID cannot be empty");
-            }
+            var user = await userManager.FindByIdAsync(userId);
 
-            var user = await userManager.FindByIdAsync(id);
             if (user == null)
+                throw new KeyNotFoundException("User not found.");
+
+            // Remove user roles first
+            var roles = await userManager.GetRolesAsync(user);
+            if (roles.Any())
             {
-                throw new KeyNotFoundException("User not found");
+                var roleRemovalResult = await userManager.RemoveFromRolesAsync(user, roles);
+                if (!roleRemovalResult.Succeeded)
+                    throw new InvalidOperationException("Failed to remove user roles before deletion.");
             }
 
+            // Now delete the user
             var result = await userManager.DeleteAsync(user);
             if (!result.Succeeded)
-            {
-                throw new InvalidOperationException($"Failed to delete user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-            }
+                throw new InvalidOperationException("Failed to delete user.");
         }
 
         public async Task UpdateUserAsync(string id, string userName, string email)
