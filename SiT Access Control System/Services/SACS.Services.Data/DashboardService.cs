@@ -43,11 +43,20 @@ namespace SACS.Services.Data
                 });
             }
 
-            // Ensure the current user has the correct roles
+            // Ensure the current user is valid
             var currentUser = await _userManagementService.GetCurrentUserAsync(principal);
-            var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
+            List<string> currentUserRoles = new();
 
-            // Add the current user's roles for correct display
+            if (currentUser != null)
+            {
+                currentUserRoles = (await _userManager.GetRolesAsync(currentUser)).ToList();
+            }
+            else
+            {
+                // Optional: log this or handle it differently based on your needs
+                // throw new InvalidOperationException("Current user could not be found.");
+            }
+
             return new IndexViewModel
             {
                 SettingsCount = _settingsService.GetCount(),

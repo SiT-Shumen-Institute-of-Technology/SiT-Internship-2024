@@ -1,15 +1,14 @@
 ﻿@model SACS.Web.ViewModels.Employee.CreateEmployeeAndSummaryViewModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
     var departmentInput = Model.Departments.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-    var userInput = Model.Users.Select(x => new SelectListItem(x.UserName, x.Id));
 }
+
 <div class="text-center">
     <h1 class="display-4">Add an employee</h1>
 </div>
 <hr>
+
+<div id="toast" class="toast" style="display: none;"></div>
 
 <form asp-controller="Employee" asp-action="Create" method="post" class="col-md-6 offset-md-3">
     <div>
@@ -44,6 +43,7 @@
             <input class="form-control" asp-for="Email">
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="DepartmentId"></label>
             <select class="form-control" asp-for="DepartmentId" asp-items="departmentInput"></select>
@@ -55,3 +55,54 @@
         </div>
     </div>
 </form>
+
+<style>
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        min-width: 250px;
+        z-index: 1000;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Toast function matching Dashboard
+            function showToast(message, isSuccess) {
+                const toast = $('#toast');
+                toast.removeClass('alert-success alert-error');
+                toast.addClass(isSuccess ? 'alert-success' : 'alert-error');
+                toast.text(message).fadeIn(300);
+                setTimeout(() => toast.fadeOut(300), 3000);
+            }
+
+            // Check for toast messages
+            const toastMessage = '@TempData["ToastMessage"]';
+            const toastType = '@TempData["ToastType"]';
+
+            if (toastMessage) {
+                showToast(toastMessage, toastType === 'success');
+            }
+        });
+    </script>
+}
+

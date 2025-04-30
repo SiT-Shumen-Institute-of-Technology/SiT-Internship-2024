@@ -1,6 +1,7 @@
 ﻿namespace SACS.Web.Controllers
 {
     using System;
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Mvc;
     using SACS.Data.Models;
     using SACS.Services.Data;
@@ -28,49 +29,70 @@
         // GET: /Employee/Create
         public IActionResult Create()
         {
-            return this.View(new CreateEmployeeAndSummaryViewModel
+            var model = new CreateEmployeeAndSummaryViewModel
             {
                 Departments = this.departmentService.GetAll(),
-                Users = this.userManagementService.GetAllUsers(),
-            });
+            };
+
+            return this.View(model);
         }
 
         // POST: /Employee/Create
         [HttpPost]
         public IActionResult Create(CreateEmployeeAndSummaryViewModel input)
         {
-            var user = this.userManagementService.GetUserById(input.UserId);
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = this.userManagementService.GetUserById(currentUserId);
 
-            var newEmployee = new Employee
+            if (user == null)
             {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                Position = input.Position,
-                PhoneNumber = input.PhoneNumber,
-                Email = input.Email,
-                DepartmentId = input.DepartmentId,
-                Department = this.departmentService.GetDepartmentById(input.DepartmentId),
-                UserId = user.Id,
-                User = user,
-            };
+                TempData["ErrorMessage"] = "Invalid user.";
+                return this.RedirectToAction("Create");
+            }
 
-            var newSummary = new Summary
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                CurrentState = input.CurrentState,
-                TimesLate = input.TimesLate,
-                TotalHoursWorked = input.TotalHoursWorked,
-                Timesabscent = input.Timesabscent,
-                VacationDays = input.VacationDays,
-                EmployeeId = newEmployee.Id,
-                Employee = newEmployee,
-            };
+                var newEmployee = new Employee
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FirstName = input.FirstName,
+                    LastName = input.LastName,
+                    Position = input.Position,
+                    PhoneNumber = input.PhoneNumber,
+                    Email = input.Email,
+                    DepartmentId = input.DepartmentId,
+                    Department = this.departmentService.GetDepartmentById(input.DepartmentId),
+                    UserId = user.Id,
+                    User = user,
+                };
 
-            this.employeeService.Add(newEmployee);
-            this.summaryService.CreateSummary(newSummary);
+                var newSummary = new Summary
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CurrentState = input.CurrentState,
+                    TimesLate = input.TimesLate,
+                    TotalHoursWorked = input.TotalHoursWorked,
+                    Timesabscent = input.Timesabscent,
+                    VacationDays = input.VacationDays,
+                    EmployeeId = newEmployee.Id,
+                    Employee = newEmployee,
+                };
 
-            return this.RedirectToAction("Create");
+                this.employeeService.Add(newEmployee);
+                this.summaryService.CreateSummary(newSummary);
+
+                // Change from TempData to match Dashboard's approach
+                TempData["ToastMessage"] = "Employee created successfully!";
+                TempData["ToastType"] = "success";
+
+                return this.RedirectToAction("Create");
+            }
+            catch (Exception ex)
+            {
+                TempData["ToastMessage"] = $"Error creating employee: {ex.Message}";
+                TempData["ToastType"] = "error";
+                return this.RedirectToAction("Create");
+            }
         }
 
         // GET: /Employee/Details/{id}

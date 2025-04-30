@@ -18,14 +18,9 @@ namespace SACS.Web.ViewModels.Administration.Users
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        public string Role { get; set; }
-
+        [Required(ErrorMessage = "Please select a role.")]
         public string SelectedRole { get; set; }
 
         public List<SelectListItem> Roles { get; set; }
-
-
-        public IEnumerable<SelectListItem> AvailableRoles { get; set; }
     }
 }
