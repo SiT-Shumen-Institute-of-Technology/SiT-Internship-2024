@@ -23,7 +23,6 @@ namespace SACS.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
-
     namespace SACS.Web
     {
         public class Program
