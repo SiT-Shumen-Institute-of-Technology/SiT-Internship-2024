@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -30,14 +31,19 @@
             });
         }
 
-        
-
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public IActionResult Delete(string id)
         {
-            this.employeeService.RemoveById(id);
-            return this.RedirectToAction(nameof(this.Index));
+            if (employeeService.GetAllEmployees().FirstOrDefault(x => x.Id == id) == null)
+            {
+                return this.BadRequest("Employee Not Found");
+            }
+            else
+            {
+                this.employeeService.RemoveById(id);
+                return this.RedirectToAction(nameof(this.Index));
+            }
         }
 
         public IActionResult Privacy()
