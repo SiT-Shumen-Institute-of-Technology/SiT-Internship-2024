@@ -1,9 +1,8 @@
-﻿namespace SACS.Services.Mapping
-{
-    using AutoMapper;
+﻿using AutoMapper;
 
-    public interface IHaveCustomMappings
-    {
-        void CreateMappings(IProfileExpression configuration);
-    }
+namespace SACS.Services.Mapping;
+
+public interface IHaveCustomMappings
+{
+    void CreateMappings(IProfileExpression configuration);
 }

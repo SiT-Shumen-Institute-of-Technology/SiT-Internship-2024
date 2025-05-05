@@ -1,17 +1,11 @@
-﻿namespace SACS.Web.ViewModels.Employee
+﻿using System.Collections.Generic;
+using SACS.Data.Models;
+
+namespace SACS.Web.ViewModels.Employee;
+
+public class EmployeeListViewModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    public ICollection<Data.Models.Employee> Employees { get; set; }
 
-    using SACS.Data.Models;
-
-    public class EmployeeListViewModel
-    {
-        public List<Employee> Employees { get; set; }
-
-        public List<Summary> Summaries { get; set; }
-    }
+    public ICollection<Summary> Summaries { get; set; }
 }

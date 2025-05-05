@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SACS.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AdminSeederAndDepratmentsSeederAndTryingTofixUserId : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,13 +76,11 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Settings",
+                name: "RFIDCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -90,7 +88,7 @@ namespace SACS.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
+                    table.PrimaryKey("PK_RFIDCards", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -234,6 +232,32 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ActualAttendances",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActualAttendances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ActualAttendances_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Days",
                 columns: table => new
                 {
@@ -254,6 +278,58 @@ namespace SACS.Data.Migrations
                         name: "FK_Days_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeSchedules",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeSchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeSchedules_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeesRFIDCards",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RFIDCardId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeesRFIDCards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeesRFIDCards_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EmployeesRFIDCards_RFIDCards_RFIDCardId",
+                        column: x => x.RFIDCardId,
+                        principalTable: "RFIDCards",
                         principalColumn: "Id");
                 });
 
@@ -300,6 +376,16 @@ namespace SACS.Data.Migrations
                         principalTable: "Employees",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActualAttendances_EmployeeId1",
+                table: "ActualAttendances",
+                column: "EmployeeId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActualAttendances_IsDeleted",
+                table: "ActualAttendances",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -381,13 +467,38 @@ namespace SACS.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSchedules_EmployeeId",
+                table: "EmployeeSchedules",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSchedules_IsDeleted",
+                table: "EmployeeSchedules",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeesRFIDCards_EmployeeId",
+                table: "EmployeesRFIDCards",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeesRFIDCards_IsDeleted",
+                table: "EmployeesRFIDCards",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeesRFIDCards_RFIDCardId",
+                table: "EmployeesRFIDCards",
+                column: "RFIDCardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalIdentifications_EmployeeId",
                 table: "PersonalIdentifications",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_IsDeleted",
-                table: "Settings",
+                name: "IX_RFIDCards_IsDeleted",
+                table: "RFIDCards",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -404,6 +515,9 @@ namespace SACS.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ActualAttendances");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -423,16 +537,22 @@ namespace SACS.Data.Migrations
                 name: "Days");
 
             migrationBuilder.DropTable(
-                name: "PersonalIdentifications");
+                name: "EmployeeSchedules");
 
             migrationBuilder.DropTable(
-                name: "Settings");
+                name: "EmployeesRFIDCards");
+
+            migrationBuilder.DropTable(
+                name: "PersonalIdentifications");
 
             migrationBuilder.DropTable(
                 name: "Summaries");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "RFIDCards");
 
             migrationBuilder.DropTable(
                 name: "Employees");

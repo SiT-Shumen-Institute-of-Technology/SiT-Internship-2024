@@ -1,8 +1,7 @@
-﻿namespace SACS.Web.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-    public class BaseController : Controller
-    {
-    }
+namespace SACS.Web.Controllers;
+
+public class BaseController : Controller
+{
 }

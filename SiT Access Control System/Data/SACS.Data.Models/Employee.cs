@@ -1,33 +1,24 @@
-﻿namespace SACS.Data.Models
+﻿using SACS.Data.Common.Models;
+
+namespace SACS.Data.Models;
+
+public class Employee : BaseDeletableModel<string>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    public string FirstName { get; set; }
 
-    using SACS.Data.Common.Models;
-    using SACS.Data.Common.Repositories;
+    public string LastName { get; set; }
 
-    public class Employee : BaseDeletableModel<string>
-    {
-        public string FirstName { get; set; }
+    public string Position { get; set; }
 
-        public string LastName { get; set; }
+    public string PhoneNumber { get; set; }
 
-        public string Position { get; set; }
+    public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
+    public virtual Department Department { get; set; }
 
-        public string Email { get; set; }
+    public virtual string DepartmentId { get; set; }
 
-        public virtual Department Department { get; set; }
+    public string UserId { get; set; }
 
-        public virtual string DepartmentId { get; set; }
-
-        public string UserId { get; set; }
-
-        public ApplicationUser User { get; set; } 
-    }
+    public ApplicationUser User { get; set; }
 }

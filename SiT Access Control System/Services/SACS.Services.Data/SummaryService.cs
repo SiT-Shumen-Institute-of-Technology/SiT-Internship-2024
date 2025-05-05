@@ -1,39 +1,30 @@
-﻿namespace SACS.Services.Data
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Models;
+using SACS.Services.Data.Interfaces;
+
+namespace SACS.Services.Data;
+
+public class SummaryService : ISummaryService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    private readonly IRepository<Summary> summaryRepository;
 
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-
-    public class SummaryService : ISummaryService
+    public SummaryService(IRepository<Summary> summaryRepository)
     {
-        private readonly IDeletableEntityRepository<Summary> summaryRepository;
-
-        public SummaryService(IDeletableEntityRepository<Summary> summaryRepository)
-        {
-            this.summaryRepository = summaryRepository;
-        }
-
-        public async Task CreateSummaryAsync(Summary summary)
-        {
-            await this.summaryRepository.AddAsync(summary);
-            await this.summaryRepository.SaveChangesAsync();
-        }
+        this.summaryRepository = summaryRepository;
+    }
 
 
-        public void CreateSummary(Summary summary)
-        {
-            this.summaryRepository.AddAsync(summary);
-            this.summaryRepository.SaveChangesAsync();
-        }
+    public async Task CreateSummaryAsync(Summary summary)
+    {
+        await summaryRepository.AddAsync(summary);
+        await summaryRepository.SaveChangesAsync();
+    }
 
-        public List<Summary> GetAllSummaries()
-        {
-            return this.summaryRepository.All().ToList();
-        }
+    public List<Summary> GetAllSummaries()
+    {
+        return summaryRepository.All().ToList();
     }
 }

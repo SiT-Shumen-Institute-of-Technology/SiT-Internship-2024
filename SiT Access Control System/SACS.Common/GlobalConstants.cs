@@ -1,13 +1,12 @@
-﻿namespace SACS.Common
+﻿namespace SACS.Common;
+
+public static class GlobalConstants
 {
-    public static class GlobalConstants
-    {
-        public const string SystemName = "SACS";
+    public const string SystemName = "SACS";
 
-        public const string AdministratorRoleName = "Administrator";
+    public const string AdministratorRoleName = "Administrator";
 
-        public const string UserRoleName = "User";
+    public const string UserRoleName = "User";
 
-        public const string EmployeeRoleName = "Employee";
-    }
+    public const string EmployeeRoleName = "Employee";
 }

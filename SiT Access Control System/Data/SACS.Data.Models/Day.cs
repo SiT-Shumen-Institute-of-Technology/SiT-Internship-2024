@@ -1,23 +1,17 @@
-﻿namespace SACS.Data.Models
+﻿using System;
+using SACS.Data.Common.Models;
+
+namespace SACS.Data.Models;
+
+public class Day : BaseDeletableModel<string>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    public char State { get; set; }
 
-    using SACS.Data.Common.Models;
+    public int WorkedHours { get; set; }
 
-    public class Day : BaseDeletableModel<string>
-    {
-        public char State { get; set; }
+    public virtual Employee Employee { get; set; }
 
-        public int WorkedHours { get; set; }
+    public string EmployeeId { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
-        public string EmployeeId { get; set; }
-
-        public DateTime Date { get; set; }
-    }
+    public DateTime Date { get; set; }
 }

@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SACS.Web.ViewModels.Administration.Dashboard;
 using SACS.Common;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 using SACS.Data.Models;
 using SACS.Web.ViewModels.Administration.Users;
-using System.Threading.Tasks;
-using System;
 
 [Authorize(Roles = "Administrator")]
 public class UserController : Controller
@@ -17,9 +16,9 @@ public class UserController : Controller
     {
         return new List<SelectListItem>
         {
-            new SelectListItem { Text = GlobalConstants.AdministratorRoleName, Value = GlobalConstants.AdministratorRoleName },
-            new SelectListItem { Text = GlobalConstants.UserRoleName, Value = GlobalConstants.UserRoleName },
-            new SelectListItem { Text = GlobalConstants.EmployeeRoleName, Value = GlobalConstants.EmployeeRoleName },
+            new() { Text = GlobalConstants.AdministratorRoleName, Value = GlobalConstants.AdministratorRoleName },
+            new() { Text = GlobalConstants.UserRoleName, Value = GlobalConstants.UserRoleName },
+            new() { Text = GlobalConstants.EmployeeRoleName, Value = GlobalConstants.EmployeeRoleName }
         };
     }
 
@@ -37,8 +36,8 @@ public class UserController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateUserViewModel model,
-    [FromServices] UserManager<ApplicationUser> userManager,
-    [FromServices] RoleManager<ApplicationRole> roleManager)
+        [FromServices] UserManager<ApplicationUser> userManager,
+        [FromServices] RoleManager<ApplicationRole> roleManager)
     {
         Console.WriteLine($"Received role: {model.SelectedRole}");
 
@@ -46,12 +45,8 @@ public class UserController : Controller
         {
             // Debug: Check validation errors
             foreach (var state in ModelState)
-            {
-                foreach (var error in state.Value.Errors)
-                {
-                    Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
-                }
-            }
+            foreach (var error in state.Value.Errors)
+                Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
 
             model.Roles = GetAvailableRoles();
             return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
@@ -62,7 +57,7 @@ public class UserController : Controller
             var user = new ApplicationUser
             {
                 UserName = model.UserName,
-                Email = model.Email,
+                Email = model.Email
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
@@ -76,9 +71,7 @@ public class UserController : Controller
                     {
                         // Log or handle role creation errors
                         foreach (var error in roleResult.Errors)
-                        {
                             ModelState.AddModelError(string.Empty, $"Role creation failed: {error.Description}");
-                        }
                         model.Roles = GetAvailableRoles();
                         return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
                     }
@@ -88,9 +81,7 @@ public class UserController : Controller
                 if (!addToRoleResult.Succeeded)
                 {
                     foreach (var error in addToRoleResult.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, $"Role assignment failed: {error.Description}");
-                    }
                     model.Roles = GetAvailableRoles();
                     return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
                 }
@@ -98,10 +89,7 @@ public class UserController : Controller
                 return RedirectToAction("Index", "Dashboard", new { area = "Administration" });
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         }
         catch (Exception ex)
         {

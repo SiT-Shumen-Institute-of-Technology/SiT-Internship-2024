@@ -1,18 +1,16 @@
-﻿namespace SACS.Data.Common.Repositories
+﻿using System.Linq;
+using SACS.Data.Common.Models;
+
+namespace SACS.Data.Common.Repositories;
+
+public interface IDeletableEntityRepository<TEntity> : IRepository<TEntity>
+    where TEntity : class, IDeletableEntity
 {
-    using System.Linq;
+    IQueryable<TEntity> AllWithDeleted();
 
-    using SACS.Data.Common.Models;
+    IQueryable<TEntity> AllAsNoTrackingWithDeleted();
 
-    public interface IDeletableEntityRepository<TEntity> : IRepository<TEntity>
-        where TEntity : class, IDeletableEntity
-    {
-        IQueryable<TEntity> AllWithDeleted();
+    void HardDelete(TEntity entity);
 
-        IQueryable<TEntity> AllAsNoTrackingWithDeleted();
-
-        void HardDelete(TEntity entity);
-
-        void Undelete(TEntity entity);
-    }
+    void Undelete(TEntity entity);
 }

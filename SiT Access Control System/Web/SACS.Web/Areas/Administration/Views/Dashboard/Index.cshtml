@@ -1,5 +1,5 @@
-﻿@model SACS.Web.ViewModels.Administration.Dashboard.IndexViewModel
-@using Microsoft.AspNetCore.Antiforgery
+﻿@using Microsoft.AspNetCore.Antiforgery
+@model SACS.Web.ViewModels.Administration.Dashboard.IndexViewModel
 @inject IAntiforgery antiforgery
 
 @{
@@ -37,7 +37,7 @@
         display: inline-block;
         width: 20px;
         height: 20px;
-        border: 3px solid rgba(255,255,255,.3);
+        border: 3px solid rgba(255, 255, 255, .3);
         border-radius: 50%;
         border-top-color: #fff;
         animation: spin 1s ease-in-out infinite;
@@ -75,51 +75,52 @@
 
 <table class="table table-bordered table-striped">
     <thead>
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model.Users)
-        {
-            var currentRole = user.Roles.FirstOrDefault() ?? "User";
-            <tr id="row-@user.Id">
-                <td>
-                    <span class="view-mode">@user.UserName</span>
-                    <input type="text" class="edit-mode form-control" value="@user.UserName">
-                </td>
-                <td>
-                    <span class="view-mode">@user.Email</span>
-                    <input type="email" class="edit-mode form-control" value="@user.Email">
-                </td>
-                <td>
+    @foreach (var user in Model.Users)
+    {
+        var currentRole = user.Roles.FirstOrDefault() ?? "User";
+        <tr id="row-@user.Id">
+            <td>
+                <span class="view-mode">@user.UserName</span>
+                <input type="text" class="edit-mode form-control" value="@user.UserName">
+            </td>
+            <td>
+                <span class="view-mode">@user.Email</span>
+                <input type="email" class="edit-mode form-control" value="@user.Email">
+            </td>
+            <td>
                     <span class="view-mode">
-                        <span class="badge @(currentRole == "Administrator" ? "bg-danger" : currentRole == "Employee" ? "bg-primary" : "bg-secondary")">
+                        <span
+                            class="badge @(currentRole == "Administrator" ? "bg-danger" : currentRole == "Employee" ? "bg-primary" : "bg-secondary")">
                             @currentRole
                         </span>
                     </span>
-                    <select class="edit-mode form-control">
-                        @foreach (var role in allRoles)
-                        {
-                            <option value="@role" selected="@(role == currentRole)">@role</option>
-                        }
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-primary edit-btn">Edit</button>
-                    <button class="btn btn-success save-btn" data-userid="@user.Id" style="display: none;">
-                        <span class="btn-text">Save</span>
-                    </button>
-                    <button class="btn btn-secondary cancel-btn" style="display: none;">Cancel</button>
-                    <button class="btn btn-danger delete-btn" data-userid="@user.Id">
-                        <span class="btn-text">Delete</span>
-                    </button>
-                </td>
-            </tr>
-        }
+                <select class="edit-mode form-control">
+                    @foreach (var role in allRoles)
+                    {
+                        <option value="@role" selected="@(role == currentRole)">@role</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <button class="btn btn-primary edit-btn">Edit</button>
+                <button class="btn btn-success save-btn" data-userid="@user.Id" style="display: none;">
+                    <span class="btn-text">Save</span>
+                </button>
+                <button class="btn btn-secondary cancel-btn" style="display: none;">Cancel</button>
+                <button class="btn btn-danger delete-btn" data-userid="@user.Id">
+                    <span class="btn-text">Delete</span>
+                </button>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 
@@ -250,7 +251,7 @@
                     headers: {
                         "RequestVerificationToken": token
                     },
-                    data: { id: userId },
+                    data: {id: userId},
                     success: function () {
                         row.fadeOut(300, function () {
                             $(this).remove();

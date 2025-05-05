@@ -1,38 +1,32 @@
-﻿namespace SACS.Data
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SACS.Data.Common;
+
+namespace SACS.Data;
+
+public class DbQueryRunner : IDbQueryRunner
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using SACS.Data.Common;
-
-    using Microsoft.EntityFrameworkCore;
-
-    public class DbQueryRunner : IDbQueryRunner
+    public DbQueryRunner(ApplicationDbContext context)
     {
-        public DbQueryRunner(ApplicationDbContext context)
-        {
-            this.Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        Context = context ?? throw new ArgumentNullException(nameof(context));
+    }
 
-        public ApplicationDbContext Context { get; set; }
+    public ApplicationDbContext Context { get; set; }
 
-        public Task RunQueryAsync(string query, params object[] parameters)
-        {
-            return this.Context.Database.ExecuteSqlRawAsync(query, parameters);
-        }
+    public Task RunQueryAsync(string query, params object[] parameters)
+    {
+        return Context.Database.ExecuteSqlRawAsync(query, parameters);
+    }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.Context?.Dispose();
-            }
-        }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing) Context?.Dispose();
     }
 }

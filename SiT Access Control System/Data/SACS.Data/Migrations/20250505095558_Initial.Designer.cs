@@ -12,8 +12,8 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250425121010_AdminSeederAndDepratmentsSeederAndTryingTofixUserId")]
-    partial class AdminSeederAndDepratmentsSeederAndTryingTofixUserId
+    [Migration("20250505095558_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,50 @@ namespace SACS.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.ActualAttendance", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId1");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("ActualAttendances");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.ApplicationRole", b =>
@@ -372,6 +416,81 @@ namespace SACS.Data.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RFIDCardId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("RFIDCardId");
+
+                    b.ToTable("EmployeesRFIDCards");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("EmployeeSchedules");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>
                 {
                     b.Property<int>("Id")
@@ -390,13 +509,13 @@ namespace SACS.Data.Migrations
                     b.ToTable("PersonalIdentifications");
                 });
 
-            modelBuilder.Entity("SACS.Data.Models.Setting", b =>
+            modelBuilder.Entity("SACS.Data.Models.RFIDCard", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -410,17 +529,11 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Settings");
+                    b.ToTable("RFIDCards");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.Summary", b =>
@@ -518,6 +631,15 @@ namespace SACS.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SACS.Data.Models.ActualAttendance", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId1");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("SACS.Data.Models.Day", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
@@ -541,6 +663,30 @@ namespace SACS.Data.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("SACS.Data.Models.RFIDCard", "RFIDCard")
+                        .WithMany()
+                        .HasForeignKey("RFIDCardId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("RFIDCard");
+                });
+
+            modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
+                {
+                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>
