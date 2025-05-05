@@ -1,56 +1,51 @@
-﻿using SACS.Common;
-using SACS.Web.ViewModels;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SACS.Common;
 using SACS.Services.Data.Interfaces;
+using SACS.Web.ViewModels;
+using SACS.Web.ViewModels.Employee;
 
+namespace SACS.Web.Controllers;
 
-namespace SACS.Web.Controllers
+public class HomeController : BaseController
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
+    private readonly IEmployeeService employeeService;
+    private readonly ISummaryService summaryService;
 
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    public class HomeController : BaseController
+    public HomeController(IEmployeeService employeeService, ISummaryService summaryService)
     {
-        private readonly IEmployeeService employeeService;
-        private readonly ISummaryService summaryService;
+        this.employeeService = employeeService;
+        this.summaryService = summaryService;
+    }
 
-        public HomeController(IEmployeeService employeeService, ISummaryService summaryService)
+    public IActionResult Index()
+    {
+        return View(new EmployeeListViewModel
         {
-            this.employeeService = employeeService;
-            this.summaryService = summaryService;
-        }
+            Employees = employeeService.GetAllEmployees(),
+            Summaries = summaryService.GetAllSummaries()
+        });
+    }
 
-        public IActionResult Index()
-        {
-            return this.View(new EmployeeListViewModel
-            {
-                Employees = this.employeeService.GetAllEmployees(),
-                Summaries = this.summaryService.GetAllSummaries(),
-            });
-        }
 
-        
+    [HttpPost]
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public IActionResult Delete(string id)
+    {
+        employeeService.RemoveById(id);
+        return RedirectToAction(nameof(Index));
+    }
 
-        [HttpPost]
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public IActionResult Delete(string id)
-        {
-            this.employeeService.RemoveById(id);
-            return this.RedirectToAction(nameof(this.Index));
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-        public IActionResult Privacy()
-        {
-            return this.View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return this.View(
-                new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(
+            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -1,35 +1,29 @@
-﻿namespace SACS.Services.Data
+﻿using System.Linq;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Models;
+using SACS.Services.Data.Interfaces;
+
+namespace SACS.Services.Data;
+
+public class DayService : IDayService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    private readonly IDeletableEntityRepository<Day> dayRepository;
 
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-    using SACS.Services.Data.Interfaces;
-
-    public class DayService : IDayService
+    public DayService(IDeletableEntityRepository<Day> dayRepository)
     {
-        private readonly IDeletableEntityRepository<Day> dayRepository;
+        this.dayRepository = dayRepository;
+    }
 
-        public DayService(IDeletableEntityRepository<Day> dayRepository)
-        {
-            this.dayRepository = dayRepository;
-        }
+    public void Add(Day day)
+    {
+        dayRepository.AddAsync(day);
+        dayRepository.SaveChangesAsync();
+    }
 
-        public void Add(Day day)
-        {
-            this.dayRepository.AddAsync(day);
-            this.dayRepository.SaveChangesAsync();
-        }
-
-        public void RemoveById(string id)
-        {
-            var choosenDay = this.dayRepository.All().FirstOrDefault(x => x.Id == id);
-            this.dayRepository.Delete(choosenDay);
-            this.dayRepository.SaveChangesAsync();
-        }
+    public void RemoveById(string id)
+    {
+        var choosenDay = dayRepository.All().FirstOrDefault(x => x.Id == id);
+        dayRepository.Delete(choosenDay);
+        dayRepository.SaveChangesAsync();
     }
 }

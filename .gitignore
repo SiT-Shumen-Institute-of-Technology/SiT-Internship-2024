@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Common7
+/Git
+/Licenses
+/MSSQL16.MSSQLSERVER/MSSQL

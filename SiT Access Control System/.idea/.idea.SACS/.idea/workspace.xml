@@ -11,38 +11,159 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49968846-173c-4cb2-8353-468106368d39" name="Changes" comment="">
+    <list default="true" id="49968846-173c-4cb2-8353-468106368d39" name="Changes" comment="Merge conflict are solved.">
       <change afterPath="$PROJECT_DIR$/../ESP32-Code/RFIDCardToEmployeeApp.ino" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SACS/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SACS/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SACS/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SACS/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SACS/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/ActualAttendance.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/EmployeeRFIDCard.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/EmployeeSchedule.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/RFIDCard.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/DateTimeProviderService.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/EmployeeRFIDCardService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IEmployeeRFIDCardService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IRFIDCardService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IDateTimeProviderService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IEmployeeRFIDCardService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IRFIDCardService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IScheduleService.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/RFIDCardService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/AddEmployeeController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/ScheduleService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tests/SACS.Services.Data.Tests/ScheduleServiceTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tests/SACS.Web.Tests/Controllers/EmployeeControllerTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/ScheduleEntryViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/ScheduleViewModel.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/CardReaderAPIController.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/EmployeesController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Profiles/EmployeeProfile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Profiles/EmployeeScheduleProfile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Profiles/IMapper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Profiles/SummaryProfile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/EmployeeInformation.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/Schedule.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/IDbQueryRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/IDbQueryRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/BaseDeletableModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/BaseDeletableModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/BaseModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/BaseModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/IAuditInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/IAuditInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/IDeletableEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Models/IDeletableEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Repositories/IDeletableEntityRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Repositories/IDeletableEntityRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/Repositories/IRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/Repositories/IRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Common/SACS.Data.Common.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Common/SACS.Data.Common.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/ApplicationRole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/ApplicationRole.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/ApplicationUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/ApplicationUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/Day.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/Day.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/Department.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/Department.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/Employee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/Employee.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/PersonalIdentification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/PersonalIdentification.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/SACS.Data.Models.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/SACS.Data.Models.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/Setting.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data.Models/Summary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data.Models/Summary.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/SACS.Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250414133540_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250414133540_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Configurations/ApplicationUserConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Configurations/ApplicationUserConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/DbQueryRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/DbQueryRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/DesignTimeDbContextFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/DesignTimeDbContextFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/EntityIndexesConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/EntityIndexesConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/IdentityOptionsProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/IdentityOptionsProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250425121010_AdminSeederAndDepratmentsSeederAndTryingTofixUserId.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250425121010_AdminSeederAndDepratmentsSeederAndTryingTofixUserId.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250428134150_AddingCreationOfNewUsers.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/20250428134150_AddingCreationOfNewUsers.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Repositories/EfDeletableEntityRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Repositories/EfDeletableEntityRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Repositories/EfRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Repositories/EfRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/SACS.Data/SACS.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/SACS.Data.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/AdminSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Seeding/AdminSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/ApplicationDbContextSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Seeding/ApplicationDbContextSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/DepartmentsSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Seeding/DepartmentsSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/ISeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Seeding/ISeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/RolesSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/Seeding/RolesSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/SACS.Data/Seeding/SettingsSeeder.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/SACS.Data/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/SACS.Data/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SACS.Common/GlobalConstants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SACS.Common/GlobalConstants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SACS.Common/SACS.Common.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SACS.Common/SACS.Common.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/DashboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/DashboardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/DayService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/DayService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/DepartmentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/DepartmentService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/EmployeeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/EmployeeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IDepartmentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IDepartmentService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IEmployeeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IEmployeeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/ISummaryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/ISummaryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IDashboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IDashboardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IDayService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IDayService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IDepartmentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IDepartmentService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IEmployeeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/IEmployeeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/ISettingsService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/ISummaryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/ISummaryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/IUserManagementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/IUserManagementService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/SACS.Services.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/SACS.Services.Data.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/SettingsService.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/SummaryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/SummaryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Data/UserManagementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Data/UserManagementService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/AutoMapperConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/AutoMapperConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IHaveCustomMappings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IHaveCustomMappings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IMapFrom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IMapFrom.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IMapTo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/IMapTo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/QueryableMappingExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/QueryableMappingExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Mapping/SACS.Services.Mapping.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Mapping/SACS.Services.Mapping.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Messaging/EmailAttachment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Messaging/EmailAttachment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Messaging/IEmailSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Messaging/IEmailSender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Messaging/NullMessageSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Messaging/NullMessageSender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Messaging/SACS.Services.Messaging.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Messaging/SACS.Services.Messaging.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services.Messaging/SendGridEmailSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services.Messaging/SendGridEmailSender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/SACS.Services/SACS.Services.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Services/SACS.Services/SACS.Services.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SACS.Services.Data.Tests/SACS.Services.Data.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SACS.Services.Data.Tests/SACS.Services.Data.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SACS.Services.Data.Tests/SettingsServiceTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/SACS.Web.Tests/SACS.Web.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SACS.Web.Tests/SACS.Web.Tests.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tests/SACS.Web.Tests/WebTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/SACS.Web.Tests/WebTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Sandbox/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Sandbox/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Sandbox/Sandbox.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Sandbox/Sandbox.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Sandbox/SandboxOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Sandbox/SandboxOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.Infrastructure/SACS.Web.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.Infrastructure/SACS.Web.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Administration/Dashboard/IndexViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Administration/Dashboard/IndexViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/EditUserViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/EditUserViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/CreateEmployeeAndSummaryViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/CreateEmployeeAndSummaryViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EditEmployeeViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EditEmployeeViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeInformationViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeInformationViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeListViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeListViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeRowViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Employee/EmployeeRowViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/ErrorViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/ErrorViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/SACS.Web.ViewModels.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/SACS.Web.ViewModels.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Settings/SettingViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Settings/SettingsListViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/UserWithEmployeesViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/UserWithEmployeesViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Users/CreateUserViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web.ViewModels/Users/CreateUserViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/AdminController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/AdministrationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/AdministrationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/DashboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/DashboardController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Views/Dashboard/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Views/Dashboard/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Views/_ViewStart.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Views/_ViewStart.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Login.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Login.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Logout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Logout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Logout.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Logout.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Register.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/Account/Register.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/_ViewStart.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Areas/Identity/Pages/_ViewStart.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Controllers/BaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/BaseController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Controllers/EmployeeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/EmployeeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Profiles/EmployeeScheduleProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Profiles/EmployeeScheduleProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Controllers/SettingsController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Controllers/UserController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/SACS.Web.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/SACS.Web.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/CreationOfNewUsers/Create.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/CreationOfNewUsers/Create.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/Create.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/Create.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/EmployeeInformationIndex.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Employee/EmployeeInformationIndex.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/EmployeeInformation/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/EmployeeInformation/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Home/Privacy.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Home/Privacy.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Settings/Index.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/Error.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/Error.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_CookieConsentPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_CookieConsentPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/Views/_ViewStart.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/Views/_ViewStart.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/SACS.Web/appsettings.Development.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/bootstrap/dist/css/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/bootstrap/dist/css/bootstrap.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" afterDir="false" />
@@ -52,12 +173,16 @@
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery/dist/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery/dist/jquery.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery/dist/jquery.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/SACS.Web/wwwroot/lib/jquery/dist/jquery.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stylecop.json" beforeDir="false" afterPath="$PROJECT_DIR$/stylecop.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hardware/ardoino-to-rfid-v1/sketch_feb26a.ino" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -80,23 +205,62 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Migrations/20250402073748_initCreate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Migrations/20250402073748_initCreate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/AddEmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/AddEmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/AddEmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/AddEmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data.Models/Employee.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Data/SACS.Data.Models/Employee.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data.Models/Employee.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Data/SACS.Data/ApplicationDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Migrations/20250425121010_AdminSeederAndDepratmentsSeederAndTryingTofixUserId.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Migrations/20250425121010_AdminSeederAndDepratmentsSeederAndTryingTofixUserId.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Seeding/ApplicationDbContextSeeder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/Seeding/ApplicationDbContextSeeder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Data/SACS.Data/Seeding/ApplicationDbContextSeeder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Data/SACS.Data/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Data/SACS.Data/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Services/SACS.Services.Data/DepartmentService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Services/SACS.Services.Data/Interfaces/ISummaryService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Services/SACS.Services.Data/Interfaces/ISummaryService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Services/SACS.Services.Data/Interfaces/ISummaryService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Services/SACS.Services.Data/SummaryService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Services/SACS.Services.Data/SummaryService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web.ViewModels/Administration/Dashboard/IndexViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/AdministrationController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Areas/Administration/Controllers/DashboardController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Areas/Administration/Controllers/DashboardController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Areas/Administration/Controllers/DashboardController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Controllers/BaseController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/EmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/EmployeeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Controllers/EmployeeController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Controllers/HomeController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/HomeController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Controllers/HomeController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/Create.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/Create.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/Employee/Create.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/EmployeeInformation.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/EmployeeInformation.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/Employee/EmployeeInformation.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/EmployeeInformationIndex.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/Employee/EmployeeInformationIndex.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Employee/EmployeeInformationIndex.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/Views/_ViewStart.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/D.Ivanov/repos/SiT/SiT-Internship-2024/SiT Access Control System/Web/SACS.Web/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Web/SACS.Web/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="SWEA" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -112,7 +276,7 @@
     ".NET Launch Settings Profile.SACS.Web.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#13 on Merging ivan-ivanov/create-prediction-page",
+    "git-widget-placeholder": "#17 on Merging daniel-plamenov/admin-panel",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -213,12 +377,14 @@
       <workItem from="1745331402903" duration="50000" />
       <workItem from="1745331462160" duration="1500000" />
       <workItem from="1745415867068" duration="3493000" />
+      <workItem from="1746436774284" duration="3833000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -245,5 +411,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Merge conflict are solved." />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge conflict are solved." />
   </component>
 </project>

@@ -1,6 +1,5 @@
-﻿namespace SACS.Web.Profiles
+﻿namespace SACS.Web.Profiles;
+
+public interface IMapper<T>
 {
-    public interface IMapper<T>
-    {
-    }
 }

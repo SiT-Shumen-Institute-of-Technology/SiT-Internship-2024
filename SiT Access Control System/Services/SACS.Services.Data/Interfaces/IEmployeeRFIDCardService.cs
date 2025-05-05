@@ -1,17 +1,12 @@
-﻿namespace SACS.Services.Data.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SACS.Data.Models;
+
+namespace SACS.Services.Data.Interfaces;
+
+public interface IEmployeeRFIDCardService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    Task AddEmployeeAndRFIDCardServiceAsync(EmployeeRFIDCard employeeRFIDCard);
 
-    using SACS.Data.Models;
-
-    public interface IEmployeeRFIDCardService
-    {
-        Task AddEmployeeAndRFIDCardServiceAsync(EmployeeRFIDCard employeeRFIDCard);
-
-        List<EmployeeRFIDCard> All();
-    }
+    List<EmployeeRFIDCard> All();
 }

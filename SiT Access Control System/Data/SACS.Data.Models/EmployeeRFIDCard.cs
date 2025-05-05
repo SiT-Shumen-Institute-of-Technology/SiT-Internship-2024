@@ -1,21 +1,14 @@
-﻿namespace SACS.Data.Models
+﻿using SACS.Data.Common.Models;
+
+namespace SACS.Data.Models;
+
+public class EmployeeRFIDCard : BaseDeletableModel<string>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    public virtual string EmployeeId { get; set; }
 
-    using SACS.Data.Common.Models;
+    public virtual Employee Employee { get; set; }
 
-    public class EmployeeRFIDCard : BaseDeletableModel<string>
-    {
-        public virtual string EmployeeId { get; set; }
+    public virtual string RFIDCardId { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
-        public virtual string RFIDCardId { get; set; }
-
-        public virtual RFIDCard RFIDCard { get; set; }
-    }
+    public virtual RFIDCard RFIDCard { get; set; }
 }

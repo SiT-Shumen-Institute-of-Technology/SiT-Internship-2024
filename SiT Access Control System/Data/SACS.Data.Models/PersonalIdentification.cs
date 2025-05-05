@@ -1,17 +1,10 @@
-﻿namespace SACS.Data.Models
+﻿namespace SACS.Data.Models;
+
+public class PersonalIdentification
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    public int Id { get; set; }
 
-    public class PersonalIdentification
-    {
-        public int Id { get; set; }
+    public Employee Employee { get; set; }
 
-        public Employee Employee { get; set; }
-
-        public string EmployeeId { get; set; }
-    }
+    public string EmployeeId { get; set; }
 }

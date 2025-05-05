@@ -1,20 +1,14 @@
-﻿namespace SACS.Services.Data.Interfaces
+﻿using System.Collections.Generic;
+using SACS.Data.Models;
+
+namespace SACS.Services.Data.Interfaces;
+
+public interface IDepartmentService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    void RemoveById(string id);
 
-    using SACS.Data.Models;
+    void Add(Department department);
 
-    public interface IDepartmentService
-    {
-        void RemoveById(string id);
-
-        void Add(Department department);
-
-        Department GetDepartmentById(string id);
-        List<Department> GetAll();
-    }
+    Department GetDepartmentById(string id);
+    List<Department> GetAll();
 }

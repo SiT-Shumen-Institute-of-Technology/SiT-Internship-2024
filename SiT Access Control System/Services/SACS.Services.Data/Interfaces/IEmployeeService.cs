@@ -1,21 +1,16 @@
-﻿namespace SACS.Services.Data.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SACS.Data.Models;
+
+namespace SACS.Services.Data.Interfaces;
+
+public interface IEmployeeService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    void RemoveById(string id);
 
-    using SACS.Data.Models;
+    Employee FindEmployeeById(string id);
 
-    public interface IEmployeeService
-    {
-        void RemoveById(string id);
+    Task AddAsync(Employee employee);
 
-        Employee FindEmployeeById(string id);
-
-        Task AddAsync(Employee employee);
-
-        List<Employee> GetAllEmployees();
-    }
+    List<Employee> GetAllEmployees();
 }

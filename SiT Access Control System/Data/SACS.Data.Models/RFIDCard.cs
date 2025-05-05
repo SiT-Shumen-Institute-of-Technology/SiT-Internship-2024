@@ -1,15 +1,8 @@
-﻿namespace SACS.Data.Models
+﻿using SACS.Data.Common.Models;
+
+namespace SACS.Data.Models;
+
+public class RFIDCard : BaseDeletableModel<string>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    using SACS.Data.Common.Models;
-
-    public class RFIDCard : BaseDeletableModel<string>
-    {
-        public string Code { get; set; }
-    }
+    public string Code { get; set; }
 }

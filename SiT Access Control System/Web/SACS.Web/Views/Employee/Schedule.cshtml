@@ -1,4 +1,4 @@
-﻿@model SACS.Web.ViewModels.ScheduleViewModel
+﻿@model ScheduleViewModel
 
 <div class="container mt-4">
     <h2 class="mb-4">Добавяне на график</h2>
@@ -16,17 +16,17 @@
 
         <div class="mb-3">
             <label for="date" class="form-label">Дата:</label>
-            <input type="date" id="date" name="Date" class="form-control" required />
+            <input type="date" id="date" name="Date" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label for="startTime" class="form-label">Начален час:</label>
-            <input type="time" id="startTime" name="StartTime" class="form-control" required />
+            <input type="time" id="startTime" name="StartTime" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label for="endTime" class="form-label">Краен час:</label>
-            <input type="time" id="endTime" name="EndTime" class="form-control" required />
+            <input type="time" id="endTime" name="EndTime" class="form-control" required/>
         </div>
 
         <div class="mb-3">
@@ -46,32 +46,32 @@
     <div class="table-responsive bg-white p-3 rounded shadow-sm">
         <table class="table table-bordered table-striped">
             <thead class="table-light">
-                <tr>
-                    <th>Служител</th>
-                    <th>Дата</th>
-                    <th>Начален час</th>
-                    <th>Краен час</th>
-                    <th>Статус</th>
-                </tr>
+            <tr>
+                <th>Служител</th>
+                <th>Дата</th>
+                <th>Начален час</th>
+                <th>Краен час</th>
+                <th>Статус</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.WeeklySchedule)
-                {
-                    <tr>
-                        <td>@entry.EmployeeName</td>
-                        <td>@entry.Date.ToString("dd-MM-yyyy")</td>
-                        <td>@entry.StartTime.ToString(@"hh\:mm")</td>
-                        <td>@entry.EndTime.ToString(@"hh\:mm")</td>
-                        <td class="text-white fw-bold
+            @foreach (var entry in Model.WeeklySchedule)
+            {
+                <tr>
+                    <td>@entry.EmployeeName</td>
+                    <td>@entry.Date.ToString("dd-MM-yyyy")</td>
+                    <td>@entry.StartTime.ToString(@"hh\:mm")</td>
+                    <td>@entry.EndTime.ToString(@"hh\:mm")</td>
+                    <td class="text-white fw-bold
                             @(
-                                entry.Location == "Office" ? "bg-success" :
-                                entry.Location == "Remote" ? "bg-secondary" :
-                                entry.Location == "Vacation" ? "bg-warning" : ""
-                            )">
-                            @entry.Location
-                        </td>
-                    </tr>
-                }
+                                                           entry.Location == "Office" ? "bg-success" :
+                                                           entry.Location == "Remote" ? "bg-secondary" :
+                                                           entry.Location == "Vacation" ? "bg-warning" : ""
+                                                           )">
+                        @entry.Location
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>

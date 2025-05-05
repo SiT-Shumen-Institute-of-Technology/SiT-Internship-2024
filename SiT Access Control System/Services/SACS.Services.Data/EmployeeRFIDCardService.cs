@@ -1,33 +1,29 @@
-﻿namespace SACS.Services.Data
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Models;
+using SACS.Services.Data.Interfaces;
+
+namespace SACS.Services.Data;
+
+public class EmployeeRFIDCardService : IEmployeeRFIDCardService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    private readonly IDeletableEntityRepository<EmployeeRFIDCard> employeeRFIDCardRepository;
 
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-    using SACS.Services.Data.Interfaces;
-
-    public class EmployeeRFIDCardService : IEmployeeRFIDCardService
+    public EmployeeRFIDCardService(IDeletableEntityRepository<EmployeeRFIDCard> employeeRFIDCardRepository)
     {
-        private readonly IDeletableEntityRepository<EmployeeRFIDCard> employeeRFIDCardRepository;
+        this.employeeRFIDCardRepository = employeeRFIDCardRepository;
+    }
 
-        public EmployeeRFIDCardService(IDeletableEntityRepository<EmployeeRFIDCard> employeeRFIDCardRepository)
-        {
-            this.employeeRFIDCardRepository = employeeRFIDCardRepository;
-        }
+    public async Task AddEmployeeAndRFIDCardServiceAsync(EmployeeRFIDCard employeeRFIDCard)
+    {
+        await employeeRFIDCardRepository.AddAsync(employeeRFIDCard);
+        await employeeRFIDCardRepository.SaveChangesAsync();
+    }
 
-        public async Task AddEmployeeAndRFIDCardServiceAsync(EmployeeRFIDCard employeeRFIDCard)
-        {
-            await this.employeeRFIDCardRepository.AddAsync(employeeRFIDCard);
-            await this.employeeRFIDCardRepository.SaveChangesAsync();
-        }
-
-        public List<EmployeeRFIDCard> All()
-        {
-            return this.employeeRFIDCardRepository.All().ToList();
-        }
+    public List<EmployeeRFIDCard> All()
+    {
+        return employeeRFIDCardRepository.All().ToList();
     }
 }

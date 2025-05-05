@@ -1,17 +1,12 @@
-﻿namespace SACS.Services.Data.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SACS.Data.Models;
+
+namespace SACS.Services.Data.Interfaces;
+
+public interface IRFIDCardService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    List<RFIDCard> All();
 
-    using SACS.Data.Models;
-
-    public interface IRFIDCardService
-    {
-        List<RFIDCard> All();
-
-        Task AddAsync(RFIDCard rfidCard);
-    }
+    Task AddAsync(RFIDCard rfidCard);
 }

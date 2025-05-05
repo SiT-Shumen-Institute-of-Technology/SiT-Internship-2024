@@ -1,84 +1,80 @@
-﻿namespace Sandbox
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using CommandLine;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using SACS.Data;
+using SACS.Data.Common;
+using SACS.Data.Common.Repositories;
+using SACS.Data.Models;
+using SACS.Data.Repositories;
+using SACS.Data.Seeding.SACS.Data.Seeding;
+using SACS.Services.Messaging;
+
+namespace Sandbox;
+
+public static class Program
 {
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Threading.Tasks;
-
-    using SACS.Data;
-    using SACS.Data.Common;
-    using SACS.Data.Common.Repositories;
-    using SACS.Data.Models;
-    using SACS.Data.Repositories;
-    using SACS.Data.Seeding;
-    using SACS.Services.Data;
-    using SACS.Services.Messaging;
-
-    using CommandLine;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
-    public static class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
+        Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+        IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider(true);
+
+        // Seed data on application startup
+        using (var serviceScope = serviceProvider.CreateScope())
         {
-            Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider(true);
-
-            // Seed data on application startup
-            using (var serviceScope = serviceProvider.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Database.Migrate();
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            }
-
-            using (var serviceScope = serviceProvider.CreateScope())
-            {
-                serviceProvider = serviceScope.ServiceProvider;
-
-                return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
-                    opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
-                    _ => 255);
-            }
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.Migrate();
+            new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter()
+                .GetResult();
         }
 
-        private static async Task<int> SandboxCode(SandboxOptions options, IServiceProvider serviceProvider)
+        using (var serviceScope = serviceProvider.CreateScope())
         {
-            var sw = Stopwatch.StartNew();
+            serviceProvider = serviceScope.ServiceProvider;
 
-
-            Console.WriteLine(sw.Elapsed);
-            return await Task.FromResult(0);
+            return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
+                opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
+                _ => 255);
         }
+    }
 
-        private static void ConfigureServices(ServiceCollection services)
-        {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
+    private static async Task<int> SandboxCode(SandboxOptions options, IServiceProvider serviceProvider)
+    {
+        var sw = Stopwatch.StartNew();
 
-            services.AddSingleton<IConfiguration>(configuration);
 
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .UseLoggerFactory(new LoggerFactory()));
+        Console.WriteLine(sw.Elapsed);
+        return await Task.FromResult(0);
+    }
 
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+    private static void ConfigureServices(ServiceCollection services)
+    {
+        var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddEnvironmentVariables()
+            .Build();
 
-            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+        services.AddSingleton<IConfiguration>(configuration);
 
-            // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
-        }
+        services.AddDbContext<ApplicationDbContext>(
+            options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .UseLoggerFactory(new LoggerFactory()));
+
+        services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
+            .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+        services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+
+        // Application services
+        services.AddTransient<IEmailSender, NullMessageSender>();
     }
 }

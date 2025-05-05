@@ -1,89 +1,70 @@
-﻿using SACS.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using SACS.Data.Models;
 using SACS.Services.Data.Interfaces;
 
+namespace SACS.Web.Controllers;
 
-namespace SACS.Web.Controllers
+[Route("api/[controller]")]
+[ApiController]
+[IgnoreAntiforgeryToken]
+public class CardReaderAPIController : Controller
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.Json;
-    using System.Text.Json.Serialization;
-    using System.Threading.Tasks;
+    private readonly IEmployeeRFIDCardService employeeRFIDCardService;
+    private readonly IRFIDCardService rfidCardService;
+    private bool isANewCard = true;
 
-    using Microsoft.AspNetCore.Mvc;
-
-    [Route("api/[controller]")]
-    [ApiController]
-    [IgnoreAntiforgeryToken]
-    public class CardReaderAPIController : Controller
+    public CardReaderAPIController(IRFIDCardService rfidCardService, IEmployeeRFIDCardService employeeRFIDCardService)
     {
-        private readonly IRFIDCardService rfidCardService;
-        private readonly IEmployeeRFIDCardService employeeRFIDCardService;
-        private bool isANewCard = true;
+        this.rfidCardService = rfidCardService;
+        this.employeeRFIDCardService = employeeRFIDCardService;
+    }
 
-        public CardReaderAPIController(IRFIDCardService rfidCardService, IEmployeeRFIDCardService employeeRFIDCardService)
-        {
-            this.rfidCardService = rfidCardService;
-            this.employeeRFIDCardService = employeeRFIDCardService;
-        }
-
-        [HttpPost("apipost")]
-        public async Task<ActionResult<RFIDCard>> GetAndAddRFIDCard([FromQuery] string code)
-        {
-            if (this.rfidCardService.All() != null)
+    [HttpPost("apipost")]
+    public async Task<ActionResult<RFIDCard>> GetAndAddRFIDCard([FromQuery] string code)
+    {
+        if (rfidCardService.All() != null)
+            foreach (var card in rfidCardService.All())
             {
-                foreach (var card in this.rfidCardService.All())
+                if (card.Code == code)
                 {
-                    if (card.Code == code)
-                    {
-                        this.isANewCard = false;
-                        break;
-                    }
-                    else
-                    {
-                        this.isANewCard = true;
-                    }
+                    isANewCard = false;
+                    break;
                 }
+
+                isANewCard = true;
             }
 
-            if (this.isANewCard == true)
-            {
-                RFIDCard rfidCard = new RFIDCard
-                {
-                    Id = Guid.NewGuid().ToString(),
-
-                    Code = code,
-                };
-                await this.rfidCardService.AddAsync(rfidCard);
-                return this.Content("Not Connected", "text/plain", Encoding.UTF8);
-            }
-            else
-            {
-                if (this.employeeRFIDCardService.All() != null)
-                {
-                    if (this.employeeRFIDCardService.All().FirstOrDefault(x => x.RFIDCard.Code == code) != null)
-                    {
-                        return this.Content("Connected", "text/plain", Encoding.UTF8);
-                    }
-                    else
-                    {
-                        return this.Content("Not Connected", "text/plain", Encoding.UTF8);
-                    }
-                }
-                else
-                {
-                    return this.Content("Not Connected", "text/plain", Encoding.UTF8);
-                }
-            }
-        }
-
-        [HttpGet]
-        public List<EmployeeRFIDCard> GetAllRFIDCards()
+        if (isANewCard)
         {
-            return this.employeeRFIDCardService.All();
+            var rfidCard = new RFIDCard
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                Code = code
+            };
+            await rfidCardService.AddAsync(rfidCard);
+            return Content("Not Connected", "text/plain", Encoding.UTF8);
         }
+
+        if (employeeRFIDCardService.All() != null)
+        {
+            if (employeeRFIDCardService.All().FirstOrDefault(x => x.RFIDCard.Code == code) != null)
+                return Content("Connected", "text/plain", Encoding.UTF8);
+
+            return Content("Not Connected", "text/plain", Encoding.UTF8);
+        }
+
+        return Content("Not Connected", "text/plain", Encoding.UTF8);
+    }
+
+    [HttpGet]
+    public List<EmployeeRFIDCard> GetAllRFIDCards()
+    {
+        return employeeRFIDCardService.All();
     }
 }

@@ -1,28 +1,24 @@
-﻿using SACS.Data.Models;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using SACS.Data.Models;
 using SACS.Services.Data.Interfaces;
 
+namespace SACS.Web.Controllers;
 
-namespace SACS.Web.Controllers
+[Route("/api/[controller]")]
+[ApiController]
+public class EmployeesController : Controller
 {
-    using System.Collections.Generic;
+    private readonly IEmployeeService employeeService;
 
-    using Microsoft.AspNetCore.Mvc;
-
-    [Route("/api/[controller]")]
-    [ApiController]
-    public class EmployeesController : Controller
+    public EmployeesController(IEmployeeService employeeService)
     {
-        private readonly IEmployeeService employeeService;
+        this.employeeService = employeeService;
+    }
 
-        public EmployeesController(IEmployeeService employeeService)
-        {
-            this.employeeService = employeeService;
-        }
-
-        [HttpGet]
-        public List<Employee> GetEmployees()
-        {
-            return this.employeeService.GetAllEmployees();
-        }
+    [HttpGet]
+    public List<Employee> GetEmployees()
+    {
+        return employeeService.GetAllEmployees();
     }
 }

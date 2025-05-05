@@ -1,16 +1,14 @@
-﻿using SACS.Data.Models;
+﻿using AutoMapper;
+using SACS.Data.Models;
 using SACS.Web.ViewModels;
 
-namespace SACS.Web.Profiles
-{
-    using AutoMapper;
+namespace SACS.Web.Profiles;
 
-    public class EmployeeScheduleProfile : Profile
+public class EmployeeScheduleProfile : Profile
+{
+    public EmployeeScheduleProfile()
     {
-        public EmployeeScheduleProfile()
-        {
-            this.CreateMap<ScheduleViewModel, EmployeeSchedule>();
-            this.CreateMap<EmployeeSchedule, ScheduleViewModel>();
-        }
+        CreateMap<ScheduleViewModel, EmployeeSchedule>();
+        CreateMap<EmployeeSchedule, ScheduleViewModel>();
     }
 }

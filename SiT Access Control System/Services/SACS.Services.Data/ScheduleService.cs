@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +9,9 @@ using SACS.Web.ViewModels;
 
 public class ScheduleService : IScheduleService
 {
+    private readonly IDateTimeProviderService dateTimeProvider;
     private readonly IDeletableEntityRepository<Employee> employeeRepository;
     private readonly IDeletableEntityRepository<EmployeeSchedule> scheduleRepository;
-    private readonly IDateTimeProviderService dateTimeProvider;
 
     public ScheduleService(
         IDeletableEntityRepository<Employee> employeeRepository,
@@ -26,12 +25,12 @@ public class ScheduleService : IScheduleService
 
     public ScheduleViewModel GetWeeklySchedule()
     {
-        DateTime startOfWeek = this.dateTimeProvider.Today.AddDays(-(int)this.dateTimeProvider.Today.DayOfWeek);
-        DateTime endOfWeek = startOfWeek.AddDays(7);
+        var startOfWeek = dateTimeProvider.Today.AddDays(-(int)dateTimeProvider.Today.DayOfWeek);
+        var endOfWeek = startOfWeek.AddDays(7);
 
         var schedule = new ScheduleViewModel
         {
-            WeeklySchedule = this.scheduleRepository
+            WeeklySchedule = scheduleRepository
                 .All()
                 .Where(e => e.Date >= startOfWeek && e.Date < endOfWeek)
                 .Include(e => e.Employee)
@@ -42,18 +41,18 @@ public class ScheduleService : IScheduleService
                     Date = e.Date,
                     StartTime = e.StartTime,
                     EndTime = e.EndTime,
-                    Location = e.Location,
+                    Location = e.Location
                 })
                 .ToList(),
 
-            Employees = this.employeeRepository
+            Employees = employeeRepository
                 .All()
                 .Select(e => new SelectListItem
                 {
                     Value = e.Id.ToString(),
-                    Text = e.FirstName + " " + e.LastName,
+                    Text = e.FirstName + " " + e.LastName
                 })
-                .ToList(),
+                .ToList()
         };
 
         return schedule;
@@ -61,7 +60,7 @@ public class ScheduleService : IScheduleService
 
     public async Task AddScheduleAsync(EmployeeSchedule schedule)
     {
-        await this.scheduleRepository.AddAsync(schedule);
-        await this.scheduleRepository.SaveChangesAsync();
+        await scheduleRepository.AddAsync(schedule);
+        await scheduleRepository.SaveChangesAsync();
     }
 }

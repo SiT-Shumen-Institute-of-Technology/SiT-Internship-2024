@@ -1,17 +1,10 @@
-﻿namespace SACS.Services.Data.Interfaces
+﻿using SACS.Data.Models;
+
+namespace SACS.Services.Data.Interfaces;
+
+public interface IDayService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    void RemoveById(string id);
 
-    using SACS.Data.Models;
-
-    public interface IDayService
-    {
-        void RemoveById(string id);
-
-        void Add(Day day);
-    }
+    void Add(Day day);
 }
