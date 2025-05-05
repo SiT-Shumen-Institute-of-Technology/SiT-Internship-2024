@@ -89,6 +89,7 @@ namespace SACS.Web
                 services.AddTransient<IRFIDCardService, RFIDCardService>();
                 services.AddTransient<IEmployeeRFIDCardService, EmployeeRFIDCardService>();
                 services.AddTransient<IScheduleService, ScheduleService>();
+                services.AddTransient<IDateTimeProviderService, DateTimeProviderService>();
             }
 
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
