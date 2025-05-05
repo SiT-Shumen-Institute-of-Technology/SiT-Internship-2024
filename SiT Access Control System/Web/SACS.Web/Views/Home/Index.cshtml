@@ -33,35 +33,35 @@
                 if (currentSummary == "Active")
                 {
                     <td class="bg-success border">
-                        <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation"
-                           asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
+                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
+                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                     </td>
                 }
                 else if (currentSummary == "Remote")
                 {
                     <td class="bg-primary border">
-                        <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation"
-                           asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
+                        <a class="text-decoration-none" style="color: white" asp-controller="Employee"
+                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                     </td>
                 }
                 else if (currentSummary == "Vacation")
                 {
                     <td class="bg-warning border">
-                        <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation"
-                           asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
+                        <a class="text-decoration-none" style="color: black"  asp-controller="Employee"
+                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                     </td>
                 }
                 else if (currentSummary == "Absent")
                 {
                     <td class="bg-secondary border">
-                        <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation"
-                           asp-action="Index" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
+                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
+                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                     </td>
                 }
                 else
                 {
                     <td class="border">
-                        <a class="text-decoration-none" asp-controller="EmployeeInformation" asp-action="Index"
+                        <a class="text-decoration-none" asp-controller="Employee" asp-action="EmployeeInformation"
                            asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
                     </td>
                 }

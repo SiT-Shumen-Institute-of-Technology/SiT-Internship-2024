@@ -10,5 +10,6 @@ public class EmployeeProfile : Profile
     {
         CreateMap<CreateEmployeeAndSummaryViewModel, Employee>();
         CreateMap<Employee, CreateEmployeeAndSummaryViewModel>();
+        CreateMap<Employee, EmployeeInformationViewModel>();
     }
 }
