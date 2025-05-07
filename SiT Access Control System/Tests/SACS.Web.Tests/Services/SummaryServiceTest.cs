@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using FakeItEasy;
     using FluentAssertions;
@@ -22,23 +23,22 @@
             {
                 new DailySummary
                 {
-                    Id = new Guid().ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     CurrentStatus = Status.Active,
                     CreatedOn = DateTime.Now,
                     IsDeleted = false,
                 },
             };
 
-            A.CallTo(() => this.summaryRepository.All().ToList()).Returns(dailySummaries);
+            A.CallTo(() => this.summaryRepository.All()).Returns(dailySummaries.AsQueryable());
 
             this.summaryService = new SummaryService(this.summaryRepository);
         }
 
         [Fact]
-        public async void SummaryService_CreateSummaryAsync_AddsRepository()
+        public async Task SummaryService_CreateSummaryAsync_AddsRepository()
         {
             // Arrange
-            A.CallTo(() => this.summaryRepository.All());
             var summary = this.summaryRepository.All().First();
 
             // Act

@@ -10,7 +10,7 @@
 	for (int i = 0; i <= ((int)currentDayOfWeek); i++)
 	{
 		DateTime currentDayDate = currentDate.AddDays(-i);
-		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn == currentDayDate);
+		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn.Date == currentDayDate);
 		if (currentDailySummary != null)
 		{
 			weekDailySummaries.Add(currentDailySummary);
@@ -24,10 +24,12 @@
 	int daysAbsent = 0;
 	int daysLate = 0;
 
-	for (int i = 1; i <= 30; i++)
+	int daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
+
+	for (int i = 1; i <= daysInMonth; i++)
 	{
 		DateTime currentDayDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Date.Month, i);
-		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn == currentDayDate);
+		var currentDailySummary = Model.DailySummaries.FirstOrDefault(x => x.CreatedOn.Date == currentDayDate);
 
 		if (currentDailySummary != null)
 		{
@@ -65,11 +67,9 @@
 		<li class="list-group-item fs-3">Position: @Model.Position</li>
 		@if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
 		{
-
 			<form asp-action="Delete" asp-route-id="@Model.Id">
 				<button class="btn btn-danger">Delete</button>
 			</form>
-
 		}
 	</ul>
 

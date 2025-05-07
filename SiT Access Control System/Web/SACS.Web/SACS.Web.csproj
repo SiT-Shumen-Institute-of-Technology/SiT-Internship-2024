@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>aspnet-SACS-BBB373B5-EF3F-4DBB-B8AA-7152CEC275BF</UserSecretsId>
     <LangVersion>latest</LangVersion>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
