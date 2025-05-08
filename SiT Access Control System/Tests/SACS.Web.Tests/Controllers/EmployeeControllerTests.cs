@@ -1,109 +1,165 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using SACS.Data.Models;
 using SACS.Services.Data;
 using SACS.Services.Data.Interfaces;
-using SACS.Web.Controllers;
 using SACS.Web.ViewModels;
-using Xunit;
-using ViewResult = Microsoft.AspNetCore.Mvc.ViewResult;
+using SACS.Web.ViewModels.Employee;
 
-namespace SACS.Web.Tests.Controllers;
-
-public class EmployeeControllerTests
+namespace SACS.Web.Controllers
 {
-    private readonly EmployeeController controller;
-    private readonly Mock<IDepartmentService> departmentServiceMock;
-    private readonly Mock<IEmployeeService> employeeServiceMock;
-    private readonly Mock<IMapper> mapperMock;
-    private readonly Mock<IScheduleService> scheduleServiceMock;
-    private readonly Mock<ISummaryService> summaryServiceMock;
-    private readonly Mock<IUserManagementService> userManagementServiceMock;
-
-    public EmployeeControllerTests()
+    public class EmployeeController : Controller
     {
-        userManagementServiceMock = new Mock<IUserManagementService>();
-        employeeServiceMock = new Mock<IEmployeeService>();
-        departmentServiceMock = new Mock<IDepartmentService>();
-        summaryServiceMock = new Mock<ISummaryService>();
-        scheduleServiceMock = new Mock<IScheduleService>();
-        mapperMock = new Mock<IMapper>();
+        private readonly IDepartmentService departmentService;
+        private readonly ISummaryService summaryService;
+        private readonly IScheduleService scheduleService;
+        private readonly IUserManagementService userManagementService;
+        private readonly IMapper mapper;
 
-        // Initialize the controller in the constructor
-        controller = new EmployeeController(
-            userManagementServiceMock.Object,
-            employeeServiceMock.Object,
-            departmentServiceMock.Object,
-            summaryServiceMock.Object,
-            scheduleServiceMock.Object,
-            mapperMock.Object);
-    }
-
-    [Fact]
-    public void Schedule_Get_ReturnsViewWithModel()
-    {
-        // Arrange
-        var scheduleViewModel = new ScheduleViewModel();
-        scheduleServiceMock
-            .Setup(s => s.GetWeeklySchedule())
-            .Returns(scheduleViewModel);
-
-        // Act
-        var result = controller.Schedule();
-
-        // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal(scheduleViewModel, viewResult.Model);
-    }
-
-    [Fact]
-    public async Task Schedule_Post_WithInvalidModel_ReturnsSameViewWithModel()
-    {
-        // Arrange
-        var model = new ScheduleViewModel();
-        controller.ModelState.AddModelError("Test", "Invalid");
-
-        scheduleServiceMock
-            .Setup(s => s.GetWeeklySchedule())
-            .Returns(new ScheduleViewModel { Employees = new List<SelectListItem>() });
-
-        // Act
-        var result = await controller.Schedule(model);
-
-        // Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Schedule", viewResult.ViewName);
-        Assert.Equal(model, viewResult.Model);
-    }
-
-    [Fact]
-    public async Task Schedule_Post_WithValidModel_AddsScheduleAndRedirects()
-    {
-        // Arrange
-        var model = new ScheduleViewModel
+        public EmployeeController(
+            IUserManagementService userManagementService,
+            IDepartmentService departmentService,
+            ISummaryService summaryService,
+            IScheduleService scheduleService,
+            IMapper mapper)
         {
-            EmployeeId = "emp1",
-            Date = DateTime.Today,
-            Location = "Office",
-            StartTime = new TimeSpan(9, 0, 0),
-            EndTime = new TimeSpan(17, 0, 0)
-        };
+            this.departmentService = departmentService;
+            this.summaryService = summaryService;
+            this.userManagementService = userManagementService;
+            this.scheduleService = scheduleService;
+            this.mapper = mapper;
+        }
 
-        var schedule = new EmployeeSchedule();
-        mapperMock.Setup(m => m.Map<EmployeeSchedule>(model)).Returns(schedule);
+        // GET: /Employee/Create
+        public IActionResult Create()
+        {
+            var model = new CreateEmployeeAndSummaryViewModel
+            {
+                Departments = departmentService.GetAll()
+            };
+            return View(model);
+        }
 
-        // Act
-        var result = await controller.Schedule(model);
+        // POST: /Employee/Create
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateEmployeeAndSummaryViewModel input)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var adminUser = userManagementService.GetUserById(currentUserId);
 
-        // Assert
-        scheduleServiceMock.Verify(s => s.AddScheduleAsync(schedule), Times.Once);
+            if (adminUser == null)
+            {
+                TempData["ErrorMessage"] = "Invalid user.";
+                return RedirectToAction("Create");
+            }
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Schedule", redirect.ActionName);
+            try
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = input.Email,
+                    Email = input.Email,
+                    PhoneNumber = input.PhoneNumber,
+                    DepartmentId = input.DepartmentId,
+                    Position = input.Position,
+                    CreatedOn = DateTime.UtcNow
+                };
+
+                var result = await userManagementService.CreateUserAsync(newUser, "Default123!", "Employee");
+
+                if (!result.Succeeded)
+                {
+                    TempData["ToastMessage"] = "Failed to create employee user.";
+                    TempData["ToastType"] = "error";
+                    return RedirectToAction("Create");
+                }
+
+                var newSummary = new Summary
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CurrentState = input.CurrentState,
+                    TimesLate = input.TimesLate,
+                    TotalHoursWorked = input.TotalHoursWorked,
+                    Timesabscent = input.Timesabscent,
+                    VacationDays = input.VacationDays,
+                    UserId = newUser.Id,
+                };
+
+                await summaryService.CreateSummaryAsync(newSummary);
+
+                TempData["ToastMessage"] = "Employee created successfully!";
+                TempData["ToastType"] = "success";
+
+                return RedirectToAction("Create");
+            }
+            catch (Exception ex)
+            {
+                TempData["ToastMessage"] = $"Error creating employee: {ex.Message}";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Create");
+            }
+        }
+
+        // GET: /Employee/Details/{id}
+        public IActionResult Details(string id)
+        {
+            var user = userManagementService.GetUserById(id);
+
+            if (user == null)
+                return NotFound();
+
+            var viewModel = new EmployeeInformationViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
+                Department = departmentService.GetDepartmentById(user.DepartmentId),
+                Email = user.Email
+            };
+
+            return View(viewModel);
+        }
+
+        // GET: /Employee/EmployeeInformation/{id}
+        public IActionResult EmployeeInformation(string id)
+        {
+            var user = userManagementService.GetUserById(id);
+
+            if (user == null)
+                return NotFound();
+
+            var model = mapper.Map<EmployeeInformationViewModel>(user);
+
+            return View(model);
+        }
+
+        // GET: /Employee/Schedule
+        [HttpGet]
+        public IActionResult Schedule()
+        {
+            var model = scheduleService.GetWeeklySchedule();
+            return View(model);
+        }
+
+        // POST: /Employee/Schedule
+        [HttpPost]
+        public async Task<IActionResult> Schedule(ScheduleViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Employees = scheduleService.GetWeeklySchedule().Employees;
+                return View("Schedule", model);
+            }
+
+            var schedule = mapper.Map<EmployeeSchedule>(model);
+
+            await scheduleService.AddScheduleAsync(schedule);
+            return RedirectToAction(nameof(Schedule));
+        }
     }
 }

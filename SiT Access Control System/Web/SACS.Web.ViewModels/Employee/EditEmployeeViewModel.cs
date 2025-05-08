@@ -17,7 +17,7 @@ public class EditEmployeeViewModel
 
     public string Email { get; set; }
 
-    public string DepartmentId { get; set; }
+    public int DepartmentId { get; set; }
 
     public IEnumerable<Department> Departments { get; set; }
 }

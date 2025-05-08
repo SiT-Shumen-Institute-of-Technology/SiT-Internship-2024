@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SACS.Data.Models;
 
-namespace SACS.Services.Data;
-
-public interface IUserManagementService
+namespace SACS.Services.Data
 {
-    Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+    public interface IUserManagementService
+    {
+        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        List<ApplicationUser> GetAllUsers();
 
-    Task<ApplicationUser> GetCurrentUserAsync(ClaimsPrincipal user);
+        ApplicationUser GetUserById(string id);
 
-    Task DeleteUserAsync(string id);
+        Task<ApplicationUser> GetCurrentUserAsync(ClaimsPrincipal user);
 
-    Task UpdateUserAsync(string id, string userName, string email);
+        Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, string role);
 
-    List<ApplicationUser> GetAllUsers();
+        Task UpdateUserAsync(string id, string userName, string email);
 
-    Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, string role);
-
-    ApplicationUser GetUserById(string id);
+        Task DeleteUserAsync(string id);
+    }
 }

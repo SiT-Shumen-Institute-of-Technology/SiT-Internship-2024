@@ -6,6 +6,10 @@ public class Summary : BaseDeletableModel<string>
 {
     public string CurrentState { get; set; }
 
+    public string EmployeeId { get; set; }
+
+    public Employee Employee { get; set; }
+
     public int TimesLate { get; set; }
 
     public int TotalHoursWorked { get; set; }
@@ -14,7 +18,7 @@ public class Summary : BaseDeletableModel<string>
 
     public int VacationDays { get; set; }
 
-    public virtual Employee Employee { get; set; }
+    public string UserId { get; set; }
 
-    public string EmployeeId { get; set; }
+    public virtual ApplicationUser User { get; set; }
 }

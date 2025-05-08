@@ -4,11 +4,11 @@ namespace SACS.Data.Models;
 
 public class EmployeeRFIDCard : BaseDeletableModel<string>
 {
-    public virtual string EmployeeId { get; set; }
+    public string UserId { get; set; }
 
-    public virtual Employee Employee { get; set; }
+    public virtual ApplicationUser User { get; set; }
 
-    public virtual string RFIDCardId { get; set; }
+    public string RFIDCardId { get; set; }
 
     public virtual RFIDCard RFIDCard { get; set; }
 }
