@@ -5,52 +5,48 @@ using SACS.Data.Common.Repositories;
 using SACS.Data.Models;
 using SACS.Services.Data.Interfaces;
 
-namespace SACS.Services.Data;
-
-public class DepartmentService : IDepartmentService
+namespace SACS.Services.Data
 {
-    private readonly IDeletableEntityRepository<Department> departmentRepository;
-
-    public DepartmentService(IDeletableEntityRepository<Department> departmentRepository)
+    public class DepartmentService : IDepartmentService
     {
-        this.departmentRepository = departmentRepository;
-    }
+        private readonly IDeletableEntityRepository<Department> departmentRepository;
 
-    public void Add(Department department)
-    {
-        departmentRepository.AddAsync(department);
-        departmentRepository.SaveChangesAsync();
-    }
-
-    public Department GetDepartmentById(string id)
-    {
-        int departmentId;
-        if (int.TryParse(id, out departmentId))
-            return departmentRepository.All().FirstOrDefault(x => x.Id == departmentId);
-        return null;
-    }
-
-    public List<Department> GetAll()
-    {
-        return departmentRepository.All().ToList();
-    }
-
-    public void RemoveById(string id)
-    {
-        int departmentId;
-        if (int.TryParse(id, out departmentId))
+        public DepartmentService(IDeletableEntityRepository<Department> departmentRepository)
         {
-            var choosenDepartment = departmentRepository.All().FirstOrDefault(x => x.Id == departmentId);
+            this.departmentRepository = departmentRepository;
+        }
+
+        public void Add(Department department)
+        {
+            departmentRepository.AddAsync(department);
+            departmentRepository.SaveChangesAsync();
+        }
+
+        // Change parameter from string to int
+        public Department GetDepartmentById(int id)
+        {
+            return departmentRepository.All().FirstOrDefault(x => x.Id == id);
+        }
+
+        public List<Department> GetAll()
+        {
+            return departmentRepository.All().ToList();
+        }
+
+        // Change parameter from string to int
+        public void RemoveById(int id)
+        {
+            var choosenDepartment = departmentRepository.All().FirstOrDefault(x => x.Id == id);
             if (choosenDepartment != null)
             {
                 departmentRepository.Delete(choosenDepartment);
                 departmentRepository.SaveChangesAsync();
             }
-        }
-        else
-        {
-            // Handle the case where the id is not a valid integer, if needed
-            throw new ArgumentException("Invalid department ID");
+            else
+            {
+                // Handle the case where the department is not found
+                throw new ArgumentException("Department not found.");
+            }
         }
     }
 }

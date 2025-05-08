@@ -5,10 +5,11 @@ namespace SACS.Services.Data.Interfaces;
 
 public interface IDepartmentService
 {
-    void RemoveById(string id);
+    void RemoveById(int id);
 
     void Add(Department department);
 
-    Department GetDepartmentById(string id);
+    Department GetDepartmentById(int id);
+
     List<Department> GetAll();
 }

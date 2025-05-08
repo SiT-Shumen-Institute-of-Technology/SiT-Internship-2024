@@ -16,7 +16,7 @@ public class CreateEmployeeAndSummaryViewModel
 
     [MinLength(6)] public string Email { get; set; }
 
-    public string DepartmentId { get; set; }
+    public int DepartmentId { get; set; }
 
     public string CurrentState { get; set; }
 
