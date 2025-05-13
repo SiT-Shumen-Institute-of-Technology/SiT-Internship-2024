@@ -12,7 +12,7 @@
     {
         void RemoveById(string id);
 
-        void Add(Department department);
+        Task AddAsync(Department department);
 
         Department GetDepartmentById(string id);
 

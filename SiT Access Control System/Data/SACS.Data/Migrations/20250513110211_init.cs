@@ -1,13 +1,12 @@
-﻿#nullable disable
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
 
 namespace SACS.Data.Migrations
 {
-    using System;
-
-    using Microsoft.EntityFrameworkCore.Migrations;
-
     /// <inheritdoc />
-    public partial class initCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -216,6 +215,28 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DailySummaries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CurrentStatus = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailySummaries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailySummaries_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -242,12 +263,12 @@ namespace SACS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DailySummaries",
+                name: "EmployeesRFIDCards",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CurrentStatus = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RFIDCardId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -255,11 +276,16 @@ namespace SACS.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DailySummaries", x => x.Id);
+                    table.PrimaryKey("PK_EmployeesRFIDCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DailySummaries_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_EmployeesRFIDCards_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EmployeesRFIDCards_RFIDCards_RFIDCardId",
+                        column: x => x.RFIDCardId,
+                        principalTable: "RFIDCards",
                         principalColumn: "Id");
                 });
 
@@ -284,33 +310,6 @@ namespace SACS.Data.Migrations
                         name: "FK_Days_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeesRFIDCards",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RFIDCardId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeesRFIDCards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmployeesRFIDCards_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_EmployeesRFIDCards_RFIDCards_RFIDCardId",
-                        column: x => x.RFIDCardId,
-                        principalTable: "RFIDCards",
                         principalColumn: "Id");
                 });
 
@@ -417,11 +416,6 @@ namespace SACS.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeesRFIDCards_EmployeeId",
-                table: "EmployeesRFIDCards",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmployeesRFIDCards_IsDeleted",
                 table: "EmployeesRFIDCards",
                 column: "IsDeleted");
@@ -430,6 +424,11 @@ namespace SACS.Data.Migrations
                 name: "IX_EmployeesRFIDCards_RFIDCardId",
                 table: "EmployeesRFIDCards",
                 column: "RFIDCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeesRFIDCards_UserId",
+                table: "EmployeesRFIDCards",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalIdentifications_EmployeeId",

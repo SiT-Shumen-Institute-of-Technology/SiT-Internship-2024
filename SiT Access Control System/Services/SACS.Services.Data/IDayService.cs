@@ -10,8 +10,8 @@
 
     public interface IDayService
     {
-        void RemoveById(string id);
+        Task RemoveByIdAsync(string id);
 
-        void Add(Day day);
+        Task AddAsync(Day day);
     }
 }

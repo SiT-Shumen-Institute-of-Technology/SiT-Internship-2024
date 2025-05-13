@@ -10,7 +10,7 @@
 
     public class EmployeeListViewModel
     {
-        public List<Employee> Employees { get; set; }
+        public List<ApplicationUser> Employees { get; set; }
 
         public List<DailySummary> Summaries { get; set; }
     }

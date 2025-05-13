@@ -25,11 +25,8 @@
             return this.View(new EmployeeInformationViewModel
             {
                 Id = currentEmployee.Id,
-                FirstName = currentEmployee.FirstName,
-                LastName = currentEmployee.LastName,
+                Username = currentEmployee.UserName,
                 PhoneNumber = currentEmployee.PhoneNumber,
-                Position = currentEmployee.Position,
-                Department = this.departmentService.GetDepartmentById(currentEmployee.DepartmentId),
                 Email = currentEmployee.Email,
                 DailySummary = this.summaryService.GetAllSummaries().Where(x => x.EmployeeId == currentEmployee.Id).OrderBy(x => x.CreatedOn).FirstOrDefault(x => x.EmployeeId == currentEmployee.Id),
                 DailySummaries = this.summaryService.GetAllSummaries().Where(x => x.EmployeeId == currentEmployee.Id).OrderBy(x => x.CreatedOn).ToList(),

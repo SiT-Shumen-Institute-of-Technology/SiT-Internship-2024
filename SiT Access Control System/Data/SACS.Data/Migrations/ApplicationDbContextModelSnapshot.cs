@@ -401,9 +401,6 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -413,13 +410,16 @@ namespace SACS.Data.Migrations
                     b.Property<string>("RFIDCardId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("RFIDCardId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmployeesRFIDCards");
                 });
@@ -555,7 +555,7 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.DailySummary", b =>
                 {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                    b.HasOne("SACS.Data.Models.ApplicationUser", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
@@ -582,17 +582,17 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
                 {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("SACS.Data.Models.RFIDCard", "RFIDCard")
                         .WithMany()
                         .HasForeignKey("RFIDCardId");
 
-                    b.Navigation("Employee");
+                    b.HasOne("SACS.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("RFIDCard");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>

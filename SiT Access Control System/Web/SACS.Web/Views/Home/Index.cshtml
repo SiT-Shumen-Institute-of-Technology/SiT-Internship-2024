@@ -3,84 +3,101 @@
 @using SACS.Services.Data
 @model EmployeeListViewModel
 @{
-    this.ViewData["Title"] = "Home Page";
+	this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Team Attendance</h1>
+	<h1 class="display-4">Team Attendance</h1>
 </div>
 
 <table style="margin-top: 100px;" class="table">
-    <tbody>
-        @for (int i = 0; i < Model.Employees.Count(); i += 4)
-        {
-            <tr>
-                @for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
-                {
-                    var currentSummary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id).CurrentStatus;
-                    if (currentSummary == Status.Active)
-                    {
-                        <td class="bg-success border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == Status.Remote)
-                    {
-                        <td class="bg-primary border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == Status.Vacation)
-                    {
-                        <td class="bg-warning border">
-                            <a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
-                    else if (currentSummary == Status.Absent)
-                    {
-                        <td class="bg-secondary border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
+	<tbody>
+		@for (int i = 0; i < Model.Employees.Count(); i += 4)
+		{
+			<tr>
+				@for (int j = 0; j < 4 && (j + i) < Model.Employees.Count(); j++)
+				{
+					if (Model.Summaries != null)
+					{
+						var summary = @Model.Summaries.FirstOrDefault(x => x.EmployeeId == Model.Employees[j + i].Id);
 
-                    else if (currentSummary == Status.Late)
-                    {
-                        <td class="bg-danger border">
-                            <a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].FirstName</a>
-                        </td>
-                    }
+						if(summary != null)
+						{
+							var currentSummary = summary.CurrentStatus;
 
-                }
+							if (currentSummary == Status.Active)
+							{
+								<td class="bg-success border">
+									<a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
+							else if (currentSummary == Status.Remote)
+							{
+								<td class="bg-primary border">
+									<a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
+							else if (currentSummary == Status.Vacation)
+							{
+								<td class="bg-warning border">
+									<a class="text-decoration-none" style="color: black" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
+							else if (currentSummary == Status.Absent)
+							{
+								<td class="bg-secondary border">
+									<a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
 
-            </tr>
-        }
+							else if (currentSummary == Status.Late)
+							{
+								<td class="bg-danger border">
+									<a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
 
-    </tbody>
+							else
+							{
+								<td class="bg-success border">
+									<a class="text-decoration-none" style="color: white" asp-controller="EmployeeInformation" asp-action="Index" asp-route-id="@Model.Employees[j + i].Id">@Model.Employees[j + i].UserName</a>
+								</td>
+							}
+						}
+
+					}
+					
+				}
+
+			</tr>
+		}
+
+	</tbody>
 </table>
 
 <div style="margin-top: 100px;">
-    <h3 class="text-center">Color Legend</h3>
-    <hr>
-    <div>
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-success rounded list-group-item"> </li>
-            <li class="list-group-item">Active</li>
-        </ul>
+	<h3 class="text-center">Color Legend</h3>
+	<hr>
+	<div>
+		<ul class="d-flex justify-content-center">
+			<li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-success rounded list-group-item"> </li>
+			<li class="list-group-item">Active</li>
+		</ul>
 
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-primary rounded list-group-item"> </li>
-            <li class="list-group-item">Remote</li>
-        </ul>
+		<ul class="d-flex justify-content-center">
+			<li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-primary rounded list-group-item"> </li>
+			<li class="list-group-item">Remote</li>
+		</ul>
 
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-warning rounded list-group-item"> </li>
-            <li class="list-group-item">Vacation</li>
-        </ul>
+		<ul class="d-flex justify-content-center">
+			<li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-warning rounded list-group-item"> </li>
+			<li class="list-group-item">Vacation</li>
+		</ul>
 
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-secondary rounded list-group-item"> </li>
-            <li class="list-group-item">Absent</li>
-        </ul>
-    </div>
-    <hr>
+		<ul class="d-flex justify-content-center">
+			<li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;" class="bg-secondary rounded list-group-item"> </li>
+			<li class="list-group-item">Absent</li>
+		</ul>
+	</div>
+	<hr>
 </div>

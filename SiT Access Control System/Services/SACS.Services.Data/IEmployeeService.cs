@@ -12,10 +12,10 @@
     {
         void RemoveById(string id);
 
-        Employee FindEmployeeById(string id);
+        ApplicationUser FindEmployeeById(string id);
 
-        Task AddAsync(Employee employee);
+        Task AddAsync(ApplicationUser employee);
 
-        List<Employee> GetAllEmployees();
+        List<ApplicationUser> GetAllEmployees();
     }
 }

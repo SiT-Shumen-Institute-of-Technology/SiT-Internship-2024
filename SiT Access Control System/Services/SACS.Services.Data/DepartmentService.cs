@@ -18,10 +18,10 @@
             this.departmentRepository = departmentRepository;
         }
 
-        public void Add(Department department)
+        public async Task AddAsync(Department department)
         {
-            this.departmentRepository.AddAsync(department);
-            this.departmentRepository.SaveChangesAsync();
+            await this.departmentRepository.AddAsync(department);
+            await this.departmentRepository.SaveChangesAsync();
         }
 
         public Department GetDepartmentById(string id)

@@ -18,17 +18,17 @@
             this.dayRepository = dayRepository;
         }
 
-        public void Add(Day day)
+        public async Task AddAsync(Day day)
         {
-            this.dayRepository.AddAsync(day);
-            this.dayRepository.SaveChangesAsync();
+            await this.dayRepository.AddAsync(day);
+            await this.dayRepository.SaveChangesAsync();
         }
 
-        public void RemoveById(string id)
+        public async Task RemoveByIdAsync(string id)
         {
             var choosenDay = this.dayRepository.All().FirstOrDefault(x => x.Id == id);
             this.dayRepository.Delete(choosenDay);
-            this.dayRepository.SaveChangesAsync();
+            await this.dayRepository.SaveChangesAsync();
         }
     }
 }

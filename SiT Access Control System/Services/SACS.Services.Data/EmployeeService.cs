@@ -12,34 +12,34 @@
 
     public class EmployeeService : IEmployeeService
     {
-        private readonly IDeletableEntityRepository<Employee> employeeRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
 
-        public EmployeeService(IDeletableEntityRepository<Employee> employeeRepository)
+        public EmployeeService(IDeletableEntityRepository<ApplicationUser> employeeRepository)
         {
-            this.employeeRepository = employeeRepository;
+            this.userRepository = employeeRepository;
         }
 
-        public async Task AddAsync(Employee employee)
+        public async Task AddAsync(ApplicationUser employee)
         {
-            await this.employeeRepository.AddAsync(employee);
-            await this.employeeRepository.SaveChangesAsync();
+            await this.userRepository.AddAsync(employee);
+            await this.userRepository.SaveChangesAsync();
         }
 
         public void RemoveById(string id)
         {
-            Employee choosenEmployee = this.employeeRepository.All().FirstOrDefault(x => x.Id == id);
-            this.employeeRepository.Delete(choosenEmployee);
-            this.employeeRepository.SaveChangesAsync();
+            ApplicationUser choosenEmployee = this.userRepository.All().FirstOrDefault(x => x.Id == id);
+            this.userRepository.Delete(choosenEmployee);
+            this.userRepository.SaveChangesAsync();
         }
 
-        public List<Employee> GetAllEmployees()
+        public List<ApplicationUser> GetAllEmployees()
         {
-            return this.employeeRepository.All().ToList();
+            return this.userRepository.All().ToList();
         }
 
-        public Employee FindEmployeeById(string id)
+        public ApplicationUser FindEmployeeById(string id)
         {
-            return this.employeeRepository.All().FirstOrDefault(x => x.Id == id);
+            return this.userRepository.All().FirstOrDefault(x => x.Id == id);
         }
     }
 }

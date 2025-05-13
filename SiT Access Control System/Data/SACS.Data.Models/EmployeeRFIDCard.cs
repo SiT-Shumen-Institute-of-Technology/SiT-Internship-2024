@@ -10,9 +10,9 @@
 
     public class EmployeeRFIDCard : BaseDeletableModel<string>
     {
-        public virtual string EmployeeId { get; set; }
+        public virtual string UserId { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public virtual string RFIDCardId { get; set; }
 

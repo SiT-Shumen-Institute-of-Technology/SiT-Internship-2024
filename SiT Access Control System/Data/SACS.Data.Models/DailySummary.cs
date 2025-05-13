@@ -12,7 +12,7 @@
     {
         public Status CurrentStatus { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public virtual ApplicationUser Employee { get; set; }
 
         public string EmployeeId { get; set; }
     }
