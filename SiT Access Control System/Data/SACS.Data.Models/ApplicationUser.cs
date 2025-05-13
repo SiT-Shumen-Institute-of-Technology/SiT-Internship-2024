@@ -23,18 +23,19 @@ public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
 
     public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-    // Audit info
-
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
 
-    public DateTime CreatedOn { get; set; }
+    public string? Position { get; set; }
 
-    public DateTime? ModifiedOn { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    // Deletable entity
+    public int? DepartmentId { get; set; }
+
+    public Department? Department { get; set; }
     public bool IsDeleted { get; set; }
-
     public DateTime? DeletedOn { get; set; }
+    public DateTime CreatedOn { get; set; }
+    public DateTime? ModifiedOn { get; set; }
 }

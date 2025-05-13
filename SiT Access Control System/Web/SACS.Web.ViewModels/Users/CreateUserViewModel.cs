@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SACS.Data.Models;
 
 namespace SACS.Web.ViewModels.Administration.Users;
 
@@ -15,6 +16,14 @@ public class CreateUserViewModel
     [Required]
     [Display(Name = "Last Name")]
     public string LastName { get; set; }
+
+    public string? Position { get; set; }
+
+    [MinLength(6)] public string? PhoneNumber { get; set; }
+
+    public int? DepartmentId { get; set; }
+
+    public List<Department> Departments { get; set; }
 
     [Required] [EmailAddress] public string Email { get; set; }
 
