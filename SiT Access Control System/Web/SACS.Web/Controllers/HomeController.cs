@@ -1,40 +1,48 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SACS.Common;
-using SACS.Services.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using SACS.Data.Models;
 using SACS.Web.ViewModels;
-using SACS.Web.ViewModels.Employee;
+using SACS.Web.ViewModels.Administration.Dashboard;
 
 namespace SACS.Web.Controllers;
 
 public class HomeController : BaseController
 {
-    private readonly IEmployeeService employeeService;
-    private readonly ISummaryService summaryService;
+    private readonly UserManager<ApplicationUser> userManager;
 
-    public HomeController(IEmployeeService employeeService, ISummaryService summaryService)
+    public HomeController(UserManager<ApplicationUser> userManager)
     {
-        this.employeeService = employeeService;
-        this.summaryService = summaryService;
+        this.userManager = userManager;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View(new EmployeeListViewModel
+        var allUsers = await userManager.Users.ToListAsync();
+        var userRows = new List<IndexViewModel.UserRow>();
+
+        foreach (var user in allUsers)
         {
-            Employees = employeeService.GetAllEmployees(),
-            Summaries = summaryService.GetAllSummaries()
-        });
-    }
+            var roles = await userManager.GetRolesAsync(user);
 
+            userRows.Add(new IndexViewModel.UserRow
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = roles
+            });
+        }
 
-    [HttpPost]
-    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-    public IActionResult Delete(string id)
-    {
-        employeeService.RemoveById(id);
-        return RedirectToAction(nameof(Index));
+        var model = new IndexViewModel
+        {
+            Users = userRows
+        };
+
+        return View(model);
     }
 
     public IActionResult Privacy()
@@ -45,7 +53,6 @@ public class HomeController : BaseController
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(
-            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

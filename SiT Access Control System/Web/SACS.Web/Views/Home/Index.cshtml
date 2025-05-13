@@ -1,103 +1,29 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SACS.Data.Models
-@model SACS.Web.ViewModels.Employee.EmployeeListViewModel
+﻿@model SACS.Web.ViewModels.Administration.Dashboard.IndexViewModel
+
 @{
     ViewData["Title"] = "Home Page";
-    // Convert ICollection to List for indexed access
-    var employeesList = Model.Employees.ToList();
+    var users = Model.Users;
 }
 
 <div class="text-center">
     <h1 class="display-4">Team Attendance</h1>
 </div>
 
-<table style="margin-top: 100px;" class="table">
-    <tbody>
-    @for (var i = 0; i < employeesList.Count; i += 4)
-    {
-        <tr>
-            @for (var j = 0; j < 4 && j + i < employeesList.Count; j++)
-            {
-                var currentEmployee = employeesList[j + i];
-                Summary first = null;
-                foreach (var x in Model.Summaries)
+<!-- Excel-like grid layout -->
+<div class="container mt-5">
+    <div class="row g-0">
+        <div class="col-12">
+            <div class="d-grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1px; background-color: #dee2e6;">
+                @for (int i = 0; i < users.Count; i++)
                 {
-                    if (x.EmployeeId == currentEmployee.Id)
-                    {
-                        first = x;
-                        break;
-                    }
-                }
+                    var backgroundColor = (i / 4 + i % 4) % 2 == 0 ? "#f8f9fa" : "#e9ecef"; // chessboard-like pattern
 
-                var currentSummary = first?.CurrentState;
-                if (currentSummary == "Active")
-                {
-                    <td class="bg-success border">
-                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
+                        <div class="p-3 text-center border" style="background-color:@backgroundColor;">
+                            <strong>@users[i].UserName</strong>
+                        </div>
                 }
-                else if (currentSummary == "Remote")
-                {
-                    <td class="bg-primary border">
-                        <a class="text-decoration-none" style="color: white" asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else if (currentSummary == "Vacation")
-                {
-                    <td class="bg-warning border">
-                        <a class="text-decoration-none" style="color: black"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else if (currentSummary == "Absent")
-                {
-                    <td class="bg-secondary border">
-                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else
-                {
-                    <td class="border">
-                        <a class="text-decoration-none" asp-controller="Employee" asp-action="EmployeeInformation"
-                           asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-            }
-        </tr>
-    }
-    </tbody>
-</table>
-
-<div style="margin-top: 100px;">
-    <h3 class="text-center">Color Legend</h3>
-    <hr>
-    <div>
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;"
-                class="bg-success rounded list-group-item"></li>
-            <li class="list-group-item">Active</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;"
-                class="bg-primary rounded list-group-item"></li>
-            <li class="list-group-item">Remote</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;"
-                class="bg-warning rounded list-group-item"></li>
-            <li class="list-group-item">Vacation</li>
-        </ul>
-
-        <ul class="d-flex justify-content-center">
-            <li style="height: 10px; width: 10px; margin-top:5px; margin-right: 5px;"
-                class="bg-secondary rounded list-group-item"></li>
-            <li class="list-group-item">Absent</li>
-        </ul>
+            </div>
+        </div>
     </div>
-    <hr>
+</div>
 </div>

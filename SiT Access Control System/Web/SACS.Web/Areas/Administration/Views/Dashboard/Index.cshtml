@@ -50,7 +50,6 @@
         }
     }
 
-    /* Add outline styles for edit mode */
     tr.edit-mode-active {
         outline: 2px solid #0d6efd;
         outline-offset: -2px;
@@ -75,199 +74,198 @@
 
 <table class="table table-bordered table-striped">
     <thead>
-    <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-    </tr>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var user in Model.Users)
-    {
-        var currentRole = user.Roles.FirstOrDefault() ?? "User";
-        <tr id="row-@user.Id">
-            <td>
-                <span class="view-mode">@user.UserName</span>
-                <input type="text" class="edit-mode form-control" value="@user.UserName">
-            </td>
-            <td>
-                <span class="view-mode">@user.Email</span>
-                <input type="email" class="edit-mode form-control" value="@user.Email">
-            </td>
-            <td>
-                    <span class="view-mode">
-                        <span
-                            class="badge @(currentRole == "Administrator" ? "bg-danger" : currentRole == "Employee" ? "bg-primary" : "bg-secondary")">
+        @foreach (var user in Model.Users)
+        {
+            var currentRole = user.Roles.FirstOrDefault() ?? "User";
+                <tr id="row-@user.Id">
+                    <td>
+                        <span class="view-mode">@user.UserName</span>
+                        <input type="text" class="edit-mode form-control" value="@user.UserName">
+                    </td>
+                    <td>
+                        <span class="view-mode">@user.Email</span>
+                        <input type="email" class="edit-mode form-control" value="@user.Email">
+                    </td>
+                    <td>
+                        <span class="view-mode">
+                            <span
+                                class="badge @(currentRole == "Administrator" ? "bg-danger" : currentRole == "Employee" ? "bg-primary" : "bg-secondary")">
                             @currentRole
+                            </span>
                         </span>
-                    </span>
-                <select class="edit-mode form-control">
-                    @foreach (var role in allRoles)
-                    {
-                        <option value="@role" selected="@(role == currentRole)">@role</option>
-                    }
-                </select>
-            </td>
-            <td>
-                <button class="btn btn-primary edit-btn">Edit</button>
-                <button class="btn btn-success save-btn" data-userid="@user.Id" style="display: none;">
-                    <span class="btn-text">Save</span>
-                </button>
-                <button class="btn btn-secondary cancel-btn" style="display: none;">Cancel</button>
-                <button class="btn btn-danger delete-btn" data-userid="@user.Id">
-                    <span class="btn-text">Delete</span>
-                </button>
-            </td>
-        </tr>
-    }
+                        <select class="edit-mode form-control">
+                        @foreach (var role in allRoles)
+                        {
+                                    <option value="@role" selected="@(role == currentRole)">@role</option>
+                        }
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary edit-btn">Edit</button>
+                        <button class="btn btn-success save-btn" data-userid="@user.Id" style="display: none;">
+                            <span class="btn-text">Save</span>
+                        </button>
+                        <button class="btn btn-secondary cancel-btn" style="display: none;">Cancel</button>
+                        <button class="btn btn-danger delete-btn" data-userid="@user.Id">
+                            <span class="btn-text">Delete</span>
+                        </button>
+                    </td>
+                </tr>
+        }
     </tbody>
 </table>
 
 <div class="text-center mt-3">
     <div class="d-flex justify-content-center gap-3">
-        <a href="/Employee/Create" class="btn btn-success btn-lg">Add Employee</a>
         <a href="/User/Create" class="btn btn-success btn-lg">Add User</a>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            const token = '@token';
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                const token = '@token';
 
-            function showToast(message, isSuccess) {
-                const toast = $('#toast');
-                toast.removeClass('alert-success alert-error');
-                toast.addClass(isSuccess ? 'alert-success' : 'alert-error');
-                toast.text(message).fadeIn(300);
-                setTimeout(() => toast.fadeOut(300), 3000);
-            }
-
-            function setLoading(element, isLoading) {
-                const btnText = element.find('.btn-text');
-                if (isLoading) {
-                    element.prepend('<span class="loading-spinner"></span>');
-                    element.prop('disabled', true);
-                    btnText.text(isLoading === 'delete' ? 'Deleting...' : 'Saving...');
-                } else {
-                    element.find('.loading-spinner').remove();
-                    element.prop('disabled', false);
-                    btnText.text(element.hasClass('delete-btn') ? 'Delete' : 'Save');
-                }
-            }
-
-            // Edit button click handler
-            $(".edit-btn").click(function () {
-                var row = $(this).closest("tr");
-                row.addClass("edit-mode-active");
-                row.find(".view-mode").addClass("view-mode-hide");
-                row.find(".edit-mode").addClass("edit-mode-show");
-                row.find(".edit-btn, .delete-btn").hide();
-                row.find(".save-btn, .cancel-btn").show();
-            });
-
-            // Cancel button click handler
-            $(".cancel-btn").click(function () {
-                var row = $(this).closest("tr");
-                row.removeClass("edit-mode-active");
-                row.find(".view-mode").removeClass("view-mode-hide");
-                row.find(".edit-mode").removeClass("edit-mode-show");
-                row.find(".save-btn, .cancel-btn").hide();
-                row.find(".edit-btn, .delete-btn").show();
-            });
-
-            // Save button click handler
-            $(".save-btn").click(function () {
-                var row = $(this).closest("tr");
-                var userId = $(this).data("userid");
-                var userName = row.find("input[type='text']").val().trim();
-                var email = row.find("input[type='email']").val().trim();
-                var role = row.find("select").val();
-
-                if (!userName || !email) {
-                    showToast("Username and email are required", false);
-                    return;
+                function showToast(message, isSuccess) {
+                    const toast = $('#toast');
+                    toast.removeClass('alert-success alert-error');
+                    toast.addClass(isSuccess ? 'alert-success' : 'alert-error');
+                    toast.text(message).fadeIn(300);
+                    setTimeout(() => toast.fadeOut(300), 3000);
                 }
 
-                setLoading($(this), true);
-
-                $.ajax({
-                    url: "@Url.Action("UpdateUser", "Dashboard", new { area = "Administration" })",
-                    type: "POST",
-                    headers: {
-                        "RequestVerificationToken": token
-                    },
-                    data: {
-                        id: userId,
-                        userName: userName,
-                        email: email,
-                        role: role
-                    },
-                    success: function () {
-                        // Update the view with new values
-                        row.find(".view-mode").eq(0).text(userName);
-                        row.find(".view-mode").eq(1).text(email);
-                        row.find(".view-mode").eq(2).html(
-                            `<span class="badge ${role === "Administrator" ? "bg-danger" : role === "Employee" ? "bg-primary" : "bg-secondary"}">${role}</span>`
-                        );
-
-                        // Exit edit mode
-                        row.removeClass("edit-mode-active");
-                        row.find(".view-mode").removeClass("view-mode-hide");
-                        row.find(".edit-mode").removeClass("edit-mode-show");
-                        row.find(".save-btn, .cancel-btn").hide();
-                        row.find(".edit-btn, .delete-btn").show();
-
-                        showToast("User updated successfully!", true);
-                    },
-                    error: function (xhr) {
-                        const errorMsg = xhr.responseText || "Error updating user";
-                        showToast(errorMsg, false);
-                        console.error("Update error:", xhr.responseText);
-                    },
-                    complete: function () {
-                        setLoading($(".save-btn[data-userid='" + userId + "']"), false);
+                function setLoading(element, isLoading) {
+                    const btnText = element.find('.btn-text');
+                    if (isLoading) {
+                        element.prepend('<span class="loading-spinner"></span>');
+                        element.prop('disabled', true);
+                        btnText.text(isLoading === 'delete' ? 'Deleting...' : 'Saving...');
+                    } else {
+                        element.find('.loading-spinner').remove();
+                        element.prop('disabled', false);
+                        btnText.text(element.hasClass('delete-btn') ? 'Delete' : 'Save');
                     }
+                }
+
+                // Edit button click handler
+                $(".edit-btn").click(function () {
+                    var row = $(this).closest("tr");
+                    row.addClass("edit-mode-active");
+                    row.find(".view-mode").addClass("view-mode-hide");
+                    row.find(".edit-mode").addClass("edit-mode-show");
+                    row.find(".edit-btn, .delete-btn").hide();
+                    row.find(".save-btn, .cancel-btn").show();
+                });
+
+                // Cancel button click handler
+                $(".cancel-btn").click(function () {
+                    var row = $(this).closest("tr");
+                    row.removeClass("edit-mode-active");
+                    row.find(".view-mode").removeClass("view-mode-hide");
+                    row.find(".edit-mode").removeClass("edit-mode-show");
+                    row.find(".save-btn, .cancel-btn").hide();
+                    row.find(".edit-btn, .delete-btn").show();
+                });
+
+                // Save button click handler
+                $(".save-btn").click(function () {
+                    var row = $(this).closest("tr");
+                    var userId = $(this).data("userid");
+                    var userName = row.find("input[type='text']").val().trim();
+                    var email = row.find("input[type='email']").val().trim();
+                    var role = row.find("select").val();
+
+                    if (!userName || !email) {
+                        showToast("Username and email are required", false);
+                        return;
+                    }
+
+                    setLoading($(this), true);
+
+                    $.ajax({
+                        url: "@Url.Action("UpdateUser", "Dashboard", new { area = "Administration" })",
+                        type: "POST",
+                        headers: {
+                            "RequestVerificationToken": token
+                        },
+                        data: {
+                            id: userId,
+                            userName: userName,
+                            email: email,
+                            role: role
+                        },
+                        success: function () {
+                            // Update the view with new values
+                            row.find(".view-mode").eq(0).text(userName);
+                            row.find(".view-mode").eq(1).text(email);
+                            row.find(".view-mode").eq(2).html(
+                                `<span class="badge ${role === "Administrator" ? "bg-danger" : role === "Employee" ? "bg-primary" : "bg-secondary"}">${role}</span>`
+                            );
+
+                            // Exit edit mode
+                            row.removeClass("edit-mode-active");
+                            row.find(".view-mode").removeClass("view-mode-hide");
+                            row.find(".edit-mode").removeClass("edit-mode-show");
+                            row.find(".save-btn, .cancel-btn").hide();
+                            row.find(".edit-btn, .delete-btn").show();
+
+                            showToast("User updated successfully!", true);
+                        },
+                        error: function (xhr) {
+                            const errorMsg = xhr.responseText || "Error updating user";
+                            showToast(errorMsg, false);
+                            console.error("Update error:", xhr.responseText);
+                        },
+                        complete: function () {
+                            setLoading($(".save-btn[data-userid='" + userId + "']"), false);
+                        }
+                    });
+                });
+
+                // Delete button click handler
+                $(".delete-btn").click(function () {
+                    if (!confirm("Are you sure you want to delete this user?")) {
+                        return;
+                    }
+
+                    const userId = $(this).data("userid");
+                    const row = $(this).closest("tr");
+                    const deleteBtn = $(this);
+
+                    setLoading(deleteBtn, 'delete');
+
+                    $.ajax({
+                        url: "@Url.Action("DeleteUser", "Dashboard", new { area = "Administration" })",
+                        type: "POST",
+                        headers: {
+                            "RequestVerificationToken": token
+                        },
+                        data: {id: userId},
+                        success: function () {
+                            row.fadeOut(300, function () {
+                                $(this).remove();
+                                showToast("User deleted successfully!", true);
+                            });
+                        },
+                        error: function (xhr) {
+                            const errorMsg = xhr.responseText || "Error deleting user";
+                            showToast(errorMsg, false);
+                            console.error("Delete error:", xhr.responseText);
+                        },
+                        complete: function () {
+                            setLoading(deleteBtn, false);
+                        }
+                    });
                 });
             });
-
-            // Delete button click handler
-            $(".delete-btn").click(function () {
-                if (!confirm("Are you sure you want to delete this user?")) {
-                    return;
-                }
-
-                const userId = $(this).data("userid");
-                const row = $(this).closest("tr");
-                const deleteBtn = $(this);
-
-                setLoading(deleteBtn, 'delete');
-
-                $.ajax({
-                    url: "@Url.Action("DeleteUser", "Dashboard", new { area = "Administration" })",
-                    type: "POST",
-                    headers: {
-                        "RequestVerificationToken": token
-                    },
-                    data: {id: userId},
-                    success: function () {
-                        row.fadeOut(300, function () {
-                            $(this).remove();
-                            showToast("User deleted successfully!", true);
-                        });
-                    },
-                    error: function (xhr) {
-                        const errorMsg = xhr.responseText || "Error deleting user";
-                        showToast(errorMsg, false);
-                        console.error("Delete error:", xhr.responseText);
-                    },
-                    complete: function () {
-                        setLoading(deleteBtn, false);
-                    }
-                });
-            });
-        });
-    </script>
+        </script>
 }

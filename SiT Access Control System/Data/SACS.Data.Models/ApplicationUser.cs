@@ -15,9 +15,6 @@ public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
         Roles = new HashSet<IdentityUserRole<string>>();
         Claims = new HashSet<IdentityUserClaim<string>>();
         Logins = new HashSet<IdentityUserLogin<string>>();
-        Summaries = new HashSet<Summary>();
-        EmployeeSchedules = new HashSet<EmployeeSchedule>();
-        EmployeeRFIDCards = new HashSet<EmployeeRFIDCard>();
     }
 
     public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
@@ -26,28 +23,13 @@ public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
 
     public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-    // Нови свойства вместо Employee
-
-    public int DepartmentId { get; set; }
-
-    public Department Department { get; set; }
-
-    public PersonalIdentification PersonalIdentification { get; set; }
-
-    public virtual ICollection<Summary> Summaries { get; set; }
-
-    public virtual ICollection<EmployeeSchedule> EmployeeSchedules { get; set; }
-
-    public virtual ICollection<EmployeeRFIDCard> EmployeeRFIDCards { get; set; }
-
     // Audit info
-    public DateTime CreatedOn { get; set; }
 
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
 
-    public string Position { get; set; }
+    public DateTime CreatedOn { get; set; }
 
     public DateTime? ModifiedOn { get; set; }
 

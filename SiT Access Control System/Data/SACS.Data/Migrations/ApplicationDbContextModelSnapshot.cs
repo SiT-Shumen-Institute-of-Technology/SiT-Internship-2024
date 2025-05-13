@@ -231,9 +231,6 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -270,17 +267,11 @@ namespace SACS.Data.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonalIdentificationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Position")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -294,8 +285,6 @@ namespace SACS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("NormalizedEmail")
@@ -305,8 +294,6 @@ namespace SACS.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PersonalIdentificationId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -391,10 +378,7 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DepartmentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DepartmentId1")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -423,7 +407,7 @@ namespace SACS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("IsDeleted");
 
@@ -471,9 +455,6 @@ namespace SACS.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -502,8 +483,6 @@ namespace SACS.Data.Migrations
                         .HasColumnType("time");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("EmployeeId");
 
@@ -666,23 +645,6 @@ namespace SACS.Data.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("SACS.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("SACS.Data.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SACS.Data.Models.PersonalIdentification", "PersonalIdentification")
-                        .WithMany()
-                        .HasForeignKey("PersonalIdentificationId");
-
-                    b.Navigation("Department");
-
-                    b.Navigation("PersonalIdentification");
-                });
-
             modelBuilder.Entity("SACS.Data.Models.Day", b =>
                 {
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
@@ -696,7 +658,9 @@ namespace SACS.Data.Migrations
                 {
                     b.HasOne("SACS.Data.Models.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId1");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SACS.Data.Models.ApplicationUser", "User")
                         .WithMany()
@@ -715,7 +679,7 @@ namespace SACS.Data.Migrations
                         .HasForeignKey("RFIDCardId");
 
                     b.HasOne("SACS.Data.Models.ApplicationUser", "User")
-                        .WithMany("EmployeeRFIDCards")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("RFIDCard");
@@ -725,10 +689,6 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
                 {
-                    b.HasOne("SACS.Data.Models.ApplicationUser", null)
-                        .WithMany("EmployeeSchedules")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("SACS.Data.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
@@ -752,7 +712,7 @@ namespace SACS.Data.Migrations
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("SACS.Data.Models.ApplicationUser", "User")
-                        .WithMany("Summaries")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Employee");
@@ -764,15 +724,9 @@ namespace SACS.Data.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("EmployeeRFIDCards");
-
-                    b.Navigation("EmployeeSchedules");
-
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
-
-                    b.Navigation("Summaries");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.Department", b =>

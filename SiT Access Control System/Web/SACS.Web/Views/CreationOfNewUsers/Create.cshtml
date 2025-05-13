@@ -21,11 +21,16 @@
 
 <form asp-action="Create" method="post" class="w-50 mx-auto mt-4">
     <!-- Rest of your form fields remain the same -->
-    <div class="mb-3">
-        <label asp-for="UserName" class="form-label"></label>
-        <input asp-for="UserName" class="form-control"/>
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
+   <div class="mb-3">
+    <label asp-for="FirstName" class="form-label"></label>
+    <input asp-for="FirstName" class="form-control"/>
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="LastName" class="form-label"></label>
+    <input asp-for="LastName" class="form-control"/>
+    <span asp-validation-for="LastName" class="text-danger"></span>
+</div>
     <div class="mb-3">
         <label asp-for="Email" class="form-label"></label>
         <input asp-for="Email" type="email" class="form-control"/>

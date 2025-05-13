@@ -7,8 +7,14 @@ namespace SACS.Web.ViewModels.Administration.Users;
 public class CreateUserViewModel
 {
     [Required]
-    [Display(Name = "Username")]
+    [Display(Name = "First Name")]
+    public string FirstName { get; set; }
+
     public string UserName { get; set; }
+
+    [Required]
+    [Display(Name = "Last Name")]
+    public string LastName { get; set; }
 
     [Required] [EmailAddress] public string Email { get; set; }
 

@@ -45,8 +45,8 @@ public class UserController : Controller
         {
             // Debug: Check validation errors
             foreach (var state in ModelState)
-            foreach (var error in state.Value.Errors)
-                Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
+                foreach (var error in state.Value.Errors)
+                    Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
 
             model.Roles = GetAvailableRoles();
             return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
@@ -54,10 +54,23 @@ public class UserController : Controller
 
         try
         {
+            // Ensure first and last names are present if required
+            if (string.IsNullOrEmpty(model.FirstName) || string.IsNullOrEmpty(model.LastName))
+            {
+                ModelState.AddModelError(string.Empty, "First name and last name are required.");
+                model.Roles = GetAvailableRoles();
+                return View("~/Views/CreationOfNewUsers/Create.cshtml", model);
+            }
+
+            // Generate UserName from FirstName and LastName
+            var userName = $"{model.FirstName}{model.LastName}";
+
             var user = new ApplicationUser
             {
-                UserName = model.UserName,
-                Email = model.Email
+                UserName = userName,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
@@ -89,7 +102,8 @@ public class UserController : Controller
                 return RedirectToAction("Index", "Dashboard", new { area = "Administration" });
             }
 
-            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
         }
         catch (Exception ex)
         {

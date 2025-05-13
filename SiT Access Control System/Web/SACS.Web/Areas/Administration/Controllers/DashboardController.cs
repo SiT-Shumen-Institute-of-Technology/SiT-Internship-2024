@@ -68,21 +68,24 @@ public class DashboardController : AdministrationController
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
 
-            // Update basic information
+            // Update editable fields
             user.UserName = userName;
+            user.NormalizedUserName = userName.ToUpperInvariant();
             user.Email = email;
-            var result = await _userManager.UpdateAsync(user);
+            user.NormalizedEmail = email.ToUpperInvariant();
 
+            var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded) return BadRequest("Failed to update user.");
 
-            // Update role
+            // Update role if changed
             var currentRoles = await _userManager.GetRolesAsync(user);
-            if (currentRoles.Contains(role)) return Ok(); // If the role is already assigned, no need to change
+            if (!currentRoles.Contains(role))
+            {
+                foreach (var currentRole in currentRoles)
+                    await _userManager.RemoveFromRoleAsync(user, currentRole);
 
-            // Remove old roles and add the new one
-            foreach (var currentRole in currentRoles) await _userManager.RemoveFromRoleAsync(user, currentRole);
-
-            await _userManager.AddToRoleAsync(user, role);
+                await _userManager.AddToRoleAsync(user, role);
+            }
 
             return Ok();
         }
@@ -113,18 +116,26 @@ public class DashboardController : AdministrationController
             return View(model);
         }
 
+        // Auto-generate username from FirstName + LastName if left blank
+        var username = string.IsNullOrWhiteSpace(model.UserName)
+            ? $"{model.FirstName}{model.LastName}".ToLowerInvariant()
+            : model.UserName;
+
         var newUser = new ApplicationUser
         {
-            UserName = model.UserName,
+            UserName = username,
+            NormalizedUserName = username.ToUpperInvariant(),
             Email = model.Email,
-            EmailConfirmed = false
+            NormalizedEmail = model.Email.ToUpperInvariant(),
+            EmailConfirmed = false,
         };
 
         var result = await _userManager.CreateAsync(newUser, model.Password);
 
         if (!result.Succeeded)
         {
-            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
 
             model.Roles = GetAvailableRoles();
             return View(model);

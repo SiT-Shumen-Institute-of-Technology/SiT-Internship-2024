@@ -12,8 +12,8 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250508112832_initialCreate")]
-    partial class initialCreate
+    [Migration("20250513120028_Fix")]
+    partial class Fix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,8 +241,14 @@ namespace SACS.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -375,10 +381,7 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DepartmentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DepartmentId1")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -407,7 +410,7 @@ namespace SACS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("IsDeleted");
 
@@ -427,9 +430,6 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -439,13 +439,16 @@ namespace SACS.Data.Migrations
                     b.Property<string>("RFIDCardId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("RFIDCardId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmployeesRFIDCards");
                 });
@@ -568,6 +571,9 @@ namespace SACS.Data.Migrations
                     b.Property<int>("TotalHoursWorked")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("VacationDays")
                         .HasColumnType("int");
 
@@ -576,6 +582,8 @@ namespace SACS.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Summaries");
                 });
@@ -653,7 +661,9 @@ namespace SACS.Data.Migrations
                 {
                     b.HasOne("SACS.Data.Models.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId1");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SACS.Data.Models.ApplicationUser", "User")
                         .WithMany()
@@ -667,17 +677,17 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeRFIDCard", b =>
                 {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("SACS.Data.Models.RFIDCard", "RFIDCard")
                         .WithMany()
                         .HasForeignKey("RFIDCardId");
 
-                    b.Navigation("Employee");
+                    b.HasOne("SACS.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("RFIDCard");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
@@ -704,7 +714,13 @@ namespace SACS.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
+                    b.HasOne("SACS.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Employee");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.ApplicationUser", b =>
