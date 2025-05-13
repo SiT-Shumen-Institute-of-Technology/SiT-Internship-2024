@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SACS.Web.ViewModels;
 
 public class ScheduleViewModel
 {
+    public List<SelectListItem> Employees { get; set; } = new();
+
     public string EmployeeId { get; set; }
 
     public string EmployeeName => $"{FirstName} {LastName}";
@@ -30,9 +31,6 @@ public class ScheduleViewModel
     public TimeSpan? ActualEndTime { get; set; }
 
     public string ActualLocation { get; set; }
-
-    public List<SelectListItem> Employees { get; set; }
-
 
     public List<ScheduleEntryViewModel> WeeklySchedule { get; set; } = new();
 }

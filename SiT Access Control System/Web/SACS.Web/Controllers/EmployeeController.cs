@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SACS.Data.Models;
 using SACS.Services.Data;
 using SACS.Services.Data.Interfaces;
@@ -135,11 +138,22 @@ public class EmployeeController : Controller
 
     // GET: /Employee/Schedule
     [HttpGet]
-    public IActionResult Schedule()
+    [Authorize]
+    public async Task<IActionResult> Schedule()
     {
-        var model = scheduleService.GetWeeklySchedule();
-        return View(model);
+        var employeeUsers = await userManagementService.GetUsersInRoleAsync("Employee");
+
+        var viewModel = scheduleService.GetWeeklySchedule();
+
+        viewModel.Employees = employeeUsers.Select(u => new SelectListItem
+        {
+            Value = u.Id,
+            Text = $"{u.UserName}",
+        }).ToList();
+
+        return View(viewModel);
     }
+
 
     // POST: /Employee/Schedule
     [HttpPost]
@@ -147,7 +161,16 @@ public class EmployeeController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.Employees = scheduleService.GetWeeklySchedule().Employees;
+            var employeeUsers = await userManagementService.GetUsersInRoleAsync("Employee");
+
+            model.Employees = employeeUsers.Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = $"{u.UserName}"
+            }).ToList();
+
+            model.WeeklySchedule = scheduleService.GetWeeklySchedule().WeeklySchedule;
+
             return View("Schedule", model);
         }
 
@@ -156,4 +179,6 @@ public class EmployeeController : Controller
         await scheduleService.AddScheduleAsync(schedule);
         return RedirectToAction(nameof(this.Schedule));
     }
+
+
 }
