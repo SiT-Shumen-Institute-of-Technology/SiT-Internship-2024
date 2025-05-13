@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SACS.Data.Common.Repositories;
 using SACS.Data.Models;
@@ -33,11 +33,11 @@ public class ScheduleService : IScheduleService
             WeeklySchedule = scheduleRepository
                 .All()
                 .Where(e => e.Date >= startOfWeek && e.Date < endOfWeek)
-                .Include(e => e.Employee)
+                .Include(e => e.User)
                 .Select(e => new ScheduleEntryViewModel
                 {
-                    EmployeeId = e.EmployeeId,
-                    EmployeeName = e.Employee.FirstName + " " + e.Employee.LastName,
+                    EmployeeId = e.UserId,
+                    EmployeeName = e.User.UserName,
                     Date = e.Date,
                     StartTime = e.StartTime,
                     EndTime = e.EndTime,
@@ -45,14 +45,14 @@ public class ScheduleService : IScheduleService
                 })
                 .ToList(),
 
-            Employees = employeeRepository
+            Employees = this.employeeRepository
                 .All()
                 .Select(e => new SelectListItem
                 {
                     Value = e.Id.ToString(),
                     Text = e.FirstName + " " + e.LastName
                 })
-                .ToList()
+                .ToList(),
         };
 
         return schedule;

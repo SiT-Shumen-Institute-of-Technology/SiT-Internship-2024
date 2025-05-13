@@ -21,4 +21,6 @@ public interface IUserManagementService
     Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password, string role);
 
     ApplicationUser GetUserById(string id);
+
+    Task<List<ApplicationUser>> GetUsersInRoleAsync(string roleName);
 }

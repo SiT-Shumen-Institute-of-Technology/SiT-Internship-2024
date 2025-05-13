@@ -1,11 +1,11 @@
 ﻿@model ScheduleViewModel
 
 <div class="container mt-4">
-    <h2 class="mb-4">Добавяне на график</h2>
+    <h2 class="mb-4">Add schedule:</h2>
 
     <form method="post" asp-action="Schedule" asp-controller="Employee" class="bg-white p-4 rounded shadow-sm">
         <div class="mb-3">
-            <label for="employeeId" class="form-label">Служител:</label>
+            <label for="employeeId" class="form-label">Employee:</label>
             <select id="employeeId" name="EmployeeId" class="form-select" required>
                 @foreach (var employee in Model.Employees)
                 {
@@ -15,22 +15,22 @@
         </div>
 
         <div class="mb-3">
-            <label for="date" class="form-label">Дата:</label>
+            <label for="date" class="form-label">Date:</label>
             <input type="date" id="date" name="Date" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="startTime" class="form-label">Начален час:</label>
+            <label for="startTime" class="form-label">Start time:</label>
             <input type="time" id="startTime" name="StartTime" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="endTime" class="form-label">Краен час:</label>
+            <label for="endTime" class="form-label">End time:</label>
             <input type="time" id="endTime" name="EndTime" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="location" class="form-label">Локация:</label>
+            <label for="location" class="form-label">Status:</label>
             <select id="location" name="Location" class="form-select" required>
                 <option value="Office">Office</option>
                 <option value="Remote">Remote</option>
@@ -38,20 +38,20 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Добави</button>
+        <button type="submit" class="btn btn-success">Add</button>
     </form>
 
-    <h2 class="mt-5 mb-3">График за текущата седмица</h2>
+    <h2 class="mt-5 mb-3">Schedule for this week</h2>
 
     <div class="table-responsive bg-white p-3 rounded shadow-sm">
         <table class="table table-bordered table-striped">
             <thead class="table-light">
             <tr>
-                <th>Служител</th>
-                <th>Дата</th>
-                <th>Начален час</th>
-                <th>Краен час</th>
-                <th>Статус</th>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>

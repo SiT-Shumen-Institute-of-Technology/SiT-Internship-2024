@@ -10,9 +10,9 @@ public class EmployeeSchedule : BaseDeletableModel<string>
         Id = Guid.NewGuid().ToString();
     }
 
-    public string EmployeeId { get; set; }
+    public string UserId { get; set; }
 
-    public virtual Employee Employee { get; set; }
+    public virtual ApplicationUser User { get; set; }
 
     public DateTime Date { get; set; }
 

@@ -107,4 +107,10 @@ public class UserManagementService : IUserManagementService
             throw new InvalidOperationException(
                 $"Failed to update user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
     }
+
+    public async Task<List<ApplicationUser>> GetUsersInRoleAsync(string roleName)
+    {
+        return (await userManager.GetUsersInRoleAsync(roleName)).ToList();
+    }
+
 }

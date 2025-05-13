@@ -12,8 +12,8 @@ using SACS.Data;
 namespace SACS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250505095558_Initial")]
-    partial class Initial
+    [Migration("20250512140450_MadeChanges")]
+    partial class MadeChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -464,9 +464,6 @@ namespace SACS.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
@@ -482,11 +479,14 @@ namespace SACS.Data.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmployeeSchedules");
                 });
@@ -682,11 +682,11 @@ namespace SACS.Data.Migrations
 
             modelBuilder.Entity("SACS.Data.Models.EmployeeSchedule", b =>
                 {
-                    b.HasOne("SACS.Data.Models.Employee", "Employee")
+                    b.HasOne("SACS.Data.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Employee");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SACS.Data.Models.PersonalIdentification", b =>
