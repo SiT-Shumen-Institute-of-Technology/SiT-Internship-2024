@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using SACS.Data.Common.Repositories;
 using SACS.Data.Models;
 using SACS.Services.Data.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SACS.Services.Data;
 
@@ -36,6 +37,8 @@ public class EmployeeService : IEmployeeService
 
     public Employee FindEmployeeById(string id)
     {
-        return employeeRepository.All().FirstOrDefault(x => x.Id == id);
+        return employeeRepository.All()
+        .Include(e => e.Department) 
+        .FirstOrDefault(x => x.Id == id);
     }
 }

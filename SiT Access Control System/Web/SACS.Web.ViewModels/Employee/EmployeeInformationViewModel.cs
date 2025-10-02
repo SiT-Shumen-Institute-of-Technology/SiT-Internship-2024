@@ -5,6 +5,7 @@ namespace SACS.Web.ViewModels.Employee;
 public class EmployeeInformationViewModel
 {
     public string Id { get; set; }
+
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
