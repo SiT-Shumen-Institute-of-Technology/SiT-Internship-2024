@@ -41,38 +41,3 @@
         <button type="submit" class="btn btn-success">Add</button>
     </form>
 
-    <h2 class="mt-5 mb-3">Schedule for this week</h2>
-
-    <div class="table-responsive bg-white p-3 rounded shadow-sm">
-        <table class="table table-bordered table-striped">
-            <thead class="table-light">
-            <tr>
-                <th>Employee</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var entry in Model.WeeklySchedule)
-            {
-                <tr>
-                    <td>@entry.EmployeeName</td>
-                    <td>@entry.Date.ToString("dd-MM-yyyy")</td>
-                    <td>@entry.StartTime.ToString(@"hh\:mm")</td>
-                    <td>@entry.EndTime.ToString(@"hh\:mm")</td>
-                    <td class="text-white fw-bold
-                            @(
-                                                           entry.Location == "Office" ? "bg-success" :
-                                                           entry.Location == "Remote" ? "bg-secondary" :
-                                                           entry.Location == "Vacation" ? "bg-warning" : ""
-                                                           )">
-                        @entry.Location
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>

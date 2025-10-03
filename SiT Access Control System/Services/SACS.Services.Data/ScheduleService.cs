@@ -31,19 +31,19 @@ public class ScheduleService : IScheduleService
         var schedule = new ScheduleViewModel
         {
             WeeklySchedule = scheduleRepository
-                .All()
-                .Where(e => e.Date >= startOfWeek && e.Date < endOfWeek)
-                .Include(e => e.User)
-                .Select(e => new ScheduleEntryViewModel
-                {
-                    EmployeeId = e.UserId,
-                    EmployeeName = e.User.UserName,
-                    Date = e.Date,
-                    StartTime = e.StartTime,
-                    EndTime = e.EndTime,
-                    Location = e.Location
-                })
-                .ToList(),
+    .All()
+    .Where(e => e.Date >= startOfWeek && e.Date < endOfWeek)
+    .Include(e => e.Employee) // ensure Employee is loaded
+    .Select(e => new ScheduleEntryViewModel
+    {
+        EmployeeId = e.EmployeeId,
+        EmployeeName = e.Employee.FirstName + " " + e.Employee.LastName, // use Employee
+        Date = e.Date,
+        StartTime = e.StartTime,
+        EndTime = e.EndTime,
+        Location = e.Location
+    })
+    .ToList(),
 
             Employees = this.employeeRepository
                 .All()

@@ -1,39 +1,70 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SACS.Common;
+using SACS.Data.Models;
 using SACS.Services.Data.Interfaces;
 using SACS.Web.ViewModels;
 using SACS.Web.ViewModels.Employee;
+using System.Threading.Tasks;
 
 namespace SACS.Web.Controllers;
 
 public class HomeController : BaseController
 {
-    private readonly IEmployeeService employeeService;
-    private readonly ISummaryService summaryService;
+    private readonly IEmployeeService _employeeService;
+    private readonly ISummaryService _summaryService;
+    private readonly IScheduleService _scheduleService;
 
-    public HomeController(IEmployeeService employeeService, ISummaryService summaryService)
+    public HomeController(
+        IEmployeeService employeeService,
+        ISummaryService summaryService,
+        IScheduleService scheduleService)
     {
-        this.employeeService = employeeService;
-        this.summaryService = summaryService;
+        _employeeService = employeeService;
+        _summaryService = summaryService;
+        _scheduleService = scheduleService;
     }
 
     public IActionResult Index()
     {
-        return View(new EmployeeListViewModel
-        {
-            Employees = employeeService.GetAllEmployees(),
-            Summaries = summaryService.GetAllSummaries()
-        });
-    }
+        // Get employee data
+        var employees = _employeeService.GetAllEmployees();
+        var summaries = _summaryService.GetAllSummaries();
 
+        // Get weekly schedule
+        var weeklySchedule = _scheduleService.GetWeeklySchedule();
+
+        var model = new EmployeeScheduleViewModel
+        {
+            EmployeeList = new EmployeeListViewModel
+            {
+                Employees = employees,
+                Summaries = summaries
+            },
+            WeeklySchedule = weeklySchedule.WeeklySchedule // ✅ Correct
+        };
+
+        return View(model);
+    }
 
     [HttpPost]
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> AddSchedule(EmployeeSchedule schedule)
     {
-        employeeService.RemoveById(id);
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _scheduleService.AddScheduleAsync(schedule);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public IActionResult DeleteEmployee(string id)
+    {
+        _employeeService.RemoveById(id);
         return RedirectToAction(nameof(Index));
     }
 
@@ -46,6 +77,6 @@ public class HomeController : BaseController
     public IActionResult Error()
     {
         return View(
-            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
