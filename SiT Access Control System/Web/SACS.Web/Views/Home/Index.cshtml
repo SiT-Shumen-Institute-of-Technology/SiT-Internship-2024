@@ -11,66 +11,6 @@
     <h1 class="display-4">Team Attendance</h1>
 </div>
 
-<table style="margin-top: 100px;" class="table">
-    <tbody>
-    @for (var i = 0; i < employeesList.Count; i += 4)
-    {
-        <tr>
-            @for (var j = 0; j < 4 && j + i < employeesList.Count; j++)
-            {
-                var currentEmployee = employeesList[j + i];
-                Summary first = null;
-                foreach (var x in Model.Summaries)
-                {
-                    if (x.EmployeeId == currentEmployee.Id)
-                    {
-                        first = x;
-                        break;
-                    }
-                }
-
-                var currentSummary = first?.CurrentState;
-                if (currentSummary == "Active")
-                {
-                    <td class="bg-success border">
-                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else if (currentSummary == "Remote")
-                {
-                    <td class="bg-primary border">
-                        <a class="text-decoration-none" style="color: white" asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else if (currentSummary == "Vacation")
-                {
-                    <td class="bg-warning border">
-                        <a class="text-decoration-none" style="color: black"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else if (currentSummary == "Absent")
-                {
-                    <td class="bg-secondary border">
-                        <a class="text-decoration-none" style="color: white"  asp-controller="Employee"
-                           asp-action="EmployeeInformation" asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-                else
-                {
-                    <td class="border">
-                        <a class="text-decoration-none" asp-controller="Employee" asp-action="EmployeeInformation"
-                           asp-route-id="@currentEmployee.Id">@currentEmployee.FirstName</a>
-                    </td>
-                }
-            }
-        </tr>
-    }
-    </tbody>
-</table>
-
 <div style="margin-top: 100px;">
     <h3 class="text-center">Color Legend</h3>
     <hr>

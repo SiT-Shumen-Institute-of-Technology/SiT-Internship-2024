@@ -10,40 +10,40 @@
         <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\..\stylecop.json"/>
+        <AdditionalFiles Include="..\..\stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="SACS.Web.Tests"/>
+        <InternalsVisibleTo Include="SACS.Web.Tests" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.20"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.20"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.20" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
 
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
 
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3"/>
-        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449"/>
-        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
+        <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.3" />
 
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.20"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.20" />
 
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3"/>
-        <PackageReference Include="Moq" Version="4.20.72"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
+        <PackageReference Include="Moq" Version="4.20.72" />
 
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="all">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -51,15 +51,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\SACS.Common\SACS.Common.csproj"/>
-        <ProjectReference Include="..\..\Data\SACS.Data.Models\SACS.Data.Models.csproj"/>
-        <ProjectReference Include="..\..\Data\SACS.Data\SACS.Data.csproj"/>
-        <ProjectReference Include="..\..\Services\SACS.Services.Data\SACS.Services.Data.csproj"/>
-        <ProjectReference Include="..\..\Services\SACS.Services.Mapping\SACS.Services.Mapping.csproj"/>
-        <ProjectReference Include="..\..\Services\SACS.Services.Messaging\SACS.Services.Messaging.csproj"/>
-        <ProjectReference Include="..\..\Services\SACS.Services\SACS.Services.csproj"/>
-        <ProjectReference Include="..\SACS.Web.Infrastructure\SACS.Web.Infrastructure.csproj"/>
-        <ProjectReference Include="..\SACS.Web.ViewModels\SACS.Web.ViewModels.csproj"/>
+        <ProjectReference Include="..\..\SACS.Common\SACS.Common.csproj" />
+        <ProjectReference Include="..\..\Data\SACS.Data.Models\SACS.Data.Models.csproj" />
+        <ProjectReference Include="..\..\Data\SACS.Data\SACS.Data.csproj" />
+        <ProjectReference Include="..\..\Services\SACS.Services.Data\SACS.Services.Data.csproj" />
+        <ProjectReference Include="..\..\Services\SACS.Services.Mapping\SACS.Services.Mapping.csproj" />
+        <ProjectReference Include="..\..\Services\SACS.Services.Messaging\SACS.Services.Messaging.csproj" />
+        <ProjectReference Include="..\..\Services\SACS.Services\SACS.Services.csproj" />
+        <ProjectReference Include="..\SACS.Web.Infrastructure\SACS.Web.Infrastructure.csproj" />
+        <ProjectReference Include="..\SACS.Web.ViewModels\SACS.Web.ViewModels.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -67,23 +67,23 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.20"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.20"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.20" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3"/>
-        <PackageReference Include="Moq" Version="4.20.72"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
+        <PackageReference Include="Moq" Version="4.20.72" />
     </ItemGroup>
 
     <ItemGroup>

@@ -141,18 +141,36 @@ public class EmployeeController : Controller
     [Authorize]
     public async Task<IActionResult> Schedule()
     {
-        var employeeUsers = await userManagementService.GetUsersInRoleAsync("Employee");
+        var employees = employeeService.GetAllEmployees(); // however you fetch them
 
         var viewModel = scheduleService.GetWeeklySchedule();
 
-        viewModel.Employees = employeeUsers.Select(u => new SelectListItem
+
+        viewModel.Employees = employees.Select(e => new SelectListItem
         {
-            Value = u.Id,
-            Text = $"{u.UserName}",
+            Value = e.Id,  
+            Text = $"{e.FirstName} {e.LastName}"
         }).ToList();
 
         return View(viewModel);
     }
+
+    [HttpGet]
+    [Authorize]
+    public IActionResult Info()
+    {
+        var employees = employeeService.GetAllEmployees();
+        var summaries = summaryService.GetAllSummaries();
+
+        var model = new EmployeeListViewModel
+        {
+            Employees = employees,
+            Summaries = summaries
+        };
+
+        return View(model);
+    }
+
 
 
     // POST: /Employee/Schedule

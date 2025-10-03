@@ -12,6 +12,10 @@ public class EmployeeSchedule : BaseDeletableModel<string>
 
     public string UserId { get; set; }
 
+    public string EmployeeId { get; set; }   // ✅ Link to Employee
+
+    public Employee Employee { get; set; }
+
     public virtual ApplicationUser User { get; set; }
 
     public DateTime Date { get; set; }

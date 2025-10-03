@@ -1,0 +1,67 @@
+﻿@model SACS.Web.ViewModels.Employee.EmployeeListViewModel
+@{
+    ViewData["Title"] = "Employee Info";
+}
+
+<h1 class="mt-4 mb-4">Employees</h1>
+
+<div class="container">
+    <div class="row">
+        @foreach (var employee in Model.Employees)
+        {
+            var summary = Model.Summaries.FirstOrDefault(x => x.EmployeeId == employee.Id);
+            var currentState = summary?.CurrentState;
+
+            string bgClass;
+            string textColor;
+
+            switch (currentState)
+            {
+                case "Active":
+                    bgClass = "bg-success";
+                    textColor = "text-white";
+                    break;
+                case "Remote":
+                    bgClass = "bg-primary";
+                    textColor = "text-white";
+                    break;
+                case "Vacation":
+                    bgClass = "bg-warning";
+                    textColor = "text-dark";
+                    break;
+                case "Absent":
+                    bgClass = "bg-secondary";
+                    textColor = "text-white";
+                    break;
+                default:
+                    bgClass = "bg-light";
+                    textColor = "text-dark";
+                    break;
+            }
+
+            <div class="col-12 col-sm-6 col-md-3 mb-3">
+                <a asp-controller="Employee"
+                   asp-action="EmployeeInformation"
+                   asp-route-id="@employee.Id"
+                   class="text-decoration-none">
+                    <div class="card @bgClass text-center h-100 card-hover">
+                        <div class="card-body">
+                            <span class="fw-bold @textColor">
+                                @employee.FirstName
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card-hover:hover {
+        transform: translateY(-3px);
+        transition: transform 0.2s ease-in-out;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+</style>
