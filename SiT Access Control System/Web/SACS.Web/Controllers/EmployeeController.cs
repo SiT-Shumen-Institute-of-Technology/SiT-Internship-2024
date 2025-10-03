@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +7,11 @@ using SACS.Services.Data;
 using SACS.Services.Data.Interfaces;
 using SACS.Web.ViewModels;
 using SACS.Web.ViewModels.Employee;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SACS.Web.Controllers;
 
@@ -157,10 +158,25 @@ public class EmployeeController : Controller
 
     [HttpGet]
     [Authorize]
-    public IActionResult Info()
+    public IActionResult Info(string sortOrder)
     {
         var employees = employeeService.GetAllEmployees();
         var summaries = summaryService.GetAllSummaries();
+
+        switch (sortOrder)
+        {
+            case "recent":
+                employees = employees.OrderByDescending(e => e.Id).ToList();
+                break;
+            case "name_desc":
+                employees = employees.OrderByDescending(e => e.FirstName).ToList();
+                break;
+            default:
+                employees = employees.OrderBy(e => e.FirstName).ToList();
+                break;
+        }
+
+        ViewData["CurrentSort"] = sortOrder ?? "name_asc";
 
         var model = new EmployeeListViewModel
         {
@@ -168,10 +184,45 @@ public class EmployeeController : Controller
             Summaries = summaries
         };
 
+        // build SelectList for dropdown
+        ViewData["SortList"] = new SelectList(new[]
+        {
+        new { Value = "name_asc", Text = "Sort by Name (A–Z)" },
+        new { Value = "name_desc", Text = "Sort by Name (Z–A)" },
+        new { Value = "recent", Text = "Most Recent" }
+    }, "Value", "Text", sortOrder);
+
         return View(model);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteSelected([FromBody] List<string> ids)
+    {
+        if (ids == null || ids.Count == 0)
+        {
+            return BadRequest("No employees selected.");
+        }
 
+        try
+        {
+            foreach (var id in ids)
+            {
+                // delete summaries first (avoid FK issues)
+                await summaryService.DeleteSummaryByEmployeeIdAsync(id);
+
+                // delete employee
+                await employeeService.RemoveByIdAsync(id);
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            // log exception if you have logging; return server error for now
+            return StatusCode(500, $"Error deleting employees: {ex.Message}");
+        }
+    }
 
     // POST: /Employee/Schedule
     [HttpPost]

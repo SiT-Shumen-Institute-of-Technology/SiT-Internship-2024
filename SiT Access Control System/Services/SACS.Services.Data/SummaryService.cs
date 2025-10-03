@@ -16,6 +16,32 @@ public class SummaryService : ISummaryService
         this.summaryRepository = summaryRepository;
     }
 
+    public void DeleteSummaryByEmployeeId(string employeeId)
+    {
+        var summaries = summaryRepository.All().Where(s => s.EmployeeId == employeeId).ToList();
+
+        foreach (var summary in summaries)
+        {
+            summaryRepository.Delete(summary);
+        }
+
+        summaryRepository.SaveChangesAsync().GetAwaiter().GetResult(); // sync call
+    }
+
+    public async Task DeleteSummaryByEmployeeIdAsync(string employeeId)
+    {
+        var summaries = summaryRepository.All().Where(s => s.EmployeeId == employeeId).ToList();
+        if (summaries.Any())
+        {
+            foreach (var summary in summaries)
+            {
+                summaryRepository.Delete(summary);
+            }
+            await summaryRepository.SaveChangesAsync();
+        }
+    }
+
+
 
     public async Task CreateSummaryAsync(Summary summary)
     {

@@ -8,6 +8,11 @@ public interface IEmployeeService
 {
     void RemoveById(string id);
 
+    void DeleteEmployee(string id);
+
+    Task RemoveByIdAsync(string id);
+
+
     Employee FindEmployeeById(string id);
 
     Task AddAsync(Employee employee);

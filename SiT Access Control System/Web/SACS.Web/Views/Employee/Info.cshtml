@@ -1,12 +1,33 @@
-﻿@model SACS.Web.ViewModels.Employee.EmployeeListViewModel
+﻿@using Microsoft.AspNetCore.Http
+@model SACS.Web.ViewModels.Employee.EmployeeListViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @{
     ViewData["Title"] = "Employee Info";
+    var sortList = ViewData["SortList"] as SelectList;
+    var token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h1 class="mt-4 mb-4">Employees</h1>
 
 <div class="container">
-    <div class="row">
+    <div class="row mb-4">
+        <form method="get" asp-action="Info" class="mb-4">
+            <div class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <label class="form-label mb-0">Sort:</label>
+                </div>
+                <div class="col-md-3">
+                    <select asp-items="sortList" name="sortOrder" class="form-select" onchange="this.form.submit()">
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <button id="deleteBtn" class="btn btn-danger mb-3">Delete</button>
+        <button id="cancelDeleteBtn" class="btn btn-secondary mb-3" style="display:none;">Cancel</button>
+    </div>
+
+    <div class="row" id="employeeCards">
         @foreach (var employee in Model.Employees)
         {
             var summary = Model.Summaries.FirstOrDefault(x => x.EmployeeId == employee.Id);
@@ -17,51 +38,110 @@
 
             switch (currentState)
             {
-                case "Active":
-                    bgClass = "bg-success";
-                    textColor = "text-white";
-                    break;
-                case "Remote":
-                    bgClass = "bg-primary";
-                    textColor = "text-white";
-                    break;
-                case "Vacation":
-                    bgClass = "bg-warning";
-                    textColor = "text-dark";
-                    break;
-                case "Absent":
-                    bgClass = "bg-secondary";
-                    textColor = "text-white";
-                    break;
-                default:
-                    bgClass = "bg-light";
-                    textColor = "text-dark";
-                    break;
+                case "Active": bgClass = "bg-success"; textColor = "text-white"; break;
+                case "Remote": bgClass = "bg-primary"; textColor = "text-white"; break;
+                case "Vacation": bgClass = "bg-warning"; textColor = "text-dark"; break;
+                case "Absent": bgClass = "bg-secondary"; textColor = "text-white"; break;
+                default: bgClass = "bg-light"; textColor = "text-dark"; break;
             }
 
             <div class="col-12 col-sm-6 col-md-3 mb-3">
-                <a asp-controller="Employee"
-                   asp-action="EmployeeInformation"
-                   asp-route-id="@employee.Id"
-                   class="text-decoration-none">
-                    <div class="card @bgClass text-center h-100 card-hover">
-                        <div class="card-body">
-                            <span class="fw-bold @textColor">
-                                @employee.FirstName
-                            </span>
-                        </div>
+                <div class="card @bgClass text-center h-100 card-hover position-relative"
+                     data-employee-id="@employee.Id"
+                     data-employee-name="@employee.FirstName"
+                     data-employee-url="@Url.Action("EmployeeInformation", "Employee", new { id = employee.Id })">
+                    <input type="checkbox" class="employee-checkbox position-absolute top-0 end-0 m-2" style="display:none; z-index:2;">
+                    <div class="card-body">
+                        <span class="fw-bold @textColor">@employee.FirstName</span>
                     </div>
-                </a>
+                </div>
             </div>
         }
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const deleteBtn = document.getElementById("deleteBtn");
+        const cancelBtn = document.getElementById("cancelDeleteBtn");
+        const checkboxes = document.querySelectorAll(".employee-checkbox");
+        let deleteMode = false;
+
+        // Clicking a card
+        document.querySelectorAll(".card").forEach(card => {
+            card.addEventListener("click", function(e) {
+                if (deleteMode) {
+                    const cb = card.querySelector(".employee-checkbox");
+                    cb.checked = !cb.checked;
+                    card.classList.toggle("selected", cb.checked);
+                    e.stopPropagation();
+                } else {
+                    window.location = card.getAttribute("data-employee-url");
+                }
+            });
+        });
+
+        // Delete button behavior
+        deleteBtn.addEventListener("click", function() {
+            if (!deleteMode) {
+                // Enter delete mode
+                deleteMode = true;
+                deleteBtn.textContent = "Delete Selected";
+                cancelBtn.style.display = "inline-block";
+                checkboxes.forEach(cb => cb.style.display = "block");
+                document.querySelectorAll(".card").forEach(card => card.classList.add("delete-hover"));
+            } else {
+                // Perform delete
+                const selected = document.querySelectorAll(".employee-checkbox:checked");
+                if (selected.length === 0) return;
+
+                let names = Array.from(selected).map(cb => cb.closest(".card").getAttribute("data-employee-name"));
+                if (confirm(`Are you sure you want to delete: ${names.join(", ")}?`)) {
+                    const ids = Array.from(selected).map(cb => cb.closest(".card").getAttribute("data-employee-id"));
+
+                    fetch('@Url.Action("DeleteSelected", "Employee")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': '@token'
+                        },
+                        body: JSON.stringify(ids)
+                    })
+                    .then(res => {
+                        if(res.ok){
+                            ids.forEach(id => {
+                                document.querySelector(`.card[data-employee-id='${id}']`).remove();
+                            });
+                            cancelBtn.click(); // Exit delete mode
+                        } else {
+                            alert("Failed to delete selected employees.");
+                        }
+                    });
+                }
+            }
+        });
+
+        // Cancel delete mode
+        cancelBtn.addEventListener("click", function() {
+            deleteMode = false;
+            deleteBtn.textContent = "Delete";
+            cancelBtn.style.display = "none";
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+                cb.style.display = "none";
+            });
+            document.querySelectorAll(".card").forEach(card => card.classList.remove("selected", "delete-hover"));
+        });
+    });
+</script>
+
 <style>
-    .card-hover:hover {
-        transform: translateY(-3px);
-        transition: transform 0.2s ease-in-out;
+    .card.delete-hover:hover {
+        border: 2px solid red;
         cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .card.selected {
+        border: 2px solid darkred;
     }
 </style>

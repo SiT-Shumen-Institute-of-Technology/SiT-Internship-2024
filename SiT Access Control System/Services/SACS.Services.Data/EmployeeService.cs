@@ -17,6 +17,26 @@ public class EmployeeService : IEmployeeService
         this.employeeRepository = employeeRepository;
     }
 
+    public void DeleteEmployee(string id)
+    {
+        var employee = employeeRepository.All().FirstOrDefault(x => x.Id == id);
+        if (employee != null)
+        {
+            employeeRepository.Delete(employee);
+            employeeRepository.SaveChangesAsync().GetAwaiter().GetResult(); // sync call
+        }
+    }
+
+    public async Task RemoveByIdAsync(string id)
+    {
+        var employee = employeeRepository.All().FirstOrDefault(x => x.Id == id);
+        if (employee != null)
+        {
+            employeeRepository.Delete(employee);
+            await employeeRepository.SaveChangesAsync();
+        }
+    }
+
     public async Task AddAsync(Employee employee)
     {
         await employeeRepository.AddAsync(employee);
